@@ -1519,20 +1519,50 @@ function selectPage(card, pageId) {
   renderPageEditor(_currentEditPage);
 }
 
+// Image schema per page/section
+const IMAGE_SCHEMA = {
+  home: [
+    { section:'hero',  key:'tile_a', label:'Hero — Imagen principal (grande)' },
+    { section:'hero',  key:'tile_b', label:'Hero — Imagen secundaria arriba' },
+    { section:'hero',  key:'tile_c', label:'Hero — Imagen secundaria abajo' },
+    { section:'sobre', key:'photo',  label:'Sobre nosotros — Foto' },
+  ],
+  spa: [
+    { section:'hero',   key:'bg',    label:'Hero — Imagen de fondo' },
+    { section:'ritual', key:'photo', label:'Ritual — Foto lateral' },
+  ],
+  jardin: [
+    { section:'hero', key:'bg', label:'Hero — Imagen de fondo' },
+  ],
+  experiencias: [
+    { section:'hero', key:'bg', label:'Hero — Imagen de fondo' },
+  ],
+  tienda: [
+    { section:'hero', key:'bg', label:'Hero — Imagen de fondo' },
+  ],
+};
+
 async function renderPageEditor(page) {
   const body = document.getElementById('page-editor-body');
   const schema = PAGE_SCHEMA[page];
   if (!schema) { body.innerHTML = '<p style="color:#bbb;padding:2rem">Sin campos para esta página.</p>'; return; }
 
-  // Load current values from Supabase
+  // Load texts from Supabase
   let lookup = {};
   try {
     const rows = await sb(`site_content?page=eq.${page}&select=section,key,value`);
     if (rows) rows.forEach(r => { lookup[`${r.section}|${r.key}`] = r.value || ''; });
   } catch(e) {}
 
-  // Render form
-  body.innerHTML = schema.map(sec => `
+  // Load images from Supabase
+  let imgLookup = {};
+  try {
+    const imgs = await sb(`site_images?page=eq.${page}&select=section,key,url`);
+    if (imgs) imgs.forEach(r => { imgLookup[`${r.section}|${r.key}`] = r.url || ''; });
+  } catch(e) {}
+
+  // Render text fields
+  const textHtml = schema.map(sec => `
     <div class="section-editor open">
       <div class="se-header" onclick="toggleSection(this)">
         <div class="se-title">${sec.label}</div>
@@ -1553,6 +1583,96 @@ async function renderPageEditor(page) {
       </div>
     </div>
   `).join('');
+
+  // Render image uploaders
+  const imgSchema = IMAGE_SCHEMA[page] || [];
+  const imgHtml = imgSchema.length ? `
+    <div class="section-editor open">
+      <div class="se-header" onclick="toggleSection(this)">
+        <div class="se-title">🖼️ Imágenes de la página</div>
+        <span class="se-chevron">▼</span>
+      </div>
+      <div class="se-body">
+        <p style="font-size:.8rem;color:#999;margin-bottom:1.5rem">Las imágenes se suben directo a Supabase Storage y se reflejan en el sitio al instante.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.2rem">
+          ${imgSchema.map(img => {
+            const currentUrl = imgLookup[`${img.section}|${img.key}`] || '';
+            const inputId = `img-${page}-${img.section}-${img.key}`;
+            return `
+              <div style="border:1px solid var(--gris2);border-radius:4px;overflow:hidden">
+                <div style="position:relative;padding-top:65%;background:var(--gris)">
+                  ${currentUrl
+                    ? `<img id="prev-${inputId}" src="${currentUrl}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">`
+                    : `<div id="prev-${inputId}" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#ccc">🖼️</div>`
+                  }
+                </div>
+                <div style="padding:.8rem">
+                  <div style="font-size:.72rem;color:#888;margin-bottom:.6rem">${img.label}</div>
+                  <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;background:var(--verde);color:#fff;padding:.5rem .9rem;border-radius:3px;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;width:fit-content">
+                    <input type="file" accept="image/*" style="display:none"
+                      onchange="uploadImage(this,'${page}','${img.section}','${img.key}','prev-${inputId}')">
+                    📁 Subir foto
+                  </label>
+                  ${currentUrl ? `<div style="font-size:.65rem;color:#bbb;margin-top:.4rem;word-break:break-all">${currentUrl.split('/').pop()}</div>` : ''}
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    </div>
+  ` : '';
+
+  body.innerHTML = textHtml + imgHtml;
+}
+
+// ── SUBIR IMAGEN A SUPABASE STORAGE ──────────────────
+async function uploadImage(input, page, section, key, previewId) {
+  const file = input.files[0];
+  if (!file) return;
+  showToast('Subiendo imagen…');
+
+  const ext = file.name.split('.').pop();
+  const filename = `${page}-${section}-${key}-${Date.now()}.${ext}`;
+
+  try {
+    // Upload to Supabase Storage
+    const uploadRes = await fetch(
+      `${VN_CONFIG.url}/storage/v1/object/images/${filename}`,
+      {
+        method: 'POST',
+        headers: {
+          'apikey': VN_CONFIG.key,
+          'Authorization': `Bearer ${VN_CONFIG.key}`,
+          'Content-Type': file.type,
+          'x-upsert': 'true'
+        },
+        body: file
+      }
+    );
+
+    if (!uploadRes.ok) throw new Error('Error al subir: ' + uploadRes.status);
+
+    // Build public URL
+    const publicUrl = `${VN_CONFIG.url}/storage/v1/object/public/images/${filename}`;
+
+    // Save URL to site_images table
+    await sb(`site_images?page=eq.${page}&section=eq.${section}&key=eq.${key}`, {
+      method: 'PATCH',
+      headers: { 'Prefer': 'return=representation' },
+      body: JSON.stringify({ url: publicUrl })
+    });
+
+    // Update preview
+    const prev = document.getElementById(previewId);
+    if (prev) {
+      prev.outerHTML = `<img id="${previewId}" src="${publicUrl}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">`;
+    }
+
+    showToast('✓ Imagen subida y guardada');
+  } catch(e) {
+    showToast('Error: ' + e.message, true);
+  }
 }
 
 function previewImgs(input, previewId) {

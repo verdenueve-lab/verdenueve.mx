@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Verde Nueve — Jardín & Spa Holístico · Huichapan</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/style.css">
 <style>
   /* ── HERO ── */
   .hero { min-height: 100vh; display: grid; grid-template-columns: 55% 45%; padding-top: 76px; }
@@ -153,9 +153,9 @@
   </div>
   <div class="hero-right">
     <div class="hero-mosaic">
-      <div class="tile tile-a"></div>
-      <div class="tile tile-b"></div>
-      <div class="tile tile-c"></div>
+      <div class="tile tile-a" data-img="hero.tile_a"></div>
+      <div class="tile tile-b" data-img="hero.tile_b"></div>
+      <div class="tile tile-c" data-img="hero.tile_c"></div>
     </div>
     <div class="hero-pill">
       <div class="big">+100</div>
@@ -181,7 +181,7 @@
 
 <!-- ── SOBRE ── -->
 <section class="sobre" id="sobre">
-  <div class="sobre-photo">
+  <div class="sobre-photo" data-img="sobre.photo">
     <div class="sobre-photo-tag es">Desde Huichapan</div>
     <div class="sobre-photo-tag en">From Huichapan</div>
   </div>
@@ -316,6 +316,6 @@
 </footer>
 
 
-<script src="main.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
