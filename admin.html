@@ -1159,39 +1159,41 @@ const CONTENT_MAP = {
 async function loadPageContent(page) {
   try {
     const rows = await sb(`site_content?page=in.(${page},global)&select=page,section,key,value`);
-    if (!rows) return;
-    rows.forEach(({ section, key, value }) => {
-      // Buscar el input con data-vn o por id que coincida con el mapa
-      const inputId = Object.keys(CONTENT_MAP).find(id => {
-        const m = CONTENT_MAP[id];
-        return m.section === section && m.key === key &&
-               (m.page === page || m.page === 'global');
-      });
-      if (inputId) {
-        const el = document.getElementById(inputId);
-        if (el) el.value = value || '';
-      }
+    if (!rows || !rows.length) return;
+    // Build a lookup: "page|section|key" -> value
+    const lookup = {};
+    rows.forEach(({ page: p, section, key, value }) => {
+      lookup[`${p}|${section}|${key}`] = value || '';
     });
+    // Fill each input using CONTENT_MAP
+    for (const [inputId, meta] of Object.entries(CONTENT_MAP)) {
+      const el = document.getElementById(inputId);
+      if (!el) continue;
+      const val = lookup[`${meta.page}|${meta.section}|${meta.key}`];
+      if (val !== undefined) el.value = val;
+    }
   } catch (e) {
     console.warn('loadPageContent error:', e.message);
   }
 }
 
-// Guardar todos los campos de contenido en Supabase
+// Guardar todos los campos de contenido en Supabase (PATCH por fila)
 async function savePageContent() {
   showToast('Guardando…');
-  const upserts = [];
+  const updates = [];
   for (const [inputId, meta] of Object.entries(CONTENT_MAP)) {
     const el = document.getElementById(inputId);
     if (!el) continue;
-    upserts.push({ page: meta.page, section: meta.section, key: meta.key, value: el.value });
+    updates.push(
+      sb(`site_content?page=eq.${meta.page}&section=eq.${meta.section}&key=eq.${meta.key}`, {
+        method: 'PATCH',
+        headers: { 'Prefer': 'return=representation' },
+        body: JSON.stringify({ value: el.value })
+      })
+    );
   }
   try {
-    await sb('site_content', {
-      method: 'POST',
-      headers: { 'Prefer': 'resolution=merge-duplicates,return=representation' },
-      body: JSON.stringify(upserts)
-    });
+    await Promise.all(updates);
     showToast('✓ Contenido guardado en Supabase');
   } catch(e) {
     showToast('Error al guardar: ' + e.message, true);
@@ -1496,11 +1498,13 @@ async function saveConfig() {
   ];
 
   try {
-    await sb('site_content', {
-      method: 'POST',
-      headers: { 'Prefer': 'resolution=merge-duplicates,return=representation' },
-      body: JSON.stringify(upserts)
-    });
+    await Promise.all(upserts.map(u =>
+      sb(`site_content?page=eq.${u.page}&section=eq.${u.section}&key=eq.${u.key}`, {
+        method: 'PATCH',
+        headers: { 'Prefer': 'return=representation' },
+        body: JSON.stringify({ value: u.value })
+      })
+    ));
     showToast('✓ Configuración guardada en Supabase');
   } catch(e) {
     showToast('Error al guardar config: ' + e.message, true);
