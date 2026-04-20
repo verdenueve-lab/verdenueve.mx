@@ -549,144 +549,11 @@
         <!-- EDITOR DE SECCIONES -->
         <div class="editor-wrap">
           <div class="editor-header">
-            <div class="editor-header-title" id="page-editor-title">Editando: Home</div>
+            <div class="editor-header-title" id="page-editor-title">Selecciona una página arriba</div>
             <button class="btn btn-primary btn-sm" onclick="savePageContent()">💾 Guardar textos</button>
           </div>
-          <div class="editor-body">
-
-            <div class="section-editor open">
-              <div class="se-header" onclick="toggleSection(this)">
-                <div class="se-title"><span>🦸</span> Hero principal</div>
-                <span class="se-chevron">▼</span>
-              </div>
-              <div class="se-body">
-                <div class="form-row">
-                  <div class="field">
-                    <label>Eyebrow / Subtítulo (ES)</label>
-                    <input type="text" id="hero-eyebrow-es" value="El Calvario, Huichapan · Pueblo Mágico">
-                  </div>
-                  <div class="field">
-                    <label>Eyebrow / Subtítulo (EN)</label>
-                    <input type="text" id="hero-eyebrow-en" value="El Calvario, Huichapan · Magic Town">
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="field">
-                    <label>Título (ES)</label>
-                    <input type="text" id="hero-title-es" value="Jardín & Spa Verde Nueve">
-                  </div>
-                  <div class="field">
-                    <label>Título (EN)</label>
-                    <input type="text" id="hero-title-en" value="Garden & Spa Verde Nueve">
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="field">
-                    <label>Descripción (ES)</label>
-                    <textarea id="hero-desc-es">Un espacio holístico donde la naturaleza, los aromas y el silencio te devuelven a ti misma.</textarea>
-                  </div>
-                  <div class="field">
-                    <label>Descripción (EN)</label>
-                    <textarea id="hero-desc-en">A holistic space where nature, aromas and silence bring you back to yourself.</textarea>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="field">
-                    <label>Tagline (ES)</label>
-                    <input type="text" id="hero-tagline-es" value="Cosmética natural · Aromaterapia · Temazcal · Hotel">
-                  </div>
-                  <div class="field">
-                    <label>Tagline (EN)</label>
-                    <input type="text" id="hero-tagline-en" value="Natural cosmetics · Aromatherapy · Temazcal · Hotel">
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="section-editor">
-              <div class="se-header" onclick="toggleSection(this)">
-                <div class="se-title"><span>📖</span> Sobre nosotros</div>
-                <span class="se-chevron">▼</span>
-              </div>
-              <div class="se-body">
-                <div class="form-row">
-                  <div class="field">
-                    <label>Título sección (ES)</label>
-                    <input type="text" id="sobre-title-es" value="Nacimos del aroma y crecimos en la naturaleza">
-                  </div>
-                  <div class="field">
-                    <label>Título sección (EN)</label>
-                    <input type="text" id="sobre-title-en" value="Born from scent, grown in nature">
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="field">
-                    <label>Texto (ES)</label>
-                    <textarea id="sobre-body-es">Todo comenzó con la aromaterapia. Poco a poco creamos más de 100 productos naturales. Luego descubrimos el poder del temazcal para conectar cuerpo y alma...</textarea>
-                  </div>
-                  <div class="field">
-                    <label>Texto (EN)</label>
-                    <textarea id="sobre-body-en">It all started with aromatherapy. Little by little we created over 100 natural products. Then we discovered the power of temazcal to connect body and soul...</textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="section-editor">
-              <div class="se-header" onclick="toggleSection(this)">
-                <div class="se-title"><span>📍</span> Información de contacto</div>
-                <span class="se-chevron">▼</span>
-              </div>
-              <div class="se-body">
-                <div class="form-row triple">
-                  <div class="field">
-                    <label>WhatsApp</label>
-                    <input type="text" id="contact-phone" value="5554071775">
-                    <div class="field-hint">Solo números, sin +52</div>
-                  </div>
-                  <div class="field">
-                    <label>Dirección</label>
-                    <input type="text" id="contact-address" value="El Calvario, Huichapan, Hidalgo">
-                  </div>
-                  <div class="field">
-                    <label>Usuario en redes</label>
-                    <input type="text" id="contact-social" value="@VerdeNueve">
-                  </div>
-                </div>
-                <div class="form-row triple">
-                  <div class="field">
-                    <label>TikTok URL</label>
-                    <input type="text" placeholder="https://tiktok.com/@verdenueve">
-                  </div>
-                  <div class="field">
-                    <label>Facebook URL</label>
-                    <input type="text" placeholder="https://facebook.com/verdenueve">
-                  </div>
-                  <div class="field">
-                    <label>Instagram URL</label>
-                    <input type="text" placeholder="https://instagram.com/verdenueve">
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="section-editor">
-              <div class="se-header" onclick="toggleSection(this)">
-                <div class="se-title"><span>🖼️</span> Imágenes del hero</div>
-                <span class="se-chevron">▼</span>
-              </div>
-              <div class="se-body">
-                <p style="font-size:.82rem;color:#999;margin-bottom:1rem">Sube las imágenes que aparecerán en el mosaico del hero. Tamaño recomendado: 800×600px.</p>
-                <div class="img-upload" onclick="document.getElementById('hero-imgs').click()">
-                  <input type="file" id="hero-imgs" multiple accept="image/*" onchange="previewImgs(this,'hero-preview')">
-                  <div class="upload-icon">📁</div>
-                  <p><strong>Haz clic</strong> o arrastra imágenes aquí</p>
-                  <p>JPG, PNG, WebP · Máx. 5 MB c/u</p>
-                </div>
-                <div class="img-preview" id="hero-preview"></div>
-              </div>
-            </div>
-
+          <div class="editor-body" id="page-editor-body">
+            <p style="color:#bbb;font-size:.85rem;text-align:center;padding:3rem">Selecciona una página para ver sus campos editables.</p>
           </div>
         </div>
       </div>
@@ -1123,7 +990,6 @@ function doLogout() {
 
 // ── INICIALIZAR DASHBOARD ─────────────────────────────
 async function initDashboard() {
-  await loadPageContent('home');
   await loadProductsTable();
   await loadServicesTable();
   await loadResumenStats();
@@ -1135,6 +1001,7 @@ async function initDashboard() {
 
 // Mapa: id de input del admin → { page, section, key }
 const CONTENT_MAP = {
+  // HOME
   'hero-title-es':   { page:'home', section:'hero',   key:'title_es' },
   'hero-title-en':   { page:'home', section:'hero',   key:'title_en' },
   'hero-desc-es':    { page:'home', section:'hero',   key:'desc_es'  },
@@ -1150,11 +1017,35 @@ const CONTENT_MAP = {
   'contact-address': { page:'home', section:'contacto', key:'address' },
   'contact-phone':   { page:'home', section:'contacto', key:'phone'   },
   'contact-social':  { page:'home', section:'contacto', key:'social'  },
+  // SPA
+  'spa-hero-title-es':  { page:'spa', section:'hero', key:'title_es' },
+  'spa-hero-title-en':  { page:'spa', section:'hero', key:'title_en' },
+  'spa-hero-desc-es':   { page:'spa', section:'hero', key:'desc_es'  },
+  'spa-hero-desc-en':   { page:'spa', section:'hero', key:'desc_en'  },
+  'spa-ritual-title-es':{ page:'spa', section:'ritual', key:'title_es' },
+  'spa-ritual-title-en':{ page:'spa', section:'ritual', key:'title_en' },
+  // JARDIN
+  'jardin-hero-desc-es': { page:'jardin', section:'hero', key:'desc_es' },
+  'jardin-hero-desc-en': { page:'jardin', section:'hero', key:'desc_en' },
+  // EXPERIENCIAS
+  'exp-hero-title-es': { page:'experiencias', section:'hero', key:'title_es' },
+  'exp-hero-title-en': { page:'experiencias', section:'hero', key:'title_en' },
+  'exp-hero-desc-es':  { page:'experiencias', section:'hero', key:'desc_es'  },
+  'exp-hero-desc-en':  { page:'experiencias', section:'hero', key:'desc_en'  },
+  // TIENDA
+  'tienda-hero-title-es': { page:'tienda', section:'hero', key:'title_es' },
+  'tienda-hero-title-en': { page:'tienda', section:'hero', key:'title_en' },
+  'tienda-hero-desc-es':  { page:'tienda', section:'hero', key:'desc_es'  },
+  'tienda-hero-desc-en':  { page:'tienda', section:'hero', key:'desc_en'  },
+  // GLOBAL
   'cfg-whatsapp':    { page:'global', section:'config', key:'whatsapp' },
   'cfg-instagram':   { page:'global', section:'config', key:'instagram' },
   'cfg-tiktok':      { page:'global', section:'config', key:'tiktok'   },
   'cfg-facebook':    { page:'global', section:'config', key:'facebook' },
 };
+
+// Mapa de páginas para saber qué página está siendo editada
+let _currentEditPage = 'home';
 
 async function loadPageContent(page) {
   try {
@@ -1177,21 +1068,18 @@ async function loadPageContent(page) {
   }
 }
 
-// Guardar todos los campos de contenido en Supabase (PATCH por fila)
+// Guardar campos dinámicos en Supabase
 async function savePageContent() {
   showToast('Guardando…');
-  const updates = [];
-  for (const [inputId, meta] of Object.entries(CONTENT_MAP)) {
-    const el = document.getElementById(inputId);
-    if (!el) continue;
-    updates.push(
-      sb(`site_content?page=eq.${meta.page}&section=eq.${meta.section}&key=eq.${meta.key}`, {
-        method: 'PATCH',
-        headers: { 'Prefer': 'return=representation' },
-        body: JSON.stringify({ value: el.value })
-      })
-    );
-  }
+  const els = document.querySelectorAll('#page-editor-body [data-page][data-section][data-key]');
+  if (!els.length) { showToast('Selecciona una página primero', true); return; }
+  const updates = Array.from(els).map(el =>
+    sb(`site_content?page=eq.${el.dataset.page}&section=eq.${el.dataset.section}&key=eq.${el.dataset.key}`, {
+      method: 'PATCH',
+      headers: { 'Prefer': 'return=representation' },
+      body: JSON.stringify({ value: el.value })
+    })
+  );
   try {
     await Promise.all(updates);
     showToast('✓ Contenido guardado en Supabase');
@@ -1554,12 +1442,117 @@ function toggleSection(header) {
   header.closest('.section-editor').classList.toggle('open');
 }
 
+// Esquema de campos por página
+const PAGE_SCHEMA = {
+  home: [
+    { section:'hero', label:'🦸 Hero principal', fields:[
+      { key:'eyebrow_es', label:'Eyebrow (ES)', type:'input' },
+      { key:'eyebrow_en', label:'Eyebrow (EN)', type:'input' },
+      { key:'title_es',   label:'Título (ES)',  type:'input' },
+      { key:'title_en',   label:'Título (EN)',  type:'input' },
+      { key:'desc_es',    label:'Descripción (ES)', type:'textarea' },
+      { key:'desc_en',    label:'Descripción (EN)', type:'textarea' },
+      { key:'tagline_es', label:'Tagline (ES)', type:'input' },
+      { key:'tagline_en', label:'Tagline (EN)', type:'input' },
+    ]},
+    { section:'sobre', label:'📖 Sobre nosotros', fields:[
+      { key:'title_es', label:'Título (ES)', type:'input' },
+      { key:'title_en', label:'Título (EN)', type:'input' },
+      { key:'body_es',  label:'Texto (ES)',  type:'textarea' },
+      { key:'body_en',  label:'Texto (EN)',  type:'textarea' },
+    ]},
+    { section:'contacto', label:'📍 Contacto', fields:[
+      { key:'phone',   label:'Teléfono / WhatsApp', type:'input' },
+      { key:'address', label:'Dirección',           type:'input' },
+      { key:'social',  label:'Redes sociales',      type:'input' },
+    ]},
+  ],
+  spa: [
+    { section:'hero', label:'🦸 Hero principal', fields:[
+      { key:'title_es', label:'Título (ES)', type:'input' },
+      { key:'title_en', label:'Título (EN)', type:'input' },
+      { key:'desc_es',  label:'Descripción (ES)', type:'textarea' },
+      { key:'desc_en',  label:'Descripción (EN)', type:'textarea' },
+    ]},
+    { section:'ritual', label:'🌿 Ritual Verde Nueve', fields:[
+      { key:'title_es', label:'Título (ES)', type:'input' },
+      { key:'title_en', label:'Título (EN)', type:'input' },
+    ]},
+  ],
+  jardin: [
+    { section:'hero', label:'🦸 Hero principal', fields:[
+      { key:'title_es', label:'Título (ES)', type:'input' },
+      { key:'title_en', label:'Título (EN)', type:'input' },
+      { key:'desc_es',  label:'Descripción (ES)', type:'textarea' },
+      { key:'desc_en',  label:'Descripción (EN)', type:'textarea' },
+    ]},
+  ],
+  experiencias: [
+    { section:'hero', label:'🦸 Hero principal', fields:[
+      { key:'title_es', label:'Título (ES)', type:'input' },
+      { key:'title_en', label:'Título (EN)', type:'input' },
+      { key:'desc_es',  label:'Descripción (ES)', type:'textarea' },
+      { key:'desc_en',  label:'Descripción (EN)', type:'textarea' },
+    ]},
+    { section:'temazcal', label:'🔥 Temazcal', fields:[
+      { key:'title_es', label:'Título (ES)', type:'input' },
+      { key:'title_en', label:'Título (EN)', type:'input' },
+    ]},
+  ],
+  tienda: [
+    { section:'hero', label:'🦸 Hero principal', fields:[
+      { key:'title_es', label:'Título (ES)', type:'input' },
+      { key:'title_en', label:'Título (EN)', type:'input' },
+      { key:'desc_es',  label:'Descripción (ES)', type:'textarea' },
+      { key:'desc_en',  label:'Descripción (EN)', type:'textarea' },
+    ]},
+  ],
+};
+
 function selectPage(card, pageId) {
   document.querySelectorAll('.page-card').forEach(c => c.classList.remove('selected'));
   card.classList.add('selected');
   const names = { home:'Home', spa:'Spa & Hotel', jardin:'Jardín Botánico', exp:'Experiencias', tienda:'Tienda' };
+  const pageMap = { home:'home', spa:'spa', jardin:'jardin', exp:'experiencias', tienda:'tienda' };
+  _currentEditPage = pageMap[pageId] || pageId;
   document.getElementById('page-editor-title').textContent = 'Editando: ' + names[pageId];
-  loadPageContent(pageId === 'exp' ? 'experiencias' : pageId);
+  renderPageEditor(_currentEditPage);
+}
+
+async function renderPageEditor(page) {
+  const body = document.getElementById('page-editor-body');
+  const schema = PAGE_SCHEMA[page];
+  if (!schema) { body.innerHTML = '<p style="color:#bbb;padding:2rem">Sin campos para esta página.</p>'; return; }
+
+  // Load current values from Supabase
+  let lookup = {};
+  try {
+    const rows = await sb(`site_content?page=eq.${page}&select=section,key,value`);
+    if (rows) rows.forEach(r => { lookup[`${r.section}|${r.key}`] = r.value || ''; });
+  } catch(e) {}
+
+  // Render form
+  body.innerHTML = schema.map(sec => `
+    <div class="section-editor open">
+      <div class="se-header" onclick="toggleSection(this)">
+        <div class="se-title">${sec.label}</div>
+        <span class="se-chevron">▼</span>
+      </div>
+      <div class="se-body">
+        <div class="form-row">
+          ${sec.fields.map(f => `
+            <div class="field">
+              <label>${f.label}</label>
+              ${f.type === 'textarea'
+                ? `<textarea data-page="${page}" data-section="${sec.section}" data-key="${f.key}">${lookup[sec.section+'|'+f.key] || ''}</textarea>`
+                : `<input type="text" data-page="${page}" data-section="${sec.section}" data-key="${f.key}" value="${(lookup[sec.section+'|'+f.key] || '').replace(/"/g,'&quot;')}">`
+              }
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
 }
 
 function previewImgs(input, previewId) {
