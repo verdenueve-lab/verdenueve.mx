@@ -1189,7 +1189,7 @@ async function savePageContent() {
   try {
     await sb('site_content', {
       method: 'POST',
-      prefer: 'resolution=merge-duplicates',
+      headers: { 'Prefer': 'resolution=merge-duplicates,return=representation' },
       body: JSON.stringify(upserts)
     });
     showToast('✓ Contenido guardado en Supabase');
@@ -1498,7 +1498,7 @@ async function saveConfig() {
   try {
     await sb('site_content', {
       method: 'POST',
-      prefer: 'resolution=merge-duplicates',
+      headers: { 'Prefer': 'resolution=merge-duplicates,return=representation' },
       body: JSON.stringify(upserts)
     });
     showToast('✓ Configuración guardada en Supabase');
