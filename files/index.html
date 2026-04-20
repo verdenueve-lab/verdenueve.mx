@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verde Nueve — Jardín & Spa Holístico · Huichapan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  /* ── HERO ── */
+  .hero { min-height: 100vh; display: grid; grid-template-columns: 55% 45%; padding-top: 76px; }
+  .hero-left { display: flex; flex-direction: column; justify-content: center; padding: 6rem 4rem 6rem 7%; }
+  .eyebrow { display: flex; align-items: center; gap: .8rem; font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: var(--tierra); font-weight: 500; margin-bottom: 1.8rem; }
+  .eyebrow::before { content: ''; display: inline-block; width: 28px; height: 1px; background: var(--tierra); }
+  .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 4.5vw, 5rem); line-height: 1.08; color: var(--verde); margin-bottom: 1.4rem; }
+  .hero-title em { display: block; font-style: italic; color: var(--tierra); }
+  .hero-desc { font-family: 'Cormorant Garamond', serif; font-size: 1.22rem; line-height: 1.75; color: var(--cafe); opacity: .88; max-width: 420px; margin-bottom: 2.8rem; }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .hero-tagline { margin-top: 2.5rem; font-size: .72rem; letter-spacing: .16em; color: var(--verde-palido); font-family: 'Cormorant Garamond', serif; font-style: italic; }
+  .hero-right { position: relative; overflow: hidden; }
+  .hero-mosaic { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 60% 40%; height: 100%; gap: 4px; }
+  .tile { overflow: hidden; background-size: cover; background-position: center; transition: transform .7s ease; }
+  .tile:hover { transform: scale(1.04); }
+  .tile-a { grid-column: 1; grid-row: 1/3; background-image: url('https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=700&q=80'); }
+  .tile-b { background-image: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=500&q=80'); }
+  .tile-c { background-image: url('https://images.unsplash.com/photo-1556760544-74068565f05c?w=500&q=80'); }
+  .hero-pill { position: absolute; bottom: 2.2rem; left: -1px; background: var(--crema); border: 1px solid var(--arena); padding: 1rem 1.6rem; box-shadow: 0 8px 30px rgba(92,61,46,.14); z-index: 10; }
+  .hero-pill .big { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--tierra); line-height: 1; }
+  .hero-pill .small { font-size: .65rem; letter-spacing: .14em; text-transform: uppercase; color: var(--cafe); opacity: .6; margin-top: .25rem; }
+  .hero-left .eyebrow   { animation: fadeUp .6s ease .1s both; }
+  .hero-left .hero-title { animation: fadeUp .7s ease .2s both; }
+  .hero-left .hero-desc  { animation: fadeUp .7s ease .35s both; }
+  .hero-left .hero-btns  { animation: fadeUp .7s ease .5s both; }
+
+  /* ── SOBRE ── */
+  .sobre { display: grid; grid-template-columns: 1fr 1fr; min-height: 78vh; }
+  .sobre-photo { background: url('https://images.unsplash.com/photo-1501854140801-50d01698950b?w=900&q=80') center/cover; position: relative; }
+  .sobre-photo-tag { position: absolute; top: 2.5rem; right: 0; background: var(--tierra); color: #fff; padding: .7rem 1.4rem; font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; }
+  .sobre-text { background: var(--crema); padding: 6rem 6% 6rem 5%; display: flex; flex-direction: column; justify-content: center; }
+  .stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; margin-top: 2.5rem; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2.1rem; color: var(--tierra); line-height: 1; }
+  .stat-lab { font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; color: var(--cafe); opacity: .6; margin-top: .3rem; }
+
+  /* ── SERVICIOS ── */
+  .servicios { padding: 8rem 7%; background: var(--hueso); }
+  .servicios-header { text-align: center; margin-bottom: 4rem; }
+  .service-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: rgba(139,94,60,.1); }
+  .service-card { background: var(--hueso); padding: 3rem 2.5rem; cursor: pointer; position: relative; overflow: hidden; text-decoration: none; color: inherit; display: block; }
+  .service-card::before { content: ''; position: absolute; inset: 0; background: var(--verde); transform: scaleY(0); transform-origin: bottom; transition: transform .4s ease; z-index: 0; }
+  .service-card:hover::before { transform: scaleY(1); }
+  .service-card > * { position: relative; z-index: 1; }
+  .service-card:hover .s-icon { color: var(--arena); }
+  .service-card:hover .s-name { color: #fff; }
+  .service-card:hover .s-desc { color: rgba(255,255,255,.72); opacity: 1; }
+  .service-card:hover .s-more { color: var(--arena); }
+  .s-icon { font-size: 2rem; margin-bottom: 1.3rem; color: var(--verde-palido); transition: color .35s; }
+  .s-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--verde); margin-bottom: .8rem; transition: color .35s; }
+  .s-desc { font-family: 'Cormorant Garamond', serif; font-size: .98rem; line-height: 1.7; color: var(--cafe); opacity: .82; margin-bottom: 1.6rem; transition: color .35s; }
+  .s-more { font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; color: var(--tierra); transition: color .35s; }
+
+  /* ── PRODUCTOS ── */
+  .productos { background: var(--verde); padding: 8rem 7%; position: relative; overflow: hidden; }
+  .productos::after { content: ''; position: absolute; top: -80px; right: -80px; width: 400px; height: 400px; border-radius: 50%; background: rgba(255,255,255,.03); pointer-events: none; }
+  .productos-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3.5rem; }
+  .productos-header .section-eyebrow { color: var(--arena); }
+  .productos-header .section-eyebrow::before { background: var(--arena); }
+  .productos-header .section-title { color: #fff; margin-bottom: 0; }
+  .productos-header .section-title em { color: var(--arena); }
+  .prod-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.2rem; }
+  .prod-card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); padding: 1.8rem; cursor: pointer; transition: all .3s; }
+  .prod-card:hover { background: rgba(255,255,255,.12); transform: translateY(-4px); }
+  .prod-emoji { font-size: 1.7rem; margin-bottom: .9rem; }
+  .prod-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: #fff; margin-bottom: .4rem; }
+  .prod-uso { font-size: .72rem; color: rgba(255,255,255,.52); line-height: 1.5; margin-bottom: 1rem; }
+  .prod-price { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--arena); }
+
+  /* ── EXPERIENCIA ── */
+  .experiencia { display: grid; grid-template-columns: 1fr 1fr; min-height: 68vh; }
+  .exp-photo { background: url('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=900&q=80') center/cover; position: relative; }
+  .exp-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, rgba(45,90,61,.3), transparent); }
+  .exp-text { background: var(--crema); padding: 6rem 6%; display: flex; flex-direction: column; justify-content: center; }
+  .ritual-list { list-style: none; margin: 2rem 0 2.5rem; }
+  .ritual-list li { display: flex; align-items: flex-start; gap: 1rem; padding: 1.1rem 0; border-bottom: 1px solid rgba(139,94,60,.12); font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--cafe); }
+  .ritual-list li:last-child { border-bottom: none; }
+  .ritual-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--tierra); margin-top: 8px; flex-shrink: 0; }
+
+  /* ── CONTACTO ── */
+  .contacto { background: var(--cafe); display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; padding: 6rem 7%; align-items: center; }
+  .contacto .section-eyebrow { color: var(--arena); }
+  .contacto .section-eyebrow::before { background: var(--arena); }
+  .contacto .section-title { color: #fff; }
+  .contacto .section-title em { color: var(--arena); }
+  .contact-desc { font-family: 'Cormorant Garamond', serif; font-size: 1.08rem; color: rgba(255,255,255,.68); line-height: 1.8; margin-bottom: 2rem; }
+  .contact-items { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-item { display: flex; align-items: center; gap: 1rem; color: rgba(255,255,255,.75); font-size: .88rem; }
+  .map-box { height: 320px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.04); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; cursor: pointer; transition: all .3s; border-radius: 2px; color: rgba(255,255,255,.4); font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.05rem; }
+  .map-box:hover { background: rgba(255,255,255,.08); color: rgba(255,255,255,.75); }
+  .map-box .pin { font-size: 2.4rem; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero, .sobre, .experiencia, .contacto { grid-template-columns: 1fr; }
+    .hero-right { min-height: 55vw; }
+    .hero-left { padding: 4rem 6%; }
+    .service-grid { grid-template-columns: 1fr 1fr; }
+    .prod-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .service-grid, .prod-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">Verde <em>Nueve</em></a>
+  <ul class="nav-links">
+    <li><a href="spa-hotel.html" class="es">Spa & Hotel</a><a href="spa-hotel.html" class="en">Spa & Hotel</a></li>
+    <li><a href="jardin.html" class="es">Jardín</a><a href="jardin.html" class="en">Garden</a></li>
+    <li><a href="experiencias.html" class="es">Experiencias</a><a href="experiencias.html" class="en">Experiences</a></li>
+    <li><a href="tienda.html" class="es">Tienda</a><a href="tienda.html" class="en">Shop</a></li>
+    <li><a href="https://wa.me/5554071775" class="btn-reservar es">Reservar</a><a href="https://wa.me/5554071775" class="btn-reservar en">Book Now</a></li>
+  </ul>
+  <div class="lang-toggle">
+    <button data-lang="es" onclick="setLang('es')">ES</button>
+    <button data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
+  <button class="nav-burger" aria-label="Menú"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="eyebrow">
+      <span class="es" data-vn="hero.eyebrow_es">El Calvario, Huichapan · Pueblo Mágico</span>
+      <span class="en" data-vn="hero.eyebrow_en">El Calvario, Huichapan · Magic Town</span>
+    </div>
+    <h1 class="hero-title">
+      <span class="es" data-vn="hero.title_es">Jardín & Spa<em>Verde Nueve</em></span>
+      <span class="en" data-vn="hero.title_en">Garden & Spa<em>Verde Nueve</em></span>
+    </h1>
+    <p class="hero-desc es" data-vn="hero.desc_es">Un espacio holístico donde la naturaleza, los aromas y el silencio te devuelven a ti misma.</p>
+    <p class="hero-desc en" data-vn="hero.desc_en">A holistic space where nature, aromas and silence bring you back to yourself.</p>
+    <div class="hero-btns">
+      <a href="experiencias.html" class="btn-prim es">Explorar Experiencias</a>
+      <a href="experiencias.html" class="btn-prim en">Explore Experiences</a>
+      <a href="tienda.html" class="btn-ghost es">Ver Productos</a>
+      <a href="tienda.html" class="btn-ghost en">Shop Products</a>
+    </div>
+    <p class="hero-tagline es" data-vn="hero.tagline_es">Cosmética natural · Aromaterapia · Temazcal · Hotel</p>
+    <p class="hero-tagline en" data-vn="hero.tagline_en">Natural cosmetics · Aromatherapy · Temazcal · Hotel</p>
+  </div>
+  <div class="hero-right">
+    <div class="hero-mosaic">
+      <div class="tile tile-a"></div>
+      <div class="tile tile-b"></div>
+      <div class="tile tile-c"></div>
+    </div>
+    <div class="hero-pill">
+      <div class="big">+100</div>
+      <div class="small es">Productos naturales</div>
+      <div class="small en">Natural products</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Temazcal Suave</div><div class="marquee-item">Aromaterapia</div>
+    <div class="marquee-item">Masajes &amp; Faciales</div><div class="marquee-item">Jardín Botánico</div>
+    <div class="marquee-item">Cosmética Natural</div><div class="marquee-item">Picnics Gourmet</div>
+    <div class="marquee-item">Meditación</div><div class="marquee-item">Hotel Holístico</div>
+    <div class="marquee-item">Temazcal Suave</div><div class="marquee-item">Aromaterapia</div>
+    <div class="marquee-item">Masajes &amp; Faciales</div><div class="marquee-item">Jardín Botánico</div>
+    <div class="marquee-item">Cosmética Natural</div><div class="marquee-item">Picnics Gourmet</div>
+    <div class="marquee-item">Meditación</div><div class="marquee-item">Hotel Holístico</div>
+  </div>
+</div>
+
+<!-- ── SOBRE ── -->
+<section class="sobre" id="sobre">
+  <div class="sobre-photo">
+    <div class="sobre-photo-tag es">Desde Huichapan</div>
+    <div class="sobre-photo-tag en">From Huichapan</div>
+  </div>
+  <div class="sobre-text">
+    <div class="section-eyebrow es fade-up">Nuestra historia</div>
+    <div class="section-eyebrow en fade-up">Our story</div>
+    <h2 class="section-title fade-up es">Nacimos del <em>aroma</em> y crecimos en la naturaleza</h2>
+    <h2 class="section-title fade-up en">Born from <em>scent</em>, grown in nature</h2>
+    <p class="section-body fade-up es">Todo comenzó con la aromaterapia. Poco a poco creamos más de 100 productos naturales. Luego descubrimos el poder del temazcal para conectar cuerpo y alma, y creamos un espacio completo: un jardín holístico en Huichapan con temazcal, spa, hotel y tienda.</p>
+    <p class="section-body fade-up en">It all started with aromatherapy. Little by little we created over 100 natural products. Then we discovered the power of temazcal to connect body and soul, and built a complete space: a holistic garden in Huichapan with temazcal, spa, hotel and shop.</p>
+    <div class="stats-row fade-up">
+      <div><div class="stat-num">+100</div><div class="stat-lab es">Productos naturales</div><div class="stat-lab en">Natural products</div></div>
+      <div><div class="stat-num">1</div><div class="stat-lab es">Jardín holístico</div><div class="stat-lab en">Holistic garden</div></div>
+      <div><div class="stat-num">∞</div><div class="stat-lab es">Momentos de paz</div><div class="stat-lab en">Moments of peace</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICIOS ── -->
+<section class="servicios" id="servicios">
+  <div class="servicios-header">
+    <div class="section-eyebrow fade-up" style="justify-content:center"><span class="es">Lo que ofrecemos</span><span class="en">What we offer</span></div>
+    <h2 class="section-title fade-up" style="text-align:center"><span class="es">Seis formas de <em>reconectarte</em></span><span class="en">Six ways to <em>reconnect</em></span></h2>
+  </div>
+  <div class="service-grid">
+    <a href="spa-hotel.html" class="service-card"><div class="s-icon">🌿</div><div class="s-name es">Spa & Faciales</div><div class="s-name en">Spa & Facials</div><p class="s-desc es">Masajes descontracturantes, relajantes, manos y pies. Faciales de limpieza, firmeza e hidratación con productos 100% naturales.</p><p class="s-desc en">Tension-releasing massages, hand and foot care. Cleansing, firming and hydrating facials with 100% natural products.</p><div class="s-more es">Ver más →</div><div class="s-more en">Learn more →</div></a>
+    <a href="experiencias.html" class="service-card"><div class="s-icon">🔥</div><div class="s-name es">Temazcal</div><div class="s-name en">Temazcal</div><p class="s-desc es">Meditación y descanso profundo. Técnicas de respiración, manejo de emociones y aromaterapia antiestres en un ambiente sagrado.</p><p class="s-desc en">Meditation and deep rest. Breathing techniques, emotion management and anti-stress aromatherapy in a sacred environment.</p><div class="s-more es">Ver más →</div><div class="s-more en">Learn more →</div></a>
+    <a href="experiencias.html" class="service-card"><div class="s-icon">🌸</div><div class="s-name es">Terapias Holísticas</div><div class="s-name en">Holistic Therapies</div><p class="s-desc es">Temazcal, danza, tai chi, respiración, aromaterapia, herbolaria y cuarzos para ceremonias de sanación profunda.</p><p class="s-desc en">Temazcal, dance, tai chi, breathing, aromatherapy, herbalism and crystals for deep healing ceremonies.</p><div class="s-more es">Ver más →</div><div class="s-more en">Learn more →</div></a>
+    <a href="experiencias.html" class="service-card"><div class="s-icon">🧺</div><div class="s-name es">Picnics & Fiestas</div><div class="s-name en">Picnics & Celebrations</div><p class="s-desc es">Cumpleaños, aniversarios, picnics gourmet y fiestas spa. Una nueva forma de celebrar rodeada de naturaleza.</p><p class="s-desc en">Birthdays, anniversaries, gourmet picnics and spa parties. A new way to celebrate in nature.</p><div class="s-more es">Ver más →</div><div class="s-more en">Learn more →</div></a>
+    <a href="spa-hotel.html" class="service-card"><div class="s-icon">🌙</div><div class="s-name es">Hotel Holístico</div><div class="s-name en">Holistic Hotel</div><p class="s-desc es">Quédate a dormir y extiende tu experiencia. Despierta en el jardín, respira aromas naturales y continúa tu descanso.</p><p class="s-desc en">Stay overnight and extend your experience. Wake up in the garden, breathe natural aromas and continue your rest.</p><div class="s-more es">Ver más →</div><div class="s-more en">Learn more →</div></a>
+    <a href="tienda.html" class="service-card"><div class="s-icon">🧴</div><div class="s-name es">Cosmética Natural</div><div class="s-name en">Natural Cosmetics</div><p class="s-desc es">Más de 100 productos: aceites esenciales, mantequillas corporales, serums, mascarillas, jabones y perfumes artesanales.</p><p class="s-desc en">Over 100 products: essential oils, body butters, serums, masks, soaps and artisanal perfumes.</p><div class="s-more es">Ver más →</div><div class="s-more en">Learn more →</div></a>
+  </div>
+</section>
+
+<!-- ── PRODUCTOS DESTACADOS ── -->
+<section class="productos" id="tienda">
+  <div class="productos-header">
+    <div>
+      <div class="section-eyebrow es">Nuestra tienda</div>
+      <div class="section-eyebrow en">Our shop</div>
+      <h2 class="section-title es">Aceites esenciales <em>destacados</em></h2>
+      <h2 class="section-title en">Featured <em>essential oils</em></h2>
+    </div>
+    <a href="tienda.html" class="btn-ghost" style="border-color:var(--arena);color:var(--arena)"><span class="es">Ver todos →</span><span class="en">View all →</span></a>
+  </div>
+  <div class="prod-grid">
+    <div class="prod-card"><div class="prod-emoji">🌺</div><div class="prod-name">Ylang Ylang</div><div class="prod-uso es">Equilibrante, ansiedad, menopausia, piel madura</div><div class="prod-uso en">Balancing, anxiety, menopause, mature skin</div><div class="prod-price">$715</div></div>
+    <div class="prod-card"><div class="prod-emoji">💜</div><div class="prod-name">Lavanda</div><div class="prod-uso es">Ansiedad, quemaduras, depresión, repelente</div><div class="prod-uso en">Anxiety, burns, depression, insect repellent</div><div class="prod-price">$522</div></div>
+    <div class="prod-card"><div class="prod-emoji">🌿</div><div class="prod-name">Pachulí</div><div class="prod-uso es">Afrodisiaco, libido, meditación, dermatitis</div><div class="prod-uso en">Aphrodisiac, libido, meditation, dermatitis</div><div class="prod-price">$627</div></div>
+    <div class="prod-card"><div class="prod-emoji">🪵</div><div class="prod-name">Mirra</div><div class="prod-uso es">Cosmética, antioxidante, sistema inmunológico</div><div class="prod-uso en">Cosmetics, antioxidant, immune system</div><div class="prod-price">$588</div></div>
+  </div>
+</section>
+
+<!-- ── EXPERIENCIA RITUAL ── -->
+<section class="experiencia" id="experiencias">
+  <div class="exp-photo"></div>
+  <div class="exp-text">
+    <div class="section-eyebrow fade-up es">El ritual completo</div>
+    <div class="section-eyebrow fade-up en">The full ritual</div>
+    <h2 class="section-title fade-up es">Antes de tu terapia, <em>el jardín te espera</em></h2>
+    <h2 class="section-title fade-up en">Before your therapy, <em>the garden awaits</em></h2>
+    <p class="section-body fade-up es">En Verde Nueve cada experiencia comienza antes de la terapia. Llegas, te acomodas en el jardín, escuchas música y conectas con el ambiente. Solo después empieza tu ceremonia.</p>
+    <p class="section-body fade-up en">At Verde Nueve every experience begins before the therapy. You arrive, settle into the garden, listen to music and connect with the environment. Only then does your ceremony begin.</p>
+    <ul class="ritual-list">
+      <li><div class="ritual-dot"></div><span class="es">Media hora o más de preparación en el jardín</span><span class="en">Half hour or more of garden preparation</span></li>
+      <li><div class="ritual-dot"></div><span class="es">Música, aromas y silencio natural</span><span class="en">Music, aromas and natural silence</span></li>
+      <li><div class="ritual-dot"></div><span class="es">Temazcal · Masaje · Facial · Ceremonia holística</span><span class="en">Temazcal · Massage · Facial · Holistic ceremony</span></li>
+      <li><div class="ritual-dot"></div><span class="es">Opción de comida y experiencias gastronómicas</span><span class="en">Food and gastronomic experiences available</span></li>
+      <li><div class="ritual-dot"></div><span class="es">Hospedaje para continuar tu descanso</span><span class="en">Accommodation to extend your stay</span></li>
+    </ul>
+    <a href="https://wa.me/5554071775" class="btn-prim" style="align-self:flex-start"><span class="es">Reservar por WhatsApp</span><span class="en">Book via WhatsApp</span></a>
+  </div>
+</section>
+
+<!-- ── CONTACTO ── -->
+<section class="contacto" id="contacto">
+  <div>
+    <div class="section-eyebrow es">Encuéntranos</div>
+    <div class="section-eyebrow en">Find us</div>
+    <h2 class="section-title es">En el corazón de un <em>pueblo mágico</em></h2>
+    <h2 class="section-title en">In the heart of a <em>magic town</em></h2>
+    <p class="contact-desc es">El Calvario, Huichapan, Hidalgo. Un jardín holístico rodeado de plantas medicinales, aromas y silencio — a unas horas de la Ciudad de México.</p>
+    <p class="contact-desc en">El Calvario, Huichapan, Hidalgo. A holistic garden surrounded by medicinal plants, aromas and silence — a few hours from Mexico City.</p>
+    <div class="contact-items">
+      <div class="contact-item"><span>📱</span>(55) 5407 1775 — WhatsApp</div>
+      <div class="contact-item"><span>📍</span>El Calvario, Huichapan, Hidalgo</div>
+      <div class="contact-item"><span>📲</span>@VerdeNueve — TikTok · Facebook · Instagram</div>
+    </div>
+  </div>
+  <div class="map-box" onclick="window.open('https://maps.google.com/?q=Huichapan+Hidalgo','_blank')">
+    <div class="pin">📍</div>
+    <span class="es">Ver en Google Maps</span>
+    <span class="en">View on Google Maps</span>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Verde Nueve</div>
+      <p class="footer-bio es">Jardín holístico, spa y cosmética natural en Huichapan, Hidalgo. Nacimos de la aromaterapia y crecimos entre plantas medicinales.</p>
+      <p class="footer-bio en">Holistic garden, spa and natural cosmetics in Huichapan, Hidalgo. Born from aromatherapy and grown among medicinal plants.</p>
+    </div>
+    <div class="footer-col">
+      <h5 class="es">Servicios</h5><h5 class="en">Services</h5>
+      <a href="spa-hotel.html"><span class="es">Spa & Masajes</span><span class="en">Spa & Massages</span></a>
+      <a href="experiencias.html"><span class="es">Temazcal</span><span class="en">Temazcal</span></a>
+      <a href="spa-hotel.html"><span class="es">Faciales</span><span class="en">Facials</span></a>
+      <a href="experiencias.html"><span class="es">Terapias Holísticas</span><span class="en">Holistic Therapies</span></a>
+    </div>
+    <div class="footer-col">
+      <h5 class="es">Productos</h5><h5 class="en">Products</h5>
+      <a href="tienda.html"><span class="es">Aceites Esenciales</span><span class="en">Essential Oils</span></a>
+      <a href="tienda.html"><span class="es">Mantequillas Corporales</span><span class="en">Body Butters</span></a>
+      <a href="tienda.html"><span class="es">Serums & Faciales</span><span class="en">Serums & Facials</span></a>
+      <a href="tienda.html"><span class="es">Aromas & Perfumes</span><span class="en">Aromas & Perfumes</span></a>
+    </div>
+    <div class="footer-col">
+      <h5>Social</h5>
+      <a href="#">TikTok</a>
+      <a href="#">Facebook</a>
+      <a href="#">Instagram</a>
+      <a href="https://wa.me/5554071775">WhatsApp</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2026 Verde Nueve — El Calvario, Huichapan</div>
+    <div class="es">Hecho con 🌿 en México</div>
+    <div class="en">Made with 🌿 in Mexico</div>
+  </div>
+</footer>
+
+
+<script src="js/main.js"></script>
+</body>
+</html>

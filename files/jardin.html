@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jardín Botánico — Verde Nueve · Huichapan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+
+  /* ── PAGE HERO ── */
+  .page-hero {
+    min-height: 90vh;
+    background: url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1600&q=80') center 30%/cover no-repeat;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0 7% 6rem; position: relative;
+  }
+  .page-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(20,45,28,.92) 0%, rgba(20,45,28,.25) 50%, transparent 100%);
+  }
+  .page-hero > * { position: relative; z-index: 2; }
+  .page-hero .eyebrow {
+    display: flex; align-items: center; gap: .8rem;
+    font-size: .68rem; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--arena); font-weight: 500; margin-bottom: 1.2rem;
+  }
+  .page-hero .eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--arena); }
+  .page-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 8vw, 8.5rem); line-height: .96; color: #fff; margin-bottom: 1.4rem;
+  }
+  .page-hero h1 em { font-style: italic; color: var(--arena); display: block; }
+  .page-hero .hero-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem; color: rgba(255,255,255,.78); line-height: 1.72; max-width: 580px; margin-bottom: 2rem;
+  }
+  .hero-chips { display: flex; gap: .8rem; flex-wrap: wrap; }
+  .chip { background: rgba(255,255,255,.11); border: 1px solid rgba(255,255,255,.22); color: #fff; padding: .4rem 1.1rem; border-radius: 100px; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; backdrop-filter: blur(6px); }
+
+  /* ── INTRO SPLIT ── */
+  .intro-split {
+    display: grid; grid-template-columns: 1fr 1fr; min-height: 75vh;
+  }
+  .intro-text {
+    background: var(--crema); padding: 6rem 5% 6rem 7%;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .intro-visual {
+    display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 4px;
+  }
+  .iv-tile {
+    background-size: cover; background-position: center;
+    overflow: hidden; transition: transform .6s ease;
+  }
+  .iv-tile:hover { transform: scale(1.05); }
+  .iv-a { background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80'); grid-row: 1/3; }
+  .iv-b { background-image: url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=400&q=80'); }
+  .iv-c { background-image: url('https://images.unsplash.com/photo-1466781783364-36c955e42a7f?w=400&q=80'); }
+
+  .intro-pull {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 1.5rem; color: var(--tierra); line-height: 1.45;
+    border-left: 3px solid var(--arena); padding-left: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  /* ── ÁREAS DEL JARDÍN ── */
+  .areas { padding: 8rem 7%; background: var(--hueso); }
+  .areas-header { margin-bottom: 5rem; }
+
+  .areas-grid {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 0; border: 1px solid rgba(139,94,60,.12);
+  }
+  .area-card {
+    padding: 3rem 2.5rem; border-right: 1px solid rgba(139,94,60,.12);
+    border-bottom: 1px solid rgba(139,94,60,.12);
+    position: relative; overflow: hidden; transition: background .3s;
+  }
+  .area-card:hover { background: var(--crema); }
+  .area-card:nth-child(3n) { border-right: none; }
+  .area-card:nth-last-child(-n+3) { border-bottom: none; }
+
+  .ac-num {
+    font-family: 'Playfair Display', serif; font-size: 4rem;
+    color: rgba(139,94,60,.08); line-height: 1;
+    position: absolute; top: 1.5rem; right: 1.8rem;
+  }
+  .ac-icon { font-size: 1.8rem; margin-bottom: 1.2rem; }
+  .ac-name {
+    font-family: 'Playfair Display', serif; font-size: 1.2rem;
+    color: var(--verde); margin-bottom: .7rem;
+  }
+  .ac-desc {
+    font-family: 'Cormorant Garamond', serif; font-size: 1rem;
+    line-height: 1.7; color: var(--cafe); opacity: .82;
+  }
+
+  /* ── PLANTAS MEDICINALES ── */
+  .plantas {
+    background: var(--verde); padding: 8rem 7%; position: relative; overflow: hidden;
+  }
+  .plantas::before {
+    content: ''; position: absolute; bottom: -100px; right: -100px;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: rgba(255,255,255,.03); pointer-events: none;
+  }
+  .plantas-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 4rem;
+  }
+  .plantas-header .section-eyebrow { color: var(--arena); }
+  .plantas-header .section-eyebrow::before { background: var(--arena); }
+  .plantas-header .section-title { color: #fff; margin-bottom: 0; }
+  .plantas-header .section-title em { color: var(--arena); }
+
+  .plantas-grid {
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 1px;
+    background: rgba(255,255,255,.08);
+  }
+  .planta-card {
+    background: var(--verde); padding: 2rem 1.8rem;
+    transition: background .3s; cursor: default;
+  }
+  .planta-card:hover { background: rgba(255,255,255,.06); }
+  .planta-icon { font-size: 1.6rem; margin-bottom: .8rem; }
+  .planta-nombre {
+    font-family: 'Playfair Display', serif; font-size: 1.05rem;
+    color: #fff; margin-bottom: .2rem;
+  }
+  .planta-cientifico {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: .85rem; color: rgba(255,255,255,.4); margin-bottom: .8rem;
+  }
+  .planta-uso {
+    font-size: .72rem; color: rgba(255,255,255,.55); line-height: 1.55;
+  }
+  .planta-tag {
+    display: inline-block; margin-top: .8rem;
+    font-size: .62rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--arena); background: rgba(201,168,124,.12);
+    padding: .22rem .7rem; border-radius: 100px;
+  }
+
+  /* ── GASTRONOMÍA ── */
+  .gastronomia {
+    display: grid; grid-template-columns: 1fr 1fr; min-height: 70vh;
+  }
+  .gastro-visual {
+    background: url('https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=900&q=80') center/cover;
+    position: relative;
+  }
+  .gastro-visual::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to right, transparent 55%, rgba(245,237,224,.08));
+  }
+  .gastro-badge {
+    position: absolute; top: 2.5rem; left: 0;
+    background: var(--arena); color: var(--cafe);
+    padding: .8rem 1.6rem; font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 500;
+  }
+
+  .gastro-content {
+    background: var(--crema); padding: 6rem 6%;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .gastro-content .section-body { margin-bottom: 2rem; }
+
+  .gastro-items { display: flex; flex-direction: column; gap: 1.2rem; margin: 2rem 0; }
+  .gastro-item {
+    display: flex; gap: 1.2rem; align-items: flex-start;
+    padding: 1.2rem 1.4rem; background: #fff;
+    border-left: 3px solid var(--verde-palido);
+    transition: border-color .3s;
+  }
+  .gastro-item:hover { border-left-color: var(--verde); }
+  .gi-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .gi-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--verde); margin-bottom: .25rem; }
+  .gi-desc { font-family: 'Cormorant Garamond', serif; font-size: .95rem; color: var(--cafe); opacity: .8; line-height: 1.5; }
+
+  .coming-soon {
+    display: inline-flex; align-items: center; gap: .6rem;
+    background: rgba(45,90,61,.08); border: 1px dashed var(--verde-palido);
+    padding: .6rem 1.2rem; border-radius: 2px;
+    font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--verde); margin-top: .5rem;
+  }
+
+  /* ── EXPERIENCIA VISUAL AMPLIA ── */
+  .landscape {
+    height: 55vh; min-height: 380px;
+    background: url('https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=1600&q=80') center 40%/cover;
+    position: relative; display: flex; align-items: center; justify-content: center;
+  }
+  .landscape::before {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(20,45,28,.55);
+  }
+  .landscape-text {
+    position: relative; z-index: 2; text-align: center; padding: 2rem;
+  }
+  .landscape-text blockquote {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: clamp(1.8rem, 4vw, 3.5rem); color: #fff;
+    line-height: 1.2; max-width: 800px; margin: 0 auto;
+  }
+  .landscape-text blockquote em { color: var(--arena); }
+  .landscape-text cite {
+    display: block; margin-top: 1.5rem;
+    font-family: 'Jost', sans-serif; font-size: .72rem;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: rgba(255,255,255,.5); font-style: normal;
+  }
+
+  /* ── TALLERES ── */
+  .talleres { padding: 8rem 7%; background: #f0e8d8; }
+  .talleres-header { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-bottom: 4rem; align-items: end; }
+
+  .talleres-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+  .taller-card {
+    background: #fff; padding: 2.5rem 2rem;
+    border-bottom: 3px solid transparent; transition: all .35s;
+  }
+  .taller-card:hover { border-bottom-color: var(--verde); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(92,61,46,.1); }
+  .taller-icon { font-size: 2rem; margin-bottom: 1.2rem; }
+  .taller-name {
+    font-family: 'Playfair Display', serif; font-size: 1.2rem;
+    color: var(--cafe); margin-bottom: .6rem;
+  }
+  .taller-desc {
+    font-family: 'Cormorant Garamond', serif; font-size: 1rem;
+    line-height: 1.7; color: var(--cafe); opacity: .78; margin-bottom: 1.2rem;
+  }
+  .taller-duracion {
+    font-size: .66rem; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--tierra);
+  }
+
+  /* ── CÓMO LLEGAR ── */
+  .llegada { background: var(--cafe); padding: 7rem 7%; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+  .llegada .section-eyebrow { color: var(--arena); }
+  .llegada .section-eyebrow::before { background: var(--arena); }
+  .llegada .section-title { color: #fff; }
+  .llegada .section-title em { color: var(--arena); }
+  .llegada-desc { font-family: 'Cormorant Garamond', serif; font-size: 1.08rem; color: rgba(255,255,255,.68); line-height: 1.8; margin-bottom: 2rem; }
+  .llegada-pasos { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; margin-bottom: 2.5rem; }
+  .llegada-pasos li {
+    display: flex; align-items: flex-start; gap: 1.2rem;
+    color: rgba(255,255,255,.75); font-family: 'Cormorant Garamond', serif; font-size: 1.05rem;
+  }
+  .lp-num {
+    font-family: 'Playfair Display', serif; font-size: 1.3rem;
+    color: var(--arena); line-height: 1; flex-shrink: 0; width: 1.8rem;
+  }
+  .map-box { height: 360px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.04); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; cursor: pointer; transition: all .3s; border-radius: 2px; color: rgba(255,255,255,.4); font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.05rem; }
+  .map-box:hover { background: rgba(255,255,255,.08); color: rgba(255,255,255,.75); }
+  .map-box .pin { font-size: 2.8rem; }
+
+  /* ── CTA ── */
+  .cta-jardin {
+    background: var(--crema); padding: 7rem 7%; text-align: center;
+  }
+  .cta-jardin .section-eyebrow { justify-content: center; margin-bottom: 1.5rem; }
+  .cta-jardin h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3.5rem); color: var(--verde); margin-bottom: 1.2rem; line-height: 1.15; }
+  .cta-jardin h2 em { font-style: italic; color: var(--tierra); }
+  .cta-jardin p { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--cafe); opacity: .8; max-width: 480px; margin: 0 auto 2.5rem; line-height: 1.75; }
+  .cta-btns { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
+  .btn-arena { background: var(--arena); color: var(--cafe); padding: .95rem 2.4rem; border-radius: 2px; font-family: 'Jost', sans-serif; font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; transition: all .3s; display: inline-block; font-weight: 500; }
+  .btn-arena:hover { background: #d4b48a; transform: translateY(-2px); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .intro-split, .gastronomia, .llegada { grid-template-columns: 1fr; }
+    .intro-visual, .gastro-visual { min-height: 55vw; }
+    .areas-grid { grid-template-columns: 1fr 1fr; }
+    .plantas-grid { grid-template-columns: 1fr 1fr; }
+    .talleres-grid { grid-template-columns: 1fr 1fr; }
+    .talleres-header { grid-template-columns: 1fr; gap: 1.5rem; }
+  }
+  @media (max-width: 600px) {
+    .areas-grid, .plantas-grid, .talleres-grid { grid-template-columns: 1fr; }
+    .area-card { border-right: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">Verde <em>Nueve</em></a>
+  <ul class="nav-links">
+    <li><a href="spa-hotel.html" class="es">Spa & Hotel</a><a href="spa-hotel.html" class="en">Spa & Hotel</a></li>
+    <li><a href="jardin.html" class="es">Jardín</a><a href="jardin.html" class="en">Garden</a></li>
+    <li><a href="experiencias.html" class="es">Experiencias</a><a href="experiencias.html" class="en">Experiences</a></li>
+    <li><a href="tienda.html" class="es">Tienda</a><a href="tienda.html" class="en">Shop</a></li>
+    <li><a href="https://wa.me/5554071775" class="btn-reservar es">Reservar</a><a href="https://wa.me/5554071775" class="btn-reservar en">Book Now</a></li>
+  </ul>
+  <div class="lang-toggle">
+    <button data-lang="es" onclick="setLang('es')">ES</button>
+    <button data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
+  <button class="nav-burger" aria-label="Menú"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="page-hero">
+  <div class="eyebrow">
+    <span class="es">El Calvario, Huichapan · Pueblo Mágico</span>
+    <span class="en">El Calvario, Huichapan · Magic Town</span>
+  </div>
+  <h1>
+    <span class="es">Jardín<em>Botánico</em></span>
+    <span class="en">Botanical<em>Garden</em></span>
+  </h1>
+  <p class="hero-desc es" data-vn="hero.desc_es">Un jardín amplio y vivo, lleno de plantas medicinales y aromáticas que forman parte de cada experiencia en Verde Nueve. El jardín no es el escenario — es el corazón.</p>
+  <p class="hero-desc en" data-vn="hero.desc_en">A wide, living garden full of medicinal and aromatic plants that are part of every Verde Nueve experience. The garden isn't the backdrop — it's the heart.</p>
+  <div class="hero-chips">
+    <div class="chip es">Plantas Medicinales</div><div class="chip en">Medicinal Plants</div>
+    <div class="chip es">Aromaterapia</div><div class="chip en">Aromatherapy</div>
+    <div class="chip es">Gastronomía</div><div class="chip en">Gastronomy</div>
+    <div class="chip es">Talleres</div><div class="chip en">Workshops</div>
+    <div class="chip es">Descanso libre</div><div class="chip en">Free rest</div>
+  </div>
+</section>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Lavanda</div>
+    <div class="marquee-item">Romero</div>
+    <div class="marquee-item">Menta</div>
+    <div class="marquee-item">Pasiflora</div>
+    <div class="marquee-item">Geranio</div>
+    <div class="marquee-item">Manzanilla</div>
+    <div class="marquee-item">Salvia</div>
+    <div class="marquee-item">Tomillo</div>
+    <div class="marquee-item">Albahaca</div>
+    <div class="marquee-item">Hierba Santa</div>
+    <div class="marquee-item">Lavanda</div>
+    <div class="marquee-item">Romero</div>
+    <div class="marquee-item">Menta</div>
+    <div class="marquee-item">Pasiflora</div>
+    <div class="marquee-item">Geranio</div>
+    <div class="marquee-item">Manzanilla</div>
+    <div class="marquee-item">Salvia</div>
+    <div class="marquee-item">Tomillo</div>
+    <div class="marquee-item">Albahaca</div>
+    <div class="marquee-item">Hierba Santa</div>
+  </div>
+</div>
+
+<!-- ── INTRO ── -->
+<section class="intro-split" id="jardin">
+  <div class="intro-text">
+    <div class="section-eyebrow es fade-up">El corazón de Verde Nueve</div>
+    <div class="section-eyebrow en fade-up">The heart of Verde Nueve</div>
+    <h2 class="section-title fade-up es">Un jardín que <em>sana antes de que empiece</em> la terapia</h2>
+    <h2 class="section-title fade-up en">A garden that <em>heals before the therapy</em> even begins</h2>
+
+    <blockquote class="intro-pull fade-up es">"Antes de cualquier terapia, el jardín ya lleva media hora trabajando en ti."</blockquote>
+    <blockquote class="intro-pull fade-up en">"Before any therapy, the garden has already been working on you for half an hour."</blockquote>
+
+    <p class="section-body fade-up es">Cuando llegás a Verde Nueve, lo primero que haces es sentarte en el jardín. Escuchar. Respirar. Las plantas medicinales y aromáticas que lo habitan no son decoración — son parte activa de cada experiencia. Sus aromas viajan directo al sistema límbico, el centro emocional del cerebro, para que tu cuerpo comience a soltar antes de que empiece cualquier terapia.</p>
+    <p class="section-body fade-up en">When you arrive at Verde Nueve, the first thing you do is sit in the garden. Listen. Breathe. The medicinal and aromatic plants that inhabit it are not decoration — they are an active part of every experience. Their aromas travel directly to the limbic system, the brain's emotional center, so your body begins to release before any therapy even begins.</p>
+  </div>
+  <div class="intro-visual">
+    <div class="iv-tile iv-a"></div>
+    <div class="iv-tile iv-b"></div>
+    <div class="iv-tile iv-c"></div>
+  </div>
+</section>
+
+<!-- ── ÁREAS DEL JARDÍN ── -->
+<section class="areas" id="areas">
+  <div class="areas-header">
+    <div class="section-eyebrow fade-up es">El espacio</div>
+    <div class="section-eyebrow fade-up en">The space</div>
+    <h2 class="section-title fade-up es">Áreas para <em>cada momento</em></h2>
+    <h2 class="section-title fade-up en">Areas for <em>every moment</em></h2>
+  </div>
+
+  <div class="areas-grid">
+    <div class="area-card fade-up">
+      <div class="ac-num">01</div>
+      <div class="ac-icon">🌿</div>
+      <div class="ac-name es">Jardín de Plantas Medicinales</div>
+      <div class="ac-name en">Medicinal Plant Garden</div>
+      <p class="ac-desc es">El alma del espacio. Lavanda, romero, menta, pasiflora, geranio y decenas de especies más cultivadas sin químicos para uso en terapias, infusiones y productos.</p>
+      <p class="ac-desc en">The soul of the space. Lavender, rosemary, mint, passionflower, geranium and dozens more species grown chemical-free for use in therapies, infusions and products.</p>
+    </div>
+    <div class="area-card fade-up">
+      <div class="ac-num">02</div>
+      <div class="ac-icon">🛋️</div>
+      <div class="ac-name es">Áreas de Descanso</div>
+      <div class="ac-name en">Rest Areas</div>
+      <p class="ac-desc es">Espacios con cojines, hamacas y mesas bajas dispersos por el jardín. Aquí es donde empieza el ritual — antes de cualquier terapia, o simplemente para estar.</p>
+      <p class="ac-desc en">Spaces with cushions, hammocks and low tables scattered throughout the garden. This is where the ritual begins — before any therapy, or simply to be.</p>
+    </div>
+    <div class="area-card fade-up">
+      <div class="ac-num">03</div>
+      <div class="ac-icon">🔥</div>
+      <div class="ac-name es">Temazcal</div>
+      <div class="ac-name en">Temazcal</div>
+      <p class="ac-desc es">El temazcal está integrado naturalmente en el jardín. Su estructura de temperatura suave permite que cualquier persona lo viva sin estrés físico.</p>
+      <p class="ac-desc en">The temazcal is naturally integrated into the garden. Its low-temperature structure allows anyone to experience it without physical stress.</p>
+    </div>
+    <div class="area-card fade-up">
+      <div class="ac-num">04</div>
+      <div class="ac-icon">🧴</div>
+      <div class="ac-name es">Tienda & Laboratorio</div>
+      <div class="ac-name en">Shop & Laboratory</div>
+      <p class="ac-desc es">Donde nacen todos nuestros productos. Puedes ver el proceso de elaboración y llevarte cosmética natural hecha con las plantas del propio jardín.</p>
+      <p class="ac-desc en">Where all our products are born. You can see the production process and take home natural cosmetics made with plants from the garden itself.</p>
+    </div>
+    <div class="area-card fade-up">
+      <div class="ac-num">05</div>
+      <div class="ac-icon">🧺</div>
+      <div class="ac-name es">Zona de Picnic</div>
+      <div class="ac-name en">Picnic Area</div>
+      <p class="ac-desc es">Áreas amplias de césped para tender mantas y canastas. El espacio ideal para celebrar, compartir alimentos o simplemente pasar el día en familia.</p>
+      <p class="ac-desc en">Spacious grass areas for laying blankets and baskets. The ideal space to celebrate, share food or simply spend the day with family.</p>
+    </div>
+    <div class="area-card fade-up">
+      <div class="ac-num">06</div>
+      <div class="ac-icon">🌙</div>
+      <div class="ac-name es">Hotel & Habitaciones</div>
+      <div class="ac-name en">Hotel & Rooms</div>
+      <p class="ac-desc es">Las habitaciones están integradas en el jardín para que el descanso continúe al despertar. Amaneces entre aromas y el sonido de las plantas.</p>
+      <p class="ac-desc en">Rooms are integrated into the garden so rest continues upon waking. You wake up surrounded by aromas and the sound of plants.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── PLANTAS MEDICINALES ── -->
+<section class="plantas" id="plantas">
+  <div class="plantas-header">
+    <div>
+      <div class="section-eyebrow es">Flora del jardín</div>
+      <div class="section-eyebrow en">Garden flora</div>
+      <h2 class="section-title es">Plantas que <em>trabajan por ti</em></h2>
+      <h2 class="section-title en">Plants that <em>work for you</em></h2>
+    </div>
+    <a href="tienda.html" class="btn-ghost" style="border-color:var(--arena);color:var(--arena)">
+      <span class="es">Ver productos →</span>
+      <span class="en">View products →</span>
+    </a>
+  </div>
+
+  <div class="plantas-grid">
+    <div class="planta-card fade-up">
+      <div class="planta-icon">💜</div>
+      <div class="planta-nombre">Lavanda</div>
+      <div class="planta-cientifico">Lavandula officinalis</div>
+      <div class="planta-uso es">Ansiedad, insomnio, quemaduras, depresión, repelente natural</div>
+      <div class="planta-uso en">Anxiety, insomnia, burns, depression, natural repellent</div>
+      <div class="planta-tag es">Relajante</div><div class="planta-tag en">Relaxing</div>
+    </div>
+    <div class="planta-card fade-up">
+      <div class="planta-icon">🌿</div>
+      <div class="planta-nombre">Romero</div>
+      <div class="planta-cientifico">Rosmarinus officinalis</div>
+      <div class="planta-uso es">Dolor muscular, memoria, circulación, crecimiento capilar</div>
+      <div class="planta-uso en">Muscle pain, memory, circulation, hair growth</div>
+      <div class="planta-tag es">Vigorizante</div><div class="planta-tag en">Invigorating</div>
+    </div>
+    <div class="planta-card fade-up">
+      <div class="planta-icon">🌱</div>
+      <div class="planta-nombre">Menta</div>
+      <div class="planta-cientifico">Mentha piperita</div>
+      <div class="planta-uso es">Analgésico, digestivo, migraña, energía, desodorante</div>
+      <div class="planta-uso en">Analgesic, digestive, migraine, energy, deodorant</div>
+      <div class="planta-tag es">Energizante</div><div class="planta-tag en">Energizing</div>
+    </div>
+    <div class="planta-card fade-up">
+      <div class="planta-icon">🌸</div>
+      <div class="planta-nombre">Pasiflora</div>
+      <div class="planta-cientifico">Passiflora incarnata</div>
+      <div class="planta-uso es">Ansiedad, estrés, insomnio, sistema nervioso</div>
+      <div class="planta-uso en">Anxiety, stress, insomnia, nervous system</div>
+      <div class="planta-tag es">Calmante</div><div class="planta-tag en">Calming</div>
+    </div>
+    <div class="planta-card fade-up">
+      <div class="planta-icon">🌺</div>
+      <div class="planta-nombre">Geranio</div>
+      <div class="planta-cientifico">Pelargonium graveolens</div>
+      <div class="planta-uso es">Equilibrio hormonal, insomnio, cansancio, piel sensible</div>
+      <div class="planta-uso en">Hormonal balance, insomnia, fatigue, sensitive skin</div>
+      <div class="planta-tag es">Equilibrante</div><div class="planta-tag en">Balancing</div>
+    </div>
+    <div class="planta-card fade-up">
+      <div class="planta-icon">🌼</div>
+      <div class="planta-nombre">Manzanilla</div>
+      <div class="planta-cientifico">Matricaria chamomilla</div>
+      <div class="planta-uso es">Inflamación, piel sensible, digestivo, relajante</div>
+      <div class="planta-uso en">Inflammation, sensitive skin, digestive, relaxing</div>
+      <div class="planta-tag es">Antiinflamatorio</div><div class="planta-tag en">Anti-inflammatory</div>
+    </div>
+    <div class="planta-card fade-up">
+      <div class="planta-icon">🍃</div>
+      <div class="planta-nombre">Salvia</div>
+      <div class="planta-cientifico">Salvia officinalis</div>
+      <div class="planta-uso es">Cólicos, cambios hormonales, estrés, purificación</div>
+      <div class="planta-uso en">Cramps, hormonal changes, stress, purification</div>
+      <div class="planta-tag es">Hormonal</div><div class="planta-tag en">Hormonal</div>
+    </div>
+    <div class="planta-card fade-up">
+      <div class="planta-icon">🌾</div>
+      <div class="planta-nombre">Lemongrass</div>
+      <div class="planta-cientifico">Cymbopogon flexuosus</div>
+      <div class="planta-uso es">Poros abiertos, digestivo, estimulante, armonía</div>
+      <div class="planta-uso en">Open pores, digestive, stimulating, harmony</div>
+      <div class="planta-tag es">Estimulante</div><div class="planta-tag en">Stimulating</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── GASTRONOMÍA ── -->
+<section class="gastronomia" id="gastronomia">
+  <div class="gastro-visual">
+    <div class="gastro-badge es">Próximamente</div>
+    <div class="gastro-badge en">Coming soon</div>
+  </div>
+  <div class="gastro-content">
+    <div class="section-eyebrow es fade-up">Experiencias gastronómicas</div>
+    <div class="section-eyebrow en fade-up">Gastronomic experiences</div>
+    <h2 class="section-title fade-up es">Cocinar con lo que <em>crece en el jardín</em></h2>
+    <h2 class="section-title fade-up en">Cooking with what <em>grows in the garden</em></h2>
+    <p class="section-body fade-up es">Muy pronto, las plantas aromáticas del jardín van a cruzar a la cocina. Experiencias gastronómicas donde los visitantes aprenden a usar romero, lavanda, menta y otras hierbas para crear platillos únicos.</p>
+    <p class="section-body fade-up en">Very soon, the garden's aromatic plants will cross over into the kitchen. Gastronomic experiences where visitors learn to use rosemary, lavender, mint and other herbs to create unique dishes.</p>
+
+    <div class="gastro-items fade-up">
+      <div class="gastro-item">
+        <div class="gi-icon">🍽️</div>
+        <div>
+          <div class="gi-name es">Menú de temporada con hierbas del jardín</div>
+          <div class="gi-name en">Seasonal menu with garden herbs</div>
+          <div class="gi-desc es">Platillos diseñados con las plantas que cultiva el jardín — cada plato con intención terapéutica.</div>
+          <div class="gi-desc en">Dishes designed with the garden's plants — each plate with therapeutic intention.</div>
+        </div>
+      </div>
+      <div class="gastro-item">
+        <div class="gi-icon">🧑‍🍳</div>
+        <div>
+          <div class="gi-name es">Taller de cocina botánica</div>
+          <div class="gi-name en">Botanical cooking workshop</div>
+          <div class="gi-desc es">Aprende a extraer sabores y propiedades medicinales de plantas aromáticas para tu cocina diaria.</div>
+          <div class="gi-desc en">Learn to extract flavors and medicinal properties from aromatic plants for your daily cooking.</div>
+        </div>
+      </div>
+      <div class="gastro-item">
+        <div class="gi-icon">🫖</div>
+        <div>
+          <div class="gi-name es">Ceremonia de infusiones</div>
+          <div class="gi-name en">Infusion ceremony</div>
+          <div class="gi-desc es">Ritual de preparación y degustación de mezclas herbales adaptadas a lo que cada persona necesita ese día.</div>
+          <div class="gi-desc en">Ritual of preparation and tasting of herbal blends adapted to what each person needs that day.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="coming-soon fade-up">
+      <span>🌱</span>
+      <span class="es">Experiencias gastronómicas — muy pronto</span>
+      <span class="en">Gastronomic experiences — coming soon</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── LANDSCAPE QUOTE ── -->
+<div class="landscape">
+  <div class="landscape-text">
+    <blockquote class="es">"La naturaleza no prisa, <em>y sin embargo todo lo logra."</em></blockquote>
+    <blockquote class="en">"Nature never hurries, <em>yet everything is accomplished."</em></blockquote>
+    <cite>— Lao Tzu</cite>
+  </div>
+</div>
+
+<!-- ── TALLERES ── -->
+<section class="talleres" id="talleres">
+  <div class="talleres-header">
+    <div>
+      <div class="section-eyebrow fade-up es">Aprende en el jardín</div>
+      <div class="section-eyebrow fade-up en">Learn in the garden</div>
+      <h2 class="section-title fade-up es">Talleres de <em>cosmética natural</em></h2>
+      <h2 class="section-title fade-up en">Natural <em>cosmetics workshops</em></h2>
+    </div>
+    <p class="section-body fade-up es">Desde los inicios de Verde Nueve, los talleres de cosmética natural han conectado a las personas con el poder de las plantas. Aprende a hacer lo que nosotros hacemos.</p>
+    <p class="section-body fade-up en">Since Verde Nueve's beginnings, natural cosmetics workshops have connected people with the power of plants. Learn to make what we make.</p>
+  </div>
+
+  <div class="talleres-grid">
+    <div class="taller-card fade-up">
+      <div class="taller-icon">🕯️</div>
+      <div class="taller-name es">Taller de Velas Aromáticas</div>
+      <div class="taller-name en">Aromatic Candles Workshop</div>
+      <p class="taller-desc es">Aprende a crear velas de soya con aceites esenciales puros. Elige tus aromas, combínalos y llévate tus creaciones a casa.</p>
+      <p class="taller-desc en">Learn to create soy candles with pure essential oils. Choose your aromas, combine them and take your creations home.</p>
+      <div class="taller-duracion es">⏱ 2 horas · Grupos pequeños</div>
+      <div class="taller-duracion en">⏱ 2 hours · Small groups</div>
+    </div>
+    <div class="taller-card fade-up">
+      <div class="taller-icon">🧼</div>
+      <div class="taller-name es">Taller de Jabones Naturales</div>
+      <div class="taller-name en">Natural Soap Workshop</div>
+      <p class="taller-desc es">Desde el aceite de coco hasta la fragancia final. Aprende el proceso de saponificación y créa tu jabón personalizado.</p>
+      <p class="taller-desc en">From coconut oil to the final fragrance. Learn the saponification process and create your personalized soap.</p>
+      <div class="taller-duracion es">⏱ 3 horas · Incluye materiales</div>
+      <div class="taller-duracion en">⏱ 3 hours · Materials included</div>
+    </div>
+    <div class="taller-card fade-up">
+      <div class="taller-icon">🧴</div>
+      <div class="taller-name es">Taller de Cosmética Natural</div>
+      <div class="taller-name en">Natural Cosmetics Workshop</div>
+      <p class="taller-desc es">Crea tu propia crema, sérum o mantequilla corporal con ingredientes naturales. Fórmulas adaptadas a tu tipo de piel.</p>
+      <p class="taller-desc en">Create your own cream, serum or body butter with natural ingredients. Formulas adapted to your skin type.</p>
+      <div class="taller-duracion es">⏱ 2.5 horas · Máx. 8 personas</div>
+      <div class="taller-duracion en">⏱ 2.5 hours · Max. 8 people</div>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top:3rem;">
+    <a href="https://wa.me/5554071775" class="btn-prim">
+      <span class="es">Inscribirse a un taller</span>
+      <span class="en">Sign up for a workshop</span>
+    </a>
+  </div>
+</section>
+
+<!-- ── CÓMO LLEGAR ── -->
+<section class="llegada" id="llegada">
+  <div>
+    <div class="section-eyebrow es">Cómo llegar</div>
+    <div class="section-eyebrow en">How to get here</div>
+    <h2 class="section-title es">En el corazón de <em>Huichapan</em></h2>
+    <h2 class="section-title en">In the heart of <em>Huichapan</em></h2>
+    <p class="llegada-desc es">Huichapan es un Pueblo Mágico de Hidalgo a solo 2 horas de la Ciudad de México. Verde Nueve está en El Calvario, a pocos minutos del centro del pueblo.</p>
+    <p class="llegada-desc en">Huichapan is a Magic Town in Hidalgo just 2 hours from Mexico City. Verde Nueve is in El Calvario, a few minutes from the town center.</p>
+    <ul class="llegada-pasos">
+      <li><div class="lp-num">1</div><span class="es">Sal por la carretera México-Querétaro hacia Huichapan</span><span class="en">Leave via Mexico-Querétaro highway toward Huichapan</span></li>
+      <li><div class="lp-num">2</div><span class="es">En Huichapan, sigue las indicaciones a El Calvario</span><span class="en">In Huichapan, follow signs to El Calvario</span></li>
+      <li><div class="lp-num">3</div><span class="es">Busca el letrero de Jardín Verde Nueve — hay estacionamiento</span><span class="en">Look for the Jardín Verde Nueve sign — parking available</span></li>
+    </ul>
+    <a href="https://wa.me/5554071775" class="btn-prim es">Pedir indicaciones por WhatsApp</a>
+    <a href="https://wa.me/5554071775" class="btn-prim en">Get directions on WhatsApp</a>
+  </div>
+
+  <div class="map-box" onclick="window.open('https://maps.google.com/?q=El+Calvario+Huichapan+Hidalgo','_blank')">
+    <div class="pin">📍</div>
+    <span class="es">El Calvario, Huichapan, Hidalgo</span>
+    <span class="en">El Calvario, Huichapan, Hidalgo</span>
+    <span style="font-size:.7rem;opacity:.5;margin-top:.3rem;font-style:normal;letter-spacing:.1em;text-transform:uppercase" class="es">Ver en Google Maps →</span>
+    <span style="font-size:.7rem;opacity:.5;margin-top:.3rem;font-style:normal;letter-spacing:.1em;text-transform:uppercase" class="en">View on Google Maps →</span>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-jardin">
+  <div class="section-eyebrow es">¿Lista para conocerlo?</div>
+  <div class="section-eyebrow en">Ready to discover it?</div>
+  <h2 class="es">El jardín <em>te está esperando</em></h2>
+  <h2 class="en">The garden <em>is waiting for you</em></h2>
+  <p class="es">Ven a caminar entre las plantas, sentarte en silencio y dejar que el jardín haga lo que sabe hacer mejor.</p>
+  <p class="en">Come walk among the plants, sit in silence and let the garden do what it does best.</p>
+  <div class="cta-btns">
+    <a href="https://wa.me/5554071775" class="btn-prim es">Reservar visita</a>
+    <a href="https://wa.me/5554071775" class="btn-prim en">Book a visit</a>
+    <a href="experiencias.html" class="btn-ghost es">Ver Experiencias →</a>
+    <a href="experiencias.html" class="btn-ghost en">See Experiences →</a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Verde Nueve</div>
+      <p class="footer-bio es">Jardín holístico, spa y cosmética natural en Huichapan, Hidalgo. Nacimos de la aromaterapia y crecimos entre plantas medicinales.</p>
+      <p class="footer-bio en">Holistic garden, spa and natural cosmetics in Huichapan, Hidalgo. Born from aromatherapy and grown among medicinal plants.</p>
+    </div>
+    <div class="footer-col">
+      <h5 class="es">Servicios</h5><h5 class="en">Services</h5>
+      <a href="spa-hotel.html"><span class="es">Spa & Masajes</span><span class="en">Spa & Massages</span></a>
+      <a href="experiencias.html"><span class="es">Temazcal</span><span class="en">Temazcal</span></a>
+      <a href="spa-hotel.html"><span class="es">Faciales</span><span class="en">Facials</span></a>
+      <a href="experiencias.html"><span class="es">Terapias Holísticas</span><span class="en">Holistic Therapies</span></a>
+    </div>
+    <div class="footer-col">
+      <h5 class="es">Productos</h5><h5 class="en">Products</h5>
+      <a href="tienda.html"><span class="es">Aceites Esenciales</span><span class="en">Essential Oils</span></a>
+      <a href="tienda.html"><span class="es">Mantequillas Corporales</span><span class="en">Body Butters</span></a>
+      <a href="tienda.html"><span class="es">Serums & Faciales</span><span class="en">Serums & Facials</span></a>
+      <a href="tienda.html"><span class="es">Aromas & Perfumes</span><span class="en">Aromas & Perfumes</span></a>
+    </div>
+    <div class="footer-col">
+      <h5>Social</h5>
+      <a href="#">TikTok</a>
+      <a href="#">Facebook</a>
+      <a href="#">Instagram</a>
+      <a href="https://wa.me/5554071775">WhatsApp</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2026 Verde Nueve — El Calvario, Huichapan</div>
+    <div class="es">Hecho con 🌿 en México</div>
+    <div class="en">Made with 🌿 in Mexico</div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

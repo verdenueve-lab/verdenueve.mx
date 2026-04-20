@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tienda — Verde Nueve · Cosmética Natural</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+
+  /* ── PAGE HERO ── */
+  .page-hero {
+    min-height: 65vh;
+    background: url('https://images.unsplash.com/photo-1556228720-195a672e8a03?w=1600&q=80') center/cover no-repeat;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0 7% 5rem; position: relative;
+  }
+  .page-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(92,61,46,.9) 0%, rgba(92,61,46,.25) 55%, transparent 100%);
+  }
+  .page-hero > * { position: relative; z-index: 2; }
+  .page-hero .eyebrow { display: flex; align-items: center; gap: .8rem; font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: var(--arena); font-weight: 500; margin-bottom: 1.2rem; }
+  .page-hero .eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--arena); }
+  .page-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 6vw, 6.5rem); line-height: 1.0; color: #fff; margin-bottom: 1rem; }
+  .page-hero h1 em { font-style: italic; color: var(--arena); }
+  .page-hero .hero-desc { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; color: rgba(255,255,255,.78); line-height: 1.7; max-width: 520px; }
+
+  /* ── FILTROS ── */
+  .filtros-wrap {
+    background: var(--crema); border-bottom: 1px solid rgba(139,94,60,.12);
+    position: sticky; top: 76px; z-index: 100;
+  }
+  .filtros {
+    display: flex; align-items: center; gap: 0;
+    padding: 0 7%; overflow-x: auto; scrollbar-width: none;
+  }
+  .filtros::-webkit-scrollbar { display: none; }
+  .filtro-btn {
+    background: none; border: none; border-bottom: 2px solid transparent;
+    padding: 1.2rem 1.6rem; cursor: pointer;
+    font-family: 'Jost', sans-serif; font-size: .74rem;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--cafe);
+    opacity: .55; transition: all .25s; white-space: nowrap;
+  }
+  .filtro-btn:hover { opacity: .85; }
+  .filtro-btn.active { opacity: 1; color: var(--tierra); border-bottom-color: var(--tierra); }
+
+  /* ── SECCIÓN GENÉRICA ── */
+  .prod-section { padding: 6rem 7%; }
+  .prod-section:nth-child(even) { background: var(--crema); }
+  .prod-section:nth-child(odd) { background: var(--hueso); }
+
+  .ps-header { margin-bottom: 3.5rem; display: flex; justify-content: space-between; align-items: flex-end; }
+  .ps-count { font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--cafe); opacity: .45; }
+
+  /* ── GRID DE PRODUCTOS ── */
+  .prod-grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; }
+  .prod-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+
+  /* ── PRODUCTO CARD ── */
+  .prod-card {
+    background: #fff; border: 1px solid rgba(139,94,60,.08);
+    transition: all .35s; cursor: pointer; position: relative;
+    display: flex; flex-direction: column;
+  }
+  .prod-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(92,61,46,.12); }
+
+  .pc-img {
+    height: 200px; background: var(--crema);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.5rem; position: relative; overflow: hidden;
+  }
+  .pc-img-bg {
+    position: absolute; inset: 0; opacity: .07;
+    background-size: cover; background-position: center;
+  }
+
+  .pc-badge {
+    position: absolute; top: .8rem; left: .8rem;
+    background: var(--verde); color: #fff;
+    font-size: .58rem; letter-spacing: .14em; text-transform: uppercase;
+    padding: .25rem .7rem; border-radius: 100px;
+  }
+  .pc-badge.new { background: var(--tierra); }
+
+  .pc-body { padding: 1.4rem 1.5rem; flex: 1; display: flex; flex-direction: column; }
+  .pc-cat { font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--tierra); margin-bottom: .4rem; }
+  .pc-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--cafe); margin-bottom: .4rem; line-height: 1.25; }
+  .pc-scientific { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: .82rem; color: var(--cafe); opacity: .45; margin-bottom: .7rem; }
+  .pc-uso { font-family: 'Cormorant Garamond', serif; font-size: .92rem; line-height: 1.55; color: var(--cafe); opacity: .75; flex: 1; margin-bottom: 1.2rem; }
+  .pc-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+  .pc-price { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--tierra); }
+  .pc-vol { font-size: .66rem; color: var(--cafe); opacity: .4; margin-top: .1rem; }
+  .pc-btn {
+    background: var(--verde); color: #fff; border: none; cursor: pointer;
+    width: 36px; height: 36px; border-radius: 2px; font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .25s;
+  }
+  .pc-btn:hover { background: var(--verde-claro); }
+
+  /* ── ACEITES — CARD DESTACADA ── */
+  .aceite-featured {
+    background: var(--verde); color: #fff;
+    grid-column: span 2;
+    display: grid; grid-template-columns: 1fr 1fr;
+  }
+  .aceite-featured .pc-img { height: auto; background: rgba(255,255,255,.06); font-size: 5rem; }
+  .aceite-featured .pc-body { padding: 2rem; }
+  .aceite-featured .pc-cat { color: var(--arena); }
+  .aceite-featured .pc-name { font-size: 1.4rem; color: #fff; }
+  .aceite-featured .pc-scientific { color: rgba(255,255,255,.4); }
+  .aceite-featured .pc-uso { color: rgba(255,255,255,.68); }
+  .aceite-featured .pc-price { color: var(--arena); font-size: 1.6rem; }
+
+  /* ── MANTEQUILLAS BODY ── */
+  .mantequillas-intro {
+    background: var(--cafe); padding: 5rem 7%;
+    display: grid; grid-template-columns: 1fr 2fr; gap: 5rem; align-items: center;
+  }
+  .mi-text .section-eyebrow { color: var(--arena); }
+  .mi-text .section-eyebrow::before { background: var(--arena); }
+  .mi-text .section-title { color: #fff; }
+  .mi-text .section-title em { color: var(--arena); }
+  .mi-text .section-body { color: rgba(255,255,255,.68); margin-bottom: 1.5rem; }
+  .mi-props { display: flex; flex-direction: column; gap: .7rem; }
+  .mi-prop { display: flex; align-items: center; gap: .8rem; color: rgba(255,255,255,.65); font-size: .82rem; }
+  .mi-prop::before { content: '✦'; color: var(--arena); font-size: .65rem; flex-shrink: 0; }
+
+  /* ── SERUMS ── */
+  .serum-card {
+    background: #fff; padding: 2.5rem 2rem;
+    border: 1px solid rgba(139,94,60,.08);
+    transition: all .35s; position: relative; overflow: hidden;
+  }
+  .serum-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(to right, var(--arena), var(--tierra));
+    transform: scaleX(0); transform-origin: left; transition: transform .35s;
+  }
+  .serum-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(92,61,46,.1); }
+  .serum-card:hover::before { transform: scaleX(1); }
+
+  .sc-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .sc-name { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--cafe); margin-bottom: .3rem; font-weight: 600; }
+  .sc-sub { font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; color: var(--tierra); margin-bottom: 1rem; }
+  .sc-desc { font-family: 'Cormorant Garamond', serif; font-size: .98rem; line-height: 1.7; color: var(--cafe); opacity: .8; margin-bottom: 1rem; }
+  .sc-resultado { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: .92rem; color: var(--verde); margin-bottom: 1.2rem; }
+  .sc-footer { display: flex; align-items: center; justify-content: space-between; }
+  .sc-price { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--tierra); }
+  .sc-vol { font-size: .66rem; color: var(--cafe); opacity: .4; }
+
+  /* ── MASCARILLAS ── */
+  .mask-card {
+    background: #fff; padding: 2.2rem;
+    border-bottom: 3px solid var(--tierra); transition: all .3s;
+  }
+  .mask-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(92,61,46,.1); }
+  .mask-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--cafe); margin-bottom: .4rem; font-weight: 600; }
+  .mask-sub { font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; color: var(--tierra); margin-bottom: 1rem; }
+  .mask-desc { font-family: 'Cormorant Garamond', serif; font-size: .96rem; line-height: 1.7; color: var(--cafe); opacity: .8; margin-bottom: .8rem; }
+  .mask-ideal { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: .9rem; color: var(--verde); margin-bottom: 1.2rem; }
+  .mask-footer { display: flex; align-items: center; justify-content: space-between; }
+  .mask-price { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--tierra); }
+  .mask-vol { font-size: .66rem; color: var(--cafe); opacity: .4; }
+
+  /* ── AROMAS & PERFUMES ── */
+  .aroma-card {
+    background: #fff; padding: 2rem 1.8rem;
+    border: 1px solid rgba(139,94,60,.08); transition: all .3s;
+    display: flex; flex-direction: column;
+  }
+  .aroma-card:hover { background: var(--crema); transform: translateY(-3px); }
+  .ac2-icon { font-size: 1.6rem; margin-bottom: .8rem; }
+  .ac2-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--cafe); margin-bottom: .3rem; }
+  .ac2-tipo { font-size: .64rem; letter-spacing: .12em; text-transform: uppercase; color: var(--tierra); margin-bottom: .7rem; }
+  .ac2-desc { font-family: 'Cormorant Garamond', serif; font-size: .92rem; line-height: 1.6; color: var(--cafe); opacity: .75; flex: 1; margin-bottom: 1rem; }
+  .ac2-price { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--tierra); }
+
+  /* ── BANNER CUIDADO PERSONAL ── */
+  .cuidado-banner {
+    background: var(--verde-palido); padding: 4rem 7%;
+    display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 2rem; align-items: center;
+  }
+  .cb-item { text-align: center; }
+  .cb-icon { font-size: 2rem; margin-bottom: .6rem; }
+  .cb-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--verde); margin-bottom: .3rem; }
+  .cb-desc { font-size: .78rem; color: var(--cafe); opacity: .7; line-height: 1.5; }
+
+  /* ── COMPRA ── */
+  .compra-info {
+    background: var(--hueso); padding: 5rem 7%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+  }
+  .compra-text .section-body { margin-bottom: 2rem; }
+  .compra-items { display: flex; flex-direction: column; gap: 1.2rem; }
+  .compra-item { display: flex; align-items: flex-start; gap: 1rem; }
+  .ci-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: .1rem; }
+  .ci-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--verde); margin-bottom: .2rem; }
+  .ci-desc { font-family: 'Cormorant Garamond', serif; font-size: .95rem; color: var(--cafe); opacity: .78; line-height: 1.5; }
+
+  .compra-visual {
+    background: var(--crema); padding: 3rem;
+    border: 1px solid rgba(139,94,60,.1);
+  }
+  .cv-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--verde); margin-bottom: 1.5rem; }
+  .cv-list { list-style: none; display: flex; flex-direction: column; gap: .8rem; }
+  .cv-list li { display: flex; align-items: center; gap: .8rem; font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--cafe); }
+  .cv-list li::before { content: '✦'; color: var(--arena); font-size: .65rem; }
+  .cv-cta { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1100px) {
+    .prod-grid-4 { grid-template-columns: repeat(3,1fr); }
+    .aceite-featured { grid-column: span 3; }
+  }
+  @media (max-width: 900px) {
+    .prod-grid-4, .prod-grid-3 { grid-template-columns: 1fr 1fr; }
+    .aceite-featured { grid-column: span 2; grid-template-columns: 1fr; }
+    .aceite-featured .pc-img { height: 180px; }
+    .mantequillas-intro { grid-template-columns: 1fr; gap: 2.5rem; }
+    .cuidado-banner { grid-template-columns: 1fr 1fr; }
+    .compra-info { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .prod-grid-4, .prod-grid-3 { grid-template-columns: 1fr; }
+    .aceite-featured { grid-column: span 1; }
+    .cuidado-banner { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">Verde <em>Nueve</em></a>
+  <ul class="nav-links">
+    <li><a href="spa-hotel.html" class="es">Spa & Hotel</a><a href="spa-hotel.html" class="en">Spa & Hotel</a></li>
+    <li><a href="jardin.html" class="es">Jardín</a><a href="jardin.html" class="en">Garden</a></li>
+    <li><a href="experiencias.html" class="es">Experiencias</a><a href="experiencias.html" class="en">Experiences</a></li>
+    <li><a href="tienda.html" class="es">Tienda</a><a href="tienda.html" class="en">Shop</a></li>
+    <li><a href="https://wa.me/5554071775" class="btn-reservar es">Reservar</a><a href="https://wa.me/5554071775" class="btn-reservar en">Book Now</a></li>
+  </ul>
+  <div class="lang-toggle">
+    <button data-lang="es" onclick="setLang('es')">ES</button>
+    <button data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
+  <button class="nav-burger" aria-label="Menú"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="page-hero">
+  <div class="eyebrow">
+    <span class="es">Cosmética Natural & Aromaterapia</span>
+    <span class="en">Natural Cosmetics & Aromatherapy</span>
+  </div>
+  <h1>
+    <span class="es" data-vn="hero.title_es">Tienda <em>Verde Nueve</em></span>
+    <span class="en" data-vn="hero.title_en">Verde Nueve <em>Shop</em></span>
+  </h1>
+  <p class="hero-desc es" data-vn="hero.desc_es">Más de 100 productos elaborados en el Jardín Verde Nueve con plantas medicinales, aceites esenciales puros y mantecas naturales. Sin tóxicos, sin rellenos.</p>
+  <p class="hero-desc en" data-vn="hero.desc_en">Over 100 products made at Jardín Verde Nueve with medicinal plants, pure essential oils and natural butters. No toxins, no fillers.</p>
+</section>
+
+<!-- ── FILTROS ── -->
+<div class="filtros-wrap">
+  <div class="filtros">
+    <button class="filtro-btn active" onclick="scrollTo('#aceites')">
+      <span class="es">Aceites Esenciales</span><span class="en">Essential Oils</span>
+    </button>
+    <button class="filtro-btn" onclick="scrollTo('#mantequillas')">
+      <span class="es">Mantequillas Corporales</span><span class="en">Body Butters</span>
+    </button>
+    <button class="filtro-btn" onclick="scrollTo('#serums')">
+      <span class="es">Serums & Faciales</span><span class="en">Serums & Facials</span>
+    </button>
+    <button class="filtro-btn" onclick="scrollTo('#mascarillas')">
+      <span class="es">Mascarillas</span><span class="en">Face Masks</span>
+    </button>
+    <button class="filtro-btn" onclick="scrollTo('#aromas')">
+      <span class="es">Aromas & Perfumes</span><span class="en">Aromas & Perfumes</span>
+    </button>
+    <button class="filtro-btn" onclick="scrollTo('#personal')">
+      <span class="es">Cuidado Personal</span><span class="en">Personal Care</span>
+    </button>
+  </div>
+</div>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Fórmula vegana</div>
+    <div class="marquee-item">Sin tóxicos</div>
+    <div class="marquee-item">Aceites esenciales puros</div>
+    <div class="marquee-item">48h de humectación</div>
+    <div class="marquee-item">Elaborado en Huichapan</div>
+    <div class="marquee-item">Plantas medicinales</div>
+    <div class="marquee-item">Rápida absorción</div>
+    <div class="marquee-item">Fórmula vegana</div>
+    <div class="marquee-item">Sin tóxicos</div>
+    <div class="marquee-item">Aceites esenciales puros</div>
+    <div class="marquee-item">48h de humectación</div>
+    <div class="marquee-item">Elaborado en Huichapan</div>
+    <div class="marquee-item">Plantas medicinales</div>
+    <div class="marquee-item">Rápida absorción</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     ACEITES ESENCIALES
+══════════════════════════════ -->
+<section class="prod-section" id="aceites">
+  <div class="ps-header">
+    <div>
+      <div class="section-eyebrow es fade-up">Aromaterapia pura</div>
+      <div class="section-eyebrow en fade-up">Pure aromatherapy</div>
+      <h2 class="section-title fade-up es">Aceites <em>Esenciales</em></h2>
+      <h2 class="section-title fade-up en"><em>Essential</em> Oils</h2>
+    </div>
+    <div class="ps-count es">14 aceites · 10 ml c/u</div>
+    <div class="ps-count en">14 oils · 10 ml each</div>
+  </div>
+
+  <div class="prod-grid-4">
+
+    <!-- DESTACADO -->
+    <div class="prod-card aceite-featured fade-up">
+      <div class="pc-img" style="background:rgba(255,255,255,.06)">
+        <span>🌺</span>
+      </div>
+      <div class="pc-body">
+        <div class="pc-cat es">Más vendido</div><div class="pc-cat en">Best seller</div>
+        <div class="pc-name" data-product="Ylang Ylang">Ylang Ylang</div>
+        <div class="pc-scientific">Cananga odorata</div>
+        <p class="pc-uso es">Equilibrante, ansiedad, menopausia, tranquilidad, cosmética, piel madura.</p>
+        <p class="pc-uso en">Balancing, anxiety, menopause, tranquility, cosmetics, mature skin.</p>
+        <div class="pc-footer">
+          <div><div class="pc-price">$715</div><div class="pc-vol">10 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa el aceite de Ylang Ylang','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card fade-up">
+      <div class="pc-img"><div class="pc-img-bg" style="background:url('https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?w=300&q=80')"></div><span>💜</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Aceite esencial</div><div class="pc-cat en">Essential oil</div>
+        <div class="pc-name" data-product="Lavanda">Lavanda</div>
+        <div class="pc-scientific">Lavandula officinalis</div>
+        <p class="pc-uso es">Ansiedad, quemaduras, varicela, depresión, golpes, hipertensión, repelente.</p>
+        <p class="pc-uso en">Anxiety, burns, chickenpox, depression, bruises, hypertension, repellent.</p>
+        <div class="pc-footer">
+          <div><div class="pc-price">$522</div><div class="pc-vol">10 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa el aceite de Lavanda','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card fade-up">
+      <div class="pc-img"><span>🌿</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Aceite esencial</div><div class="pc-cat en">Essential oil</div>
+        <div class="pc-name" data-product="Pachulí">Pachulí</div>
+        <div class="pc-scientific">Pogostemon cablin</div>
+        <p class="pc-uso es">Pie de atleta, dermatitis, fatiga, afrodisiaco, libido, meditación.</p>
+        <p class="pc-uso en">Athlete's foot, dermatitis, fatigue, aphrodisiac, libido, meditation.</p>
+        <div class="pc-footer">
+          <div><div class="pc-price">$627</div><div class="pc-vol">10 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa el aceite de Pachulí','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card fade-up">
+      <div class="pc-img"><span>🪵</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Aceite esencial</div><div class="pc-cat en">Essential oil</div>
+        <div class="pc-name" data-product="Mirra">Mirra</div>
+        <div class="pc-scientific">Commiphora Mhyrra</div>
+        <p class="pc-uso es">Cosmética, estrés, antioxidante, desinflamante, insomnio, sistema inmunológico.</p>
+        <p class="pc-uso en">Cosmetics, stress, antioxidant, anti-inflammatory, insomnia, immune system.</p>
+        <div class="pc-footer">
+          <div><div class="pc-price">$588</div><div class="pc-vol">10 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa el aceite de Mirra','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card fade-up">
+      <div class="pc-img"><span>🌱</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Aceite esencial</div><div class="pc-cat en">Essential oil</div>
+        <div class="pc-name" data-product="Salvia">Salvia</div>
+        <div class="pc-scientific">Salvia officinalis</div>
+        <p class="pc-uso es">Cólicos, cambios hormonales, piel grasa, estrés, purificación.</p>
+        <p class="pc-uso en">Cramps, hormonal changes, oily skin, stress, purification.</p>
+        <div class="pc-footer">
+          <div><div class="pc-price">$603</div><div class="pc-vol">10 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa el aceite de Salvia','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card fade-up">
+      <div class="pc-img"><span>🌸</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Aceite esencial</div><div class="pc-cat en">Essential oil</div>
+        <div class="pc-name" data-product="Mandarina">Mandarina</div>
+        <div class="pc-scientific">Citrus reticulata</div>
+        <p class="pc-uso es">Acné, estrías, manchas de la piel, apatía, depresión, armonía, alegría.</p>
+        <p class="pc-uso en">Acne, stretch marks, skin spots, apathy, depression, harmony, joy.</p>
+        <div class="pc-footer">
+          <div><div class="pc-price">$308</div><div class="pc-vol">10 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa el aceite de Mandarina','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card fade-up">
+      <div class="pc-img"><span>🍋</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Aceite esencial</div><div class="pc-cat en">Essential oil</div>
+        <div class="pc-name" data-product="Limón">Limón</div>
+        <div class="pc-scientific">Citrus limonum</div>
+        <p class="pc-uso es">Acné, asma, piel manchada, varices, mal humor, depresión, purificación, limpieza.</p>
+        <p class="pc-uso en">Acne, asthma, spotted skin, varicose veins, bad mood, depression, purification.</p>
+        <div class="pc-footer">
+          <div><div class="pc-price">$247</div><div class="pc-vol">10 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa el aceite de Limón','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card fade-up">
+      <div class="pc-img"><span>🌾</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Aceite esencial</div><div class="pc-cat en">Essential oil</div>
+        <div class="pc-name" data-product="Lemongrass">Lemongrass</div>
+        <div class="pc-scientific">Cymbopogon flexuosus</div>
+        <p class="pc-uso es">Poros abiertos, estimulante, digestivo, perfumes, decaimiento, armonía.</p>
+        <p class="pc-uso en">Open pores, stimulating, digestive, perfumes, fatigue, harmony.</p>
+        <div class="pc-footer">
+          <div><div class="pc-price">$247</div><div class="pc-vol">10 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa el Lemongrass','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card fade-up">
+      <div class="pc-img"><span>🍊</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Aceite esencial</div><div class="pc-cat en">Essential oil</div>
+        <div class="pc-name" data-product="Toronja">Toronja</div>
+        <div class="pc-scientific">Citrus paradisi</div>
+        <p class="pc-uso es">Celulitis, lipolítico, diurética, reducir apetito, armonía, alegría.</p>
+        <p class="pc-uso en">Cellulite, lipolytic, diuretic, appetite reduction, harmony, joy.</p>
+        <div class="pc-footer">
+          <div><div class="pc-price">$335</div><div class="pc-vol">10 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa el aceite de Toronja','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card fade-up">
+      <div class="pc-img"><span>🍃</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Aceite esencial</div><div class="pc-cat en">Essential oil</div>
+        <div class="pc-name" data-product="Mentha">Mentha</div>
+        <div class="pc-scientific">Mentha piperita</div>
+        <p class="pc-uso es">Analgésico, mal aliento, migraña, digestivo, desodorante, energía, memoria.</p>
+        <p class="pc-uso en">Analgesic, bad breath, migraine, digestive, deodorant, energy, memory.</p>
+        <div class="pc-footer">
+          <div><div class="pc-price">$302</div><div class="pc-vol">10 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa el aceite de Mentha','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card fade-up">
+      <div class="pc-img"><span>🌲</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Aceite esencial</div><div class="pc-cat en">Essential oil</div>
+        <div class="pc-name" data-product="Pino">Pino</div>
+        <div class="pc-scientific">Pinus sylvestris</div>
+        <p class="pc-uso es">Artritis, bronquitis, tos, reumatismo, limpieza física y mental.</p>
+        <p class="pc-uso en">Arthritis, bronchitis, cough, rheumatism, physical and mental cleansing.</p>
+        <div class="pc-footer">
+          <div><div class="pc-price">$225</div><div class="pc-vol">10 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa el aceite de Pino','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card fade-up">
+      <div class="pc-img"><span>🍊</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Aceite esencial</div><div class="pc-cat en">Essential oil</div>
+        <div class="pc-name" data-product="Naranja">Naranja</div>
+        <div class="pc-scientific">Citrus sinesis</div>
+        <p class="pc-uso es">Estreñimiento, depresión, mal humor, digestión, dieta.</p>
+        <p class="pc-uso en">Constipation, depression, bad mood, digestion, diet.</p>
+        <div class="pc-footer">
+          <div><div class="pc-price">$225</div><div class="pc-vol">10 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa el aceite de Naranja','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card fade-up">
+      <div class="pc-img"><span>🌿</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Aceite esencial</div><div class="pc-cat en">Essential oil</div>
+        <div class="pc-name" data-product="Romero">Romero</div>
+        <div class="pc-scientific">Rosmarinus officinalis</div>
+        <p class="pc-uso es">Dolor muscular, artritis, neuralgia, vigorizante, gripe, crecimiento de cabello y barba.</p>
+        <p class="pc-uso en">Muscle pain, arthritis, neuralgia, invigorating, flu, hair and beard growth.</p>
+        <div class="pc-footer">
+          <div><div class="pc-price">$324</div><div class="pc-vol">10 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa el aceite de Romero','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aceite RELAX destacado -->
+    <div class="prod-card fade-up" style="border-left: 3px solid var(--verde);">
+      <div class="pc-img"><div class="pc-badge">Blend especial</div><span>😌</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Blend de masaje</div><div class="pc-cat en">Massage blend</div>
+        <div class="pc-name">RELAX</div>
+        <div class="pc-scientific">Bergamota · Lavanda · Petitgrain</div>
+        <p class="pc-uso es">Aceite aromático de relajación y descanso. Para masaje y difusor. Ideal para estrés, ansiedad e insomnio.</p>
+        <p class="pc-uso en">Relaxing aromatic oil for rest. For massage and diffuser. Ideal for stress, anxiety and insomnia.</p>
+        <div class="pc-footer">
+          <div><div class="pc-price">Consultar</div><div class="pc-vol">30 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa el aceite RELAX','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     MANTEQUILLAS CORPORALES
+══════════════════════════════ -->
+<div class="mantequillas-intro" id="mantequillas">
+  <div class="mi-text">
+    <div class="section-eyebrow es">Humectación 48h</div>
+    <div class="section-eyebrow en">48h moisture</div>
+    <h2 class="section-title es">Mantequillas <em>Corporales</em></h2>
+    <h2 class="section-title en">Body <em>Butters</em></h2>
+    <p class="section-body es">Soufflé de cosas buenas que se funde al tacto. Fórmula vegana con mantecas de coco, karité y cacao y aceites esenciales puros.</p>
+    <p class="section-body en">A soufflé of goodness that melts on touch. Vegan formula with coconut, shea and cocoa butters and pure essential oils.</p>
+    <div class="mi-props">
+      <div class="mi-prop es">Fórmula vegana con mantecas de coco, karité y cacao</div>
+      <div class="mi-prop en">Vegan formula with coconut, shea and cocoa butters</div>
+      <div class="mi-prop es">48 horas de humectación garantizada</div>
+      <div class="mi-prop en">48 hours of guaranteed moisture</div>
+      <div class="mi-prop es">Rápida absorción · Sin residuo graso</div>
+      <div class="mi-prop en">Fast absorption · No greasy residue</div>
+      <div class="mi-prop es">Aceites esenciales puros en cada variedad</div>
+      <div class="mi-prop en">Pure essential oils in every variety</div>
+    </div>
+  </div>
+  <div>
+    <div class="section-eyebrow es" style="color:var(--arena)">8 fragancias disponibles</div>
+    <div class="section-eyebrow en" style="color:var(--arena)">8 fragrances available</div>
+  </div>
+</div>
+
+<section class="prod-section" style="padding-top:3rem">
+  <div class="prod-grid-4">
+    <div class="prod-card fade-up">
+      <div class="pc-img" style="background:#f5e6c8"><span>🥭</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Mantequilla corporal</div><div class="pc-cat en">Body butter</div>
+        <div class="pc-name" data-product="Sorbete de Mango">Sorbete de Mango</div>
+        <div class="pc-uso es">Alegre y sensual</div><div class="pc-uso en">Cheerful and sensual</div>
+        <div class="pc-footer">
+          <div><div class="pc-price">$368</div><div class="pc-vol">200 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa la mantequilla Sorbete de Mango','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+    <div class="prod-card fade-up">
+      <div class="pc-img" style="background:#e8f0e9"><span>🥥</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Mantequilla corporal</div><div class="pc-cat en">Body butter</div>
+        <div class="pc-name" data-product="Coconut">Coconut</div>
+        <div class="pc-uso es">Exótico y embriagador</div><div class="pc-uso en">Exotic and intoxicating</div>
+        <div class="pc-footer">
+          <div><div class="pc-price">$368</div><div class="pc-vol">200 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa la mantequilla Coconut','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+    <div class="prod-card fade-up">
+      <div class="pc-img" style="background:#f0edf7"><span>💜</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Mantequilla corporal</div><div class="pc-cat en">Body butter</div>
+        <div class="pc-name" data-product="Lavender">Lavender</div>
+        <div class="pc-uso es">Elegante y sutil</div><div class="pc-uso en">Elegant and subtle</div>
+        <div class="pc-footer">
+          <div><div class="pc-price">$368</div><div class="pc-vol">200 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa la mantequilla Lavender','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+    <div class="prod-card fade-up">
+      <div class="pc-img" style="background:#e8f5e9"><span>🌿</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Mantequilla corporal</div><div class="pc-cat en">Body butter</div>
+        <div class="pc-name" data-product="Mentha Verde">Mentha Verde</div>
+        <div class="pc-uso es">Energía fresca</div><div class="pc-uso en">Fresh energy</div>
+        <div class="pc-footer">
+          <div><div class="pc-price">$368</div><div class="pc-vol">200 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa la mantequilla Mentha Verde','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+    <div class="prod-card fade-up">
+      <div class="pc-img" style="background:#fce4ec"><span>🍎</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Mantequilla corporal</div><div class="pc-cat en">Body butter</div>
+        <div class="pc-name" data-product="Manzana Dulce">Manzana Dulce</div>
+        <div class="pc-uso es">Tan deliciosa como un néctar</div><div class="pc-uso en">As delicious as nectar</div>
+        <div class="pc-footer">
+          <div><div class="pc-price">$368</div><div class="pc-vol">200 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa la mantequilla Manzana Dulce','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+    <div class="prod-card fade-up">
+      <div class="pc-img" style="background:#f3e5f5"><span>🫐</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Mantequilla corporal</div><div class="pc-cat en">Body butter</div>
+        <div class="pc-name" data-product="Frutos del Bosque">Frutos del Bosque</div>
+        <div class="pc-uso es">Exquisito postre de bayas</div><div class="pc-uso en">Exquisite berry dessert</div>
+        <div class="pc-footer">
+          <div><div class="pc-price">$368</div><div class="pc-vol">200 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa la mantequilla Frutos del Bosque','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+    <div class="prod-card fade-up">
+      <div class="pc-img" style="background:#fff8e1"><span>🌾</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Mantequilla corporal</div><div class="pc-cat en">Body butter</div>
+        <div class="pc-name">Lemongrass</div>
+        <div class="pc-uso es">La mezcla perfecta de cítricos y herbal</div><div class="pc-uso en">The perfect citrus-herbal blend</div>
+        <div class="pc-footer">
+          <div><div class="pc-price">$368</div><div class="pc-vol">200 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa la mantequilla Lemongrass','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+    <div class="prod-card fade-up">
+      <div class="pc-img" style="background:#fce4ec"><span>🍦</span></div>
+      <div class="pc-body">
+        <div class="pc-cat es">Mantequilla corporal</div><div class="pc-cat en">Body butter</div>
+        <div class="pc-name" data-product="Vanilla & Almond">Vanilla & Almond</div>
+        <div class="pc-uso es">Irresistiblemente dulce y embriagador</div><div class="pc-uso en">Irresistibly sweet and intoxicating</div>
+        <div class="pc-footer">
+          <div><div class="pc-price">$368</div><div class="pc-vol">200 ml</div></div>
+          <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa la mantequilla Vanilla & Almond','_blank')">→</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     SERUMS FACIALES
+══════════════════════════════ -->
+<section class="prod-section" id="serums" style="background:var(--cafe)!important">
+  <div class="ps-header" style="color:#fff">
+    <div>
+      <div class="section-eyebrow fade-up" style="color:var(--arena)"><span style="display:none"></span>
+        <span class="es">Línea Radiance</span><span class="en">Radiance Line</span>
+      </div>
+      <h2 class="section-title fade-up" style="color:#fff">Serums & <em style="color:var(--arena)">Elixires</em></h2>
+    </div>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:rgba(255,255,255,.55);max-width:340px;line-height:1.6" class="es">El mejor regalo que le puedes dar a tu piel. Si tienes más de 40 años, te recomendamos usar sérum hidratante y sérum de aceites en lugar de crema.</p>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:rgba(255,255,255,.55);max-width:340px;line-height:1.6" class="en">The best gift you can give your skin. If you're over 40, we recommend using a hydrating serum and an oil serum instead of cream.</p>
+  </div>
+
+  <div class="prod-grid-3">
+    <div class="serum-card fade-up">
+      <div class="sc-icon">🌿</div>
+      <div class="sc-name">Suero Botánico Rejuvenecedor</div>
+      <div class="sc-sub es">Youth Perfecting Serum</div>
+      <div class="sc-sub en">Youth Perfecting Serum</div>
+      <p class="sc-desc es">Concentrado antioxidante que combate los radicales libres y potencia las proteínas de la longevidad celular. Para una piel súper hidratada, natural y tersa. Todo tipo de pieles.</p>
+      <p class="sc-desc en">Antioxidant concentrate that fights free radicals and enhances cellular longevity proteins. For super hydrated, natural and smooth skin. All skin types.</p>
+      <p class="sc-resultado es">Frescura instantánea. Después de 6 semanas tu piel se verá años más tersa.</p>
+      <p class="sc-resultado en">Instant freshness. After 6 weeks your skin will look years smoother.</p>
+      <div class="sc-footer">
+        <div><div class="sc-price">$865</div><div class="sc-vol">30 ml</div></div>
+        <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa el Suero Botánico Rejuvenecedor','_blank')">→</button>
+      </div>
+    </div>
+
+    <div class="serum-card fade-up">
+      <div class="sc-icon">✨</div>
+      <div class="sc-name">Suero Aclarante Antioxidante</div>
+      <div class="sc-sub es">Brightening Defense Serum</div>
+      <div class="sc-sub en">Brightening Defense Serum</div>
+      <p class="sc-desc es">Suero corrector que te protege de la oxidación y aclara tu piel. Concentración máxima de vitamina C, vitamina E y extractos herbales aclarantes. Disminuye manchas de la edad y cicatrices de acné.</p>
+      <p class="sc-desc en">Correcting serum that protects from oxidation and brightens your skin. Maximum concentration of vitamin C, vitamin E and brightening herbal extracts. Reduces age spots and acne scars.</p>
+      <p class="sc-resultado es">Reducción visible de manchas tras 6 semanas. Piel renovada, fresca, iluminada y más firme.</p>
+      <p class="sc-resultado en">Visible spot reduction after 6 weeks. Renewed, fresh, illuminated and firmer skin.</p>
+      <div class="sc-footer">
+        <div><div class="sc-price">$865</div><div class="sc-vol">30 ml</div></div>
+        <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa el Suero Aclarante Antioxidante','_blank')">→</button>
+      </div>
+    </div>
+
+    <div class="serum-card fade-up">
+      <div class="sc-icon">💎</div>
+      <div class="sc-name">Elixir Ultra Reparador</div>
+      <div class="sc-sub es">Repairing Elixir — 100% aceites</div>
+      <div class="sc-sub en">Repairing Elixir — 100% oils</div>
+      <p class="sc-desc es">Poderoso elixir con concentración récord (100%) en aceites naturales antiedad para combatir las 3 preocupaciones principales de la piel madura: <strong>flacidez, arrugas y sequedad.</strong> Aceites botánicos preciosos y retinol.</p>
+      <p class="sc-desc en">Powerful elixir with record concentration (100%) in natural anti-aging oils to combat the 3 main mature skin concerns: <strong>sagging, wrinkles and dryness.</strong> Precious botanical oils and retinol.</p>
+      <p class="sc-resultado es">Piel suave, humectada, menos arrugas, elasticidad y brillo.</p>
+      <p class="sc-resultado en">Soft, moisturized skin, fewer wrinkles, elasticity and glow.</p>
+      <div class="sc-footer">
+        <div><div class="sc-price">$920</div><div class="sc-vol">30 ml</div></div>
+        <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa el Elixir Ultra Reparador','_blank')">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     MASCARILLAS
+══════════════════════════════ -->
+<section class="prod-section" id="mascarillas">
+  <div class="ps-header">
+    <div>
+      <div class="section-eyebrow fade-up es">El antes y el después</div>
+      <div class="section-eyebrow fade-up en">Before and after</div>
+      <h2 class="section-title fade-up es">Mascarillas <em>Perfection</em></h2>
+      <h2 class="section-title fade-up en"><em>Perfection</em> Face Masks</h2>
+    </div>
+    <div class="ps-count es">3 fórmulas · 200g c/u</div>
+    <div class="ps-count en">3 formulas · 200g each</div>
+  </div>
+
+  <div class="prod-grid-3">
+    <div class="mask-card fade-up">
+      <div class="mask-name">Perfection — Miele</div>
+      <div class="mask-sub es">Mascarilla Revitalizante</div>
+      <div class="mask-sub en">Revitalizing Mask</div>
+      <p class="mask-desc es">Suave mascarilla con manzanilla, aloe, miel y vitamina E. Desinflama, refresca y afina los poros. Puedes dejarla actuar toda la noche.</p>
+      <p class="mask-desc en">Gentle mask with chamomile, aloe, honey and vitamin E. Reduces inflammation, refreshes and tightens pores. Can be left on overnight.</p>
+      <p class="mask-ideal es">Ideal para piel congestionada, irritada por acné, piel deshidratada.</p>
+      <p class="mask-ideal en">Ideal for congested, acne-irritated and dehydrated skin.</p>
+      <div class="mask-footer">
+        <div><div class="mask-price">$435</div><div class="mask-vol">200g</div></div>
+        <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa la mascarilla Perfection Miele','_blank')">→</button>
+      </div>
+    </div>
+    <div class="mask-card fade-up">
+      <div class="mask-name">Radiance — Latte</div>
+      <div class="mask-sub es">Mascarilla Aclarante</div>
+      <div class="mask-sub en">Brightening Mask</div>
+      <p class="mask-desc es">Mascarilla sedosa con proteína de leche para aclarar la piel suavemente y devolver su luminosidad. Mucho colágeno para recuperar elasticidad. Rinde 30 aplicaciones.</p>
+      <p class="mask-desc en">Silky mask with milk protein to gently brighten skin and restore luminosity. High collagen to recover elasticity. 30 applications.</p>
+      <p class="mask-ideal es">Aplica en rostro, manos, escote y cuello. 2 veces por semana. Todo tipo de piel.</p>
+      <p class="mask-ideal en">Apply on face, hands, décolleté and neck. Twice a week. All skin types.</p>
+      <div class="mask-footer">
+        <div><div class="mask-price">$435</div><div class="mask-vol">200g · polvo</div></div>
+        <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa la mascarilla Radiance Latte','_blank')">→</button>
+      </div>
+    </div>
+    <div class="mask-card fade-up">
+      <div class="mask-name">Perfection — Detox</div>
+      <div class="mask-sub es">Mascarilla Desintoxicante</div>
+      <div class="mask-sub en">Detox Mask</div>
+      <p class="mask-desc es">Fórmula con arcillas minerales y carbón activado que afina y limpia los poros, da aspecto mate y equilibra la piel de rostro, escote y espalda.</p>
+      <p class="mask-desc en">Formula with mineral clays and activated charcoal that refines and cleanses pores, gives a matte appearance and balances skin on face, décolleté and back.</p>
+      <p class="mask-ideal es">Úsalo también después del tratamiento anticelulitis como fango reductivo.</p>
+      <p class="mask-ideal en">Also use after anti-cellulite treatment as reductive mud.</p>
+      <div class="mask-footer">
+        <div><div class="mask-price">$435</div><div class="mask-vol">200g · polvo</div></div>
+        <button class="pc-btn" onclick="window.open('https://wa.me/5554071775?text=Hola! Me interesa la mascarilla Perfection Detox','_blank')">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     AROMAS & PERFUMES
+══════════════════════════════ -->
+<section class="prod-section" id="aromas" style="background:var(--crema)!important">
+  <div class="ps-header">
+    <div>
+      <div class="section-eyebrow fade-up es">Sprays · Sahumerios · Difusor</div>
+      <div class="section-eyebrow fade-up en">Sprays · Incense · Diffuser</div>
+      <h2 class="section-title fade-up es">Aromas & <em>Perfumes</em></h2>
+      <h2 class="section-title fade-up en">Aromas & <em>Perfumes</em></h2>
+    </div>
+  </div>
+  <div class="prod-grid-4">
+    <div class="aroma-card fade-up">
+      <div class="ac2-icon">🌸</div>
+      <div class="ac2-name es">Spray Aromatizante Floral</div>
+      <div class="ac2-name en">Floral Aromatic Spray</div>
+      <div class="ac2-tipo es">Spray ambiental</div><div class="ac2-tipo en">Room spray</div>
+      <p class="ac2-desc es">Fragancia floral fresca para ambientar espacios de descanso y meditación. Con aceites esenciales puros de rosa y geranio.</p>
+      <p class="ac2-desc en">Fresh floral fragrance for rest and meditation spaces. With pure essential oils of rose and geranium.</p>
+      <div class="ac2-price es">Consultar precio</div><div class="ac2-price en">Ask for price</div>
+    </div>
+    <div class="aroma-card fade-up">
+      <div class="ac2-icon">🌿</div>
+      <div class="ac2-name es">Spray Herbal Antiestres</div>
+      <div class="ac2-name en">Herbal Anti-stress Spray</div>
+      <div class="ac2-tipo es">Spray ambiental</div><div class="ac2-tipo en">Room spray</div>
+      <p class="ac2-desc es">Mezcla de lavanda, pasiflora y bergamota para reducir el estrés y preparar el ambiente para el descanso.</p>
+      <p class="ac2-desc en">Blend of lavender, passionflower and bergamot to reduce stress and prepare the environment for rest.</p>
+      <div class="ac2-price es">Consultar precio</div><div class="ac2-price en">Ask for price</div>
+    </div>
+    <div class="aroma-card fade-up">
+      <div class="ac2-icon">🕯️</div>
+      <div class="ac2-name es">Sahumerio de Copal</div>
+      <div class="ac2-name en">Copal Incense</div>
+      <div class="ac2-tipo es">Sahumerio ceremonial</div><div class="ac2-tipo en">Ceremonial incense</div>
+      <p class="ac2-desc es">Copal puro para limpiezas energéticas, meditación y rituales. Aroma profundo y ancestral.</p>
+      <p class="ac2-desc en">Pure copal for energy cleansings, meditation and rituals. Deep and ancestral aroma.</p>
+      <div class="ac2-price es">Consultar precio</div><div class="ac2-price en">Ask for price</div>
+    </div>
+    <div class="aroma-card fade-up">
+      <div class="ac2-icon">💧</div>
+      <div class="ac2-name es">Mezcla para Difusor</div>
+      <div class="ac2-name en">Diffuser Blend</div>
+      <div class="ac2-tipo es">Aceite para difusor</div><div class="ac2-tipo en">Diffuser oil</div>
+      <p class="ac2-desc es">Mezclas personalizadas de aceites esenciales para difusor ultrasónico. Frutales, frescos, alegres y relajantes.</p>
+      <p class="ac2-desc en">Personalized essential oil blends for ultrasonic diffuser. Fruity, fresh, cheerful and relaxing.</p>
+      <div class="ac2-price es">Consultar precio</div><div class="ac2-price en">Ask for price</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     CUIDADO PERSONAL
+══════════════════════════════ -->
+<div class="cuidado-banner" id="personal">
+  <div class="cb-item">
+    <div class="cb-icon">🧼</div>
+    <div class="cb-name es">Jabón Natural</div><div class="cb-name en">Natural Soap</div>
+    <div class="cb-desc es">Sin tóxicos, con glicerina vegetal y aceites esenciales</div>
+    <div class="cb-desc en">Toxin-free, with vegetable glycerin and essential oils</div>
+  </div>
+  <div class="cb-item">
+    <div class="cb-icon">✨</div>
+    <div class="cb-name es">Exfoliante Corporal</div><div class="cb-name en">Body Scrub</div>
+    <div class="cb-desc es">Azúcar, sal del Himalaya y aceites naturales</div>
+    <div class="cb-desc en">Sugar, Himalayan salt and natural oils</div>
+  </div>
+  <div class="cb-item">
+    <div class="cb-icon">🌿</div>
+    <div class="cb-name es">Desodorante Natural</div><div class="cb-name en">Natural Deodorant</div>
+    <div class="cb-desc es">Sin aluminio, sin parabenos. Con aceites esenciales puros</div>
+    <div class="cb-desc en">Aluminum-free, paraben-free. With pure essential oils</div>
+  </div>
+  <div class="cb-item">
+    <div class="cb-icon">📦</div>
+    <div class="cb-name es">Sets de Regalo</div><div class="cb-name en">Gift Sets</div>
+    <div class="cb-desc es">Armamos el set perfecto para ti o para regalar</div>
+    <div class="cb-desc en">We put together the perfect set for you or as a gift</div>
+  </div>
+</div>
+
+<!-- ── CÓMO COMPRAR ── -->
+<section class="compra-info">
+  <div class="compra-text">
+    <div class="section-eyebrow es fade-up">¿Cómo comprar?</div>
+    <div class="section-eyebrow en fade-up">How to buy?</div>
+    <h2 class="section-title fade-up es">Compra directo <em>por WhatsApp</em></h2>
+    <h2 class="section-title fade-up en">Buy directly <em>via WhatsApp</em></h2>
+    <p class="section-body fade-up es">Todos nuestros productos se pueden comprar directamente escribiéndonos por WhatsApp. También puedes visitarnos en el Jardín Verde Nueve en Huichapan.</p>
+    <p class="section-body fade-up en">All our products can be purchased directly by writing to us on WhatsApp. You can also visit us at Jardín Verde Nueve in Huichapan.</p>
+    <div class="compra-items fade-up">
+      <div class="compra-item">
+        <div class="ci-icon">📱</div>
+        <div>
+          <div class="ci-title es">WhatsApp directo</div>
+          <div class="ci-title en">Direct WhatsApp</div>
+          <div class="ci-desc es">Escríbenos, dinos qué necesitas y te asesoramos. Hacemos envíos a toda la república.</div>
+          <div class="ci-desc en">Write to us, tell us what you need and we'll advise you. We ship nationwide.</div>
+        </div>
+      </div>
+      <div class="compra-item">
+        <div class="ci-icon">📍</div>
+        <div>
+          <div class="ci-title es">Visítanos en Huichapan</div>
+          <div class="ci-title en">Visit us in Huichapan</div>
+          <div class="ci-desc es">Compra en persona en nuestra tienda dentro del Jardín Verde Nueve.</div>
+          <div class="ci-desc en">Shop in person at our store inside Jardín Verde Nueve.</div>
+        </div>
+      </div>
+      <div class="compra-item">
+        <div class="ci-icon">🎁</div>
+        <div>
+          <div class="ci-title es">Sets personalizados</div>
+          <div class="ci-title en">Personalized sets</div>
+          <div class="ci-desc es">Armamos sets de regalo con los productos que elijas, con presentación especial.</div>
+          <div class="ci-desc en">We put together gift sets with the products you choose, with special presentation.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="compra-visual fade-up">
+    <div class="cv-title es">¿Por qué Verde Nueve?</div>
+    <div class="cv-title en">Why Verde Nueve?</div>
+    <ul class="cv-list">
+      <li><span class="es">Elaborado con plantas cultivadas en nuestro jardín</span><span class="en">Made with plants grown in our garden</span></li>
+      <li><span class="es">Fórmulas veganas sin tóxicos ni rellenos</span><span class="en">Vegan formulas without toxins or fillers</span></li>
+      <li><span class="es">Aceites esenciales 100% puros en cada producto</span><span class="en">100% pure essential oils in every product</span></li>
+      <li><span class="es">Más de 100 productos distintos</span><span class="en">Over 100 different products</span></li>
+      <li><span class="es">Asesoría personalizada para tu tipo de piel</span><span class="en">Personalized advice for your skin type</span></li>
+      <li><span class="es">Envíos a toda la república mexicana</span><span class="en">Shipping throughout Mexico</span></li>
+    </ul>
+    <div class="cv-cta">
+      <a href="https://wa.me/5554071775" class="btn-prim es">Comprar por WhatsApp</a>
+      <a href="https://wa.me/5554071775" class="btn-prim en">Shop on WhatsApp</a>
+      <a href="jardin.html" class="btn-ghost es">Conocer el jardín →</a>
+      <a href="jardin.html" class="btn-ghost en">Discover the garden →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Verde Nueve</div>
+      <p class="footer-bio es">Jardín holístico, spa y cosmética natural en Huichapan, Hidalgo. Nacimos de la aromaterapia y crecimos entre plantas medicinales.</p>
+      <p class="footer-bio en">Holistic garden, spa and natural cosmetics in Huichapan, Hidalgo. Born from aromatherapy and grown among medicinal plants.</p>
+    </div>
+    <div class="footer-col">
+      <h5 class="es">Servicios</h5><h5 class="en">Services</h5>
+      <a href="spa-hotel.html"><span class="es">Spa & Masajes</span><span class="en">Spa & Massages</span></a>
+      <a href="experiencias.html"><span class="es">Temazcal</span><span class="en">Temazcal</span></a>
+      <a href="spa-hotel.html"><span class="es">Faciales</span><span class="en">Facials</span></a>
+      <a href="experiencias.html"><span class="es">Terapias Holísticas</span><span class="en">Holistic Therapies</span></a>
+    </div>
+    <div class="footer-col">
+      <h5 class="es">Productos</h5><h5 class="en">Products</h5>
+      <a href="#aceites"><span class="es">Aceites Esenciales</span><span class="en">Essential Oils</span></a>
+      <a href="#mantequillas"><span class="es">Mantequillas Corporales</span><span class="en">Body Butters</span></a>
+      <a href="#serums"><span class="es">Serums & Faciales</span><span class="en">Serums & Facials</span></a>
+      <a href="#aromas"><span class="es">Aromas & Perfumes</span><span class="en">Aromas & Perfumes</span></a>
+    </div>
+    <div class="footer-col">
+      <h5>Social</h5>
+      <a href="#">TikTok</a>
+      <a href="#">Facebook</a>
+      <a href="#">Instagram</a>
+      <a href="https://wa.me/5554071775">WhatsApp</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2026 Verde Nueve — El Calvario, Huichapan</div>
+    <div class="es">Hecho con 🌿 en México</div>
+    <div class="en">Made with 🌿 in Mexico</div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+  // Filtros de navegación
+  function scrollTo(id) {
+    document.querySelector(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  // Resaltar filtro activo al hacer scroll
+  const sections = ['#aceites','#mantequillas','#serums','#mascarillas','#aromas','#personal'];
+  window.addEventListener('scroll', () => {
+    sections.forEach((id, i) => {
+      const el = document.querySelector(id);
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top < 200 && rect.bottom > 200) {
+        document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.filtro-btn')[i]?.classList.add('active');
+      }
+    });
+  });
+</script>
+</body>
+</html>

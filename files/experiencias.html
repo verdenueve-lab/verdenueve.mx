@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Experiencias — Verde Nueve · Huichapan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+
+  /* ── PAGE HERO ── */
+  .page-hero {
+    min-height: 80vh;
+    background: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1400&q=80') center/cover no-repeat;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0 7% 6rem; position: relative;
+  }
+  .page-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(30,55,35,.9) 0%, rgba(30,55,35,.3) 55%, transparent 100%);
+  }
+  .page-hero > * { position: relative; z-index: 2; }
+  .page-hero .eyebrow {
+    display: flex; align-items: center; gap: .8rem;
+    font-size: .68rem; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--arena); font-weight: 500; margin-bottom: 1.2rem;
+  }
+  .page-hero .eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--arena); }
+  .page-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 7vw, 7rem); line-height: 1.0; color: #fff; margin-bottom: 1.2rem;
+  }
+  .page-hero h1 em { font-style: italic; color: var(--arena); display: block; }
+  .page-hero .hero-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.22rem; color: rgba(255,255,255,.8); line-height: 1.7; max-width: 560px; margin-bottom: 2rem;
+  }
+  .hero-chips { display: flex; gap: .8rem; flex-wrap: wrap; }
+  .chip { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25); color: #fff; padding: .4rem 1.1rem; border-radius: 100px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; backdrop-filter: blur(6px); }
+
+  /* ── TEMAZCAL HERO ── */
+  .temazcal-section {
+    display: grid; grid-template-columns: 1fr 1fr; min-height: 85vh;
+  }
+  .temazcal-visual {
+    position: relative; overflow: hidden;
+    background: url('https://images.unsplash.com/photo-1545389336-cf090694435e?w=900&q=80') center/cover;
+  }
+  .temazcal-visual::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to right, transparent 60%, rgba(250,246,239,.15));
+  }
+  .temazcal-number {
+    position: absolute; bottom: 2.5rem; left: 2.5rem;
+    font-family: 'Playfair Display', serif; font-size: 8rem;
+    color: rgba(255,255,255,.08); line-height: 1; z-index: 1; pointer-events: none;
+  }
+  .temazcal-badge {
+    position: absolute; top: 2.5rem; right: 0;
+    background: var(--tierra); color: #fff;
+    padding: .8rem 1.6rem; font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; z-index: 5;
+  }
+
+  .temazcal-content {
+    background: var(--crema); padding: 6rem 6% 6rem 5%;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .temazcal-content .section-body { margin-bottom: 2rem; }
+
+  .temazcal-incluye {
+    background: var(--verde); padding: 2rem;
+    margin: 2rem 0;
+  }
+  .ti-title {
+    font-size: .66rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--arena); margin-bottom: 1.2rem;
+  }
+  .ti-list { list-style: none; display: flex; flex-direction: column; gap: .8rem; }
+  .ti-list li {
+    display: flex; align-items: center; gap: .8rem;
+    color: rgba(255,255,255,.8); font-family: 'Cormorant Garamond', serif; font-size: 1rem;
+  }
+  .ti-list li::before { content: '✦'; color: var(--arena); font-size: .7rem; flex-shrink: 0; }
+
+  /* ── TIPOS DE TEMAZCAL ── */
+  .tipos-wrap { padding: 7rem 7%; background: var(--verde); }
+  .tipos-wrap .section-eyebrow { color: var(--arena); }
+  .tipos-wrap .section-eyebrow::before { background: var(--arena); }
+  .tipos-wrap .section-title { color: #fff; }
+  .tipos-wrap .section-title em { color: var(--arena); }
+
+  .tipos-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 3.5rem; }
+
+  .tipo-card {
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+    padding: 2.5rem 2rem; transition: all .35s; cursor: pointer;
+  }
+  .tipo-card:hover { background: rgba(255,255,255,.12); transform: translateY(-4px); }
+  .tipo-num { font-family: 'Playfair Display', serif; font-size: 3rem; color: rgba(255,255,255,.1); line-height: 1; margin-bottom: .5rem; }
+  .tipo-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #fff; margin-bottom: .8rem; }
+  .tipo-desc { font-family: 'Cormorant Garamond', serif; font-size: 1rem; line-height: 1.7; color: rgba(255,255,255,.6); margin-bottom: 1.2rem; }
+  .tipo-tags { display: flex; gap: .5rem; flex-wrap: wrap; }
+  .tipo-tag { font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--arena); background: rgba(201,168,124,.12); padding: .25rem .7rem; border-radius: 100px; }
+
+  /* ── CEREMONIAS ── */
+  .ceremonias { padding: 8rem 7%; background: var(--hueso); }
+  .ceremonias-header { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-bottom: 5rem; align-items: end; }
+
+  .ceremonias-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5px; background: rgba(139,94,60,.1); }
+  .ceremonia-card {
+    background: var(--hueso); padding: 3rem 2.5rem;
+    display: flex; gap: 2rem; align-items: flex-start;
+    transition: background .3s;
+  }
+  .ceremonia-card:hover { background: var(--crema); }
+  .cc-icon { font-size: 2.5rem; flex-shrink: 0; }
+  .cc-body {}
+  .cc-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--verde); margin-bottom: .6rem; }
+  .cc-desc { font-family: 'Cormorant Garamond', serif; font-size: 1rem; line-height: 1.7; color: var(--cafe); opacity: .82; }
+
+  /* ── PICNICS & FIESTAS ── */
+  .fiestas {
+    background: var(--cafe);
+    display: grid; grid-template-columns: 1fr 1fr; min-height: 75vh;
+  }
+  .fiestas-content { padding: 6rem 5% 6rem 7%; display: flex; flex-direction: column; justify-content: center; }
+  .fiestas-content .section-eyebrow { color: var(--arena); }
+  .fiestas-content .section-eyebrow::before { background: var(--arena); }
+  .fiestas-content .section-title { color: #fff; }
+  .fiestas-content .section-title em { color: var(--arena); }
+  .fiestas-content .section-body { color: rgba(255,255,255,.7); margin-bottom: 2.5rem; }
+
+  .fiesta-opciones { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2.5rem; }
+  .fiesta-op {
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+    padding: 1.3rem 1.6rem;
+    display: flex; align-items: center; gap: 1.2rem;
+    transition: background .3s;
+  }
+  .fiesta-op:hover { background: rgba(255,255,255,.1); }
+  .fo-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .fo-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: #fff; margin-bottom: .2rem; }
+  .fo-desc { font-size: .78rem; color: rgba(255,255,255,.5); line-height: 1.4; }
+
+  .fiestas-mosaic {
+    display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 4px;
+  }
+  .fm-tile { background-size: cover; background-position: center; overflow: hidden; transition: transform .6s; }
+  .fm-tile:hover { transform: scale(1.04); }
+  .fm-a { background-image: url('https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500&q=80'); grid-row: 1/3; }
+  .fm-b { background-image: url('https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=400&q=80'); }
+  .fm-c { background-image: url('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400&q=80'); }
+
+  /* ── GALERÍA ── */
+  .galeria { padding: 7rem 7%; background: var(--crema); }
+  .galeria-header { margin-bottom: 3.5rem; }
+  .galeria-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 240px 180px;
+    gap: 6px;
+  }
+  .gal-item {
+    background-size: cover; background-position: center;
+    overflow: hidden; cursor: pointer;
+    transition: transform .5s ease;
+  }
+  .gal-item:hover { transform: scale(1.04); }
+  .gal-item:nth-child(1) { grid-column: 1/3; background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80'); }
+  .gal-item:nth-child(2) { background-image: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400&q=80'); }
+  .gal-item:nth-child(3) { background-image: url('https://images.unsplash.com/photo-1556760544-74068565f05c?w=400&q=80'); }
+  .gal-item:nth-child(4) { background-image: url('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400&q=80'); }
+  .gal-item:nth-child(5) { background-image: url('https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=400&q=80'); }
+  .gal-item:nth-child(6) { background-image: url('https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=400&q=80'); }
+
+  /* ── TESTIMONIOS ── */
+  .testimonios { padding: 7rem 7%; background: var(--hueso); }
+  .testimonios-header { text-align: center; margin-bottom: 4rem; }
+  .testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; }
+  .testi-card {
+    background: #fff; padding: 2.5rem 2rem;
+    border-top: 3px solid var(--arena);
+    transition: box-shadow .3s;
+  }
+  .testi-card:hover { box-shadow: 0 12px 40px rgba(92,61,46,.1); }
+  .testi-stars { color: var(--arena); font-size: 1rem; letter-spacing: .1rem; margin-bottom: 1.2rem; }
+  .testi-text {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 1.08rem; line-height: 1.75; color: var(--cafe); margin-bottom: 1.5rem;
+  }
+  .testi-author { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--tierra); }
+
+  /* ── CTA ── */
+  .cta-exp {
+    background: var(--verde); padding: 7rem 7%; text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-exp::before {
+    content: ''; position: absolute; top: -150px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 600px; border-radius: 50%;
+    background: rgba(255,255,255,.04); pointer-events: none;
+  }
+  .cta-exp .section-eyebrow { color: var(--arena); justify-content: center; margin-bottom: 1.5rem; }
+  .cta-exp .section-eyebrow::before { background: var(--arena); }
+  .cta-exp h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3.5rem); color: #fff; margin-bottom: 1.2rem; line-height: 1.15; }
+  .cta-exp h2 em { font-style: italic; color: var(--arena); }
+  .cta-exp p { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: rgba(255,255,255,.65); max-width: 480px; margin: 0 auto 2.5rem; line-height: 1.75; }
+  .cta-btns { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
+  .btn-arena { background: var(--arena); color: var(--cafe); padding: .95rem 2.4rem; border-radius: 2px; font-family: 'Jost', sans-serif; font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; transition: all .3s; display: inline-block; font-weight: 500; }
+  .btn-arena:hover { background: #d4b48a; transform: translateY(-2px); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .temazcal-section, .fiestas { grid-template-columns: 1fr; }
+    .temazcal-visual, .fiestas-mosaic { min-height: 55vw; }
+    .tipos-grid, .testi-grid { grid-template-columns: 1fr 1fr; }
+    .ceremonias-header, .ceremonias-grid { grid-template-columns: 1fr; }
+    .galeria-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .gal-item:nth-child(1) { grid-column: 1/3; height: 240px; }
+    .gal-item { height: 180px; }
+  }
+  @media (max-width: 600px) {
+    .tipos-grid, .testi-grid, .fiestas-mosaic { grid-template-columns: 1fr; }
+    .galeria-grid { grid-template-columns: 1fr; }
+    .gal-item:nth-child(1) { grid-column: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">Verde <em>Nueve</em></a>
+  <ul class="nav-links">
+    <li><a href="spa-hotel.html" class="es">Spa & Hotel</a><a href="spa-hotel.html" class="en">Spa & Hotel</a></li>
+    <li><a href="jardin.html" class="es">Jardín</a><a href="jardin.html" class="en">Garden</a></li>
+    <li><a href="experiencias.html" class="es">Experiencias</a><a href="experiencias.html" class="en">Experiences</a></li>
+    <li><a href="tienda.html" class="es">Tienda</a><a href="tienda.html" class="en">Shop</a></li>
+    <li><a href="https://wa.me/5554071775" class="btn-reservar es">Reservar</a><a href="https://wa.me/5554071775" class="btn-reservar en">Book Now</a></li>
+  </ul>
+  <div class="lang-toggle">
+    <button data-lang="es" onclick="setLang('es')">ES</button>
+    <button data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
+  <button class="nav-burger" aria-label="Menú"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="page-hero">
+  <div class="eyebrow">
+    <span class="es">Huichapan, Hidalgo · Pueblo Mágico</span>
+    <span class="en">Huichapan, Hidalgo · Magic Town</span>
+  </div>
+  <h1>
+    <span class="es" data-vn="hero.title_es">Experiencias<em>que transforman</em></span>
+    <span class="en" data-vn="hero.title_en">Experiences<em>that transform</em></span>
+  </h1>
+  <p class="hero-desc es" data-vn="hero.desc_es">Temazcal, ceremonias holísticas, picnics gourmet y fiestas en el jardín. Momentos diseñados para que te reconectes con lo que importa.</p>
+  <p class="hero-desc en" data-vn="hero.desc_en">Temazcal, holistic ceremonies, gourmet picnics and garden parties. Moments designed to reconnect you with what matters.</p>
+  <div class="hero-chips">
+    <div class="chip es">Temazcal</div><div class="chip en">Temazcal</div>
+    <div class="chip es">Ceremonias</div><div class="chip en">Ceremonies</div>
+    <div class="chip es">Picnics Gourmet</div><div class="chip en">Gourmet Picnics</div>
+    <div class="chip es">Fiestas Spa</div><div class="chip en">Spa Parties</div>
+    <div class="chip es">Meditación</div><div class="chip en">Meditation</div>
+  </div>
+</section>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Temazcal Suave</div>
+    <div class="marquee-item">Meditación Guiada</div>
+    <div class="marquee-item">Danza Consciente</div>
+    <div class="marquee-item">Tai Chi</div>
+    <div class="marquee-item">Picnic Gourmet</div>
+    <div class="marquee-item">Fiesta SPA</div>
+    <div class="marquee-item">Ceremonia Holística</div>
+    <div class="marquee-item">Herbolaria</div>
+    <div class="marquee-item">Temazcal Suave</div>
+    <div class="marquee-item">Meditación Guiada</div>
+    <div class="marquee-item">Danza Consciente</div>
+    <div class="marquee-item">Tai Chi</div>
+    <div class="marquee-item">Picnic Gourmet</div>
+    <div class="marquee-item">Fiesta SPA</div>
+    <div class="marquee-item">Ceremonia Holística</div>
+    <div class="marquee-item">Herbolaria</div>
+  </div>
+</div>
+
+<!-- ── TEMAZCAL ── -->
+<section class="temazcal-section" id="temazcal">
+  <div class="temazcal-visual">
+    <div class="temazcal-number">01</div>
+    <div class="temazcal-badge es">Meditación & Descanso</div>
+    <div class="temazcal-badge en">Meditation & Rest</div>
+  </div>
+  <div class="temazcal-content">
+    <div class="section-eyebrow es fade-up">Experiencia principal</div>
+    <div class="section-eyebrow en fade-up">Main experience</div>
+    <h2 class="section-title fade-up es" data-vn="temazcal.title_es">Temazcal <em>suave</em></h2>
+    <h2 class="section-title fade-up en" data-vn="temazcal.title_en">Gentle <em>temazcal</em></h2>
+    <p class="section-body fade-up es">El temazcal de Verde Nueve es una experiencia de temperatura baja — diseñado para que cualquier persona pueda vivirlo sin estrés físico. La aromaterapia, la respiración y el silencio hacen el trabajo de reconectar cuerpo y mente.</p>
+    <p class="section-body fade-up en">Verde Nueve's temazcal is a low-temperature experience — designed so anyone can live it without physical stress. Aromatherapy, breathing and silence do the work of reconnecting body and mind.</p>
+
+    <div class="temazcal-incluye fade-up">
+      <div class="ti-title es">¿Qué incluye?</div>
+      <div class="ti-title en">What's included?</div>
+      <ul class="ti-list">
+        <li><span class="es">Técnicas de respiración guiadas</span><span class="en">Guided breathing techniques</span></li>
+        <li><span class="es">Aromaterapia antiestres personalizada</span><span class="en">Personalized anti-stress aromatherapy</span></li>
+        <li><span class="es">Manejo de emociones y meditación</span><span class="en">Emotion management and meditation</span></li>
+        <li><span class="es">Tiempo de integración en el jardín</span><span class="en">Integration time in the garden</span></li>
+        <li><span class="es">Infusión de hierbas del jardín</span><span class="en">Herbal tea from the garden</span></li>
+      </ul>
+    </div>
+
+    <a href="https://wa.me/5554071775" class="btn-prim">
+      <span class="es">Reservar Temazcal</span>
+      <span class="en">Book Temazcal</span>
+    </a>
+  </div>
+</section>
+
+<!-- ── TIPOS DE TEMAZCAL ── -->
+<section class="tipos-wrap">
+  <div class="section-eyebrow fade-up es">Modalidades</div>
+  <div class="section-eyebrow fade-up en">Modalities</div>
+  <h2 class="section-title fade-up es">¿Cómo quieres <em>vivirlo?</em></h2>
+  <h2 class="section-title fade-up en">How do you want to <em>experience it?</em></h2>
+
+  <div class="tipos-grid">
+    <div class="tipo-card fade-up">
+      <div class="tipo-num">01</div>
+      <div class="tipo-name es">Individual</div>
+      <div class="tipo-name en">Individual</div>
+      <p class="tipo-desc es">Una experiencia íntima y personalizada. El guía adapta los aromas, la respiración y la meditación a lo que necesitas ese día.</p>
+      <p class="tipo-desc en">An intimate and personalized experience. The guide adapts aromas, breathing and meditation to what you need that day.</p>
+      <div class="tipo-tags">
+        <div class="tipo-tag es">Para ti</div><div class="tipo-tag en">For you</div>
+        <div class="tipo-tag es">Personalizado</div><div class="tipo-tag en">Personalized</div>
+      </div>
+    </div>
+    <div class="tipo-card fade-up">
+      <div class="tipo-num">02</div>
+      <div class="tipo-name es">En Pareja</div>
+      <div class="tipo-name en">Couples</div>
+      <p class="tipo-desc es">Compartir el temazcal con tu pareja es una experiencia de conexión profunda. Silencio, aromas y presencia mutua.</p>
+      <p class="tipo-desc en">Sharing the temazcal with your partner is a deep connection experience. Silence, aromas and mutual presence.</p>
+      <div class="tipo-tags">
+        <div class="tipo-tag es">Conexión</div><div class="tipo-tag en">Connection</div>
+        <div class="tipo-tag es">Aniversarios</div><div class="tipo-tag en">Anniversaries</div>
+      </div>
+    </div>
+    <div class="tipo-card fade-up">
+      <div class="tipo-num">03</div>
+      <div class="tipo-name es">Grupal</div>
+      <div class="tipo-name en">Group</div>
+      <p class="tipo-desc es">Para grupos de amigas, equipos de trabajo o familias. Una ceremonia colectiva de sanación y desconexión compartida.</p>
+      <p class="tipo-desc en">For groups of friends, work teams or families. A collective healing ceremony and shared disconnection.</p>
+      <div class="tipo-tags">
+        <div class="tipo-tag es">Grupos</div><div class="tipo-tag en">Groups</div>
+        <div class="tipo-tag es">Team building</div><div class="tipo-tag en">Team building</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CEREMONIAS HOLÍSTICAS ── -->
+<section class="ceremonias" id="ceremonias">
+  <div class="ceremonias-header">
+    <div>
+      <div class="section-eyebrow fade-up es">Terapias & ceremonias</div>
+      <div class="section-eyebrow fade-up en">Therapies & ceremonies</div>
+      <h2 class="section-title fade-up es">Holístico en <em>todo sentido</em></h2>
+      <h2 class="section-title fade-up en">Holistic in <em>every sense</em></h2>
+    </div>
+    <p class="section-body fade-up es">Combinamos disciplinas ancestrales y modernas para crear ceremonias de sanación que van más allá del cuerpo físico — mente, emociones y espíritu.</p>
+    <p class="section-body fade-up en">We combine ancestral and modern disciplines to create healing ceremonies that go beyond the physical body — mind, emotions and spirit.</p>
+  </div>
+
+  <div class="ceremonias-grid">
+    <div class="ceremonia-card fade-up">
+      <div class="cc-icon">🥁</div>
+      <div class="cc-body">
+        <div class="cc-name es">Temazcal Ceremonial</div>
+        <div class="cc-name en">Ceremonial Temazcal</div>
+        <p class="cc-desc es">Ceremonia completa con canto, tambor, copal e intención. Para momentos de vida importantes: inicios, cierres, sanaciones.</p>
+        <p class="cc-desc en">Full ceremony with chant, drum, copal and intention. For important life moments: beginnings, closings, healings.</p>
+      </div>
+    </div>
+    <div class="ceremonia-card fade-up">
+      <div class="cc-icon">💃</div>
+      <div class="cc-body">
+        <div class="cc-name es">Danza Consciente</div>
+        <div class="cc-name en">Conscious Dance</div>
+        <p class="cc-desc es">Movimiento libre y guiado para liberar emociones, bloqueos y tensiones a través del cuerpo y la música.</p>
+        <p class="cc-desc en">Free and guided movement to release emotions, blocks and tensions through the body and music.</p>
+      </div>
+    </div>
+    <div class="ceremonia-card fade-up">
+      <div class="cc-icon">🧘</div>
+      <div class="cc-body">
+        <div class="cc-name es">Tai Chi & Qi Gong</div>
+        <div class="cc-name en">Tai Chi & Qi Gong</div>
+        <p class="cc-desc es">Práctica de movimiento suave y meditativo en el jardín. Equilibra la energía, mejora el enfoque y reduce el estrés.</p>
+        <p class="cc-desc en">Practice of gentle, meditative movement in the garden. Balances energy, improves focus and reduces stress.</p>
+      </div>
+    </div>
+    <div class="ceremonia-card fade-up">
+      <div class="cc-icon">🌬️</div>
+      <div class="cc-body">
+        <div class="cc-name es">Respiración Holotrópica</div>
+        <div class="cc-name en">Holotropic Breathing</div>
+        <p class="cc-desc es">Técnica de respiración profunda para liberar traumas, acceder a estados expandidos y conectar con tu interior.</p>
+        <p class="cc-desc en">Deep breathing technique to release trauma, access expanded states and connect with your inner self.</p>
+      </div>
+    </div>
+    <div class="ceremonia-card fade-up">
+      <div class="cc-icon">💎</div>
+      <div class="cc-body">
+        <div class="cc-name es">Terapia con Cuarzos</div>
+        <div class="cc-name en">Crystal Therapy</div>
+        <p class="cc-desc es">Colocación de cristales en puntos energéticos del cuerpo para armonizar, limpiar y elevar la vibración energética.</p>
+        <p class="cc-desc en">Placement of crystals on the body's energy points to harmonize, cleanse and elevate energetic vibration.</p>
+      </div>
+    </div>
+    <div class="ceremonia-card fade-up">
+      <div class="cc-icon">🌱</div>
+      <div class="cc-body">
+        <div class="cc-name es">Herbolaria & Plantas</div>
+        <div class="cc-name en">Herbalism & Plants</div>
+        <p class="cc-desc es">Recorrido por el jardín medicinal, aprendizaje de propiedades de plantas y preparación de infusiones terapéuticas.</p>
+        <p class="cc-desc en">Tour of the medicinal garden, learning plant properties and preparation of therapeutic infusions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PICNICS & FIESTAS ── -->
+<section class="fiestas" id="fiestas">
+  <div class="fiestas-content">
+    <div class="section-eyebrow es fade-up">Celebraciones</div>
+    <div class="section-eyebrow en fade-up">Celebrations</div>
+    <h2 class="section-title fade-up es">Una nueva forma <em>de celebrar</em></h2>
+    <h2 class="section-title fade-up en">A new way <em>to celebrate</em></h2>
+    <p class="section-body fade-up es">Olvídate de los salones de eventos. En Verde Nueve celebras rodeada de jardines, aromas y silencio — con experiencias que tus invitados nunca van a olvidar.</p>
+    <p class="section-body fade-up en">Forget event halls. At Verde Nueve you celebrate surrounded by gardens, aromas and silence — with experiences your guests will never forget.</p>
+
+    <div class="fiesta-opciones fade-up">
+      <div class="fiesta-op">
+        <div class="fo-icon">🧺</div>
+        <div>
+          <div class="fo-name es">Picnic Gourmet</div>
+          <div class="fo-name en">Gourmet Picnic</div>
+          <div class="fo-desc es">Canasta, manteles, cojines y comida artesanal en el jardín. Para parejas o grupos pequeños.</div>
+          <div class="fo-desc en">Basket, linens, cushions and artisan food in the garden. For couples or small groups.</div>
+        </div>
+      </div>
+      <div class="fiesta-op">
+        <div class="fo-icon">💆</div>
+        <div>
+          <div class="fo-name es">Fiesta SPA</div>
+          <div class="fo-name en">SPA Party</div>
+          <div class="fo-desc es">Masajes, faciales y temazcal para grupos. Ideal para despedidas, cumpleaños y aniversarios.</div>
+          <div class="fo-desc en">Massages, facials and temazcal for groups. Ideal for bachelorettes, birthdays and anniversaries.</div>
+        </div>
+      </div>
+      <div class="fiesta-op">
+        <div class="fo-icon">🥂</div>
+        <div>
+          <div class="fo-name es">Masaje en Pareja</div>
+          <div class="fo-name en">Couples Massage</div>
+          <div class="fo-desc es">Masajes simultáneos con aromaterapia para dos, en un espacio privado del jardín.</div>
+          <div class="fo-desc en">Simultaneous massages with aromatherapy for two, in a private garden space.</div>
+        </div>
+      </div>
+      <div class="fiesta-op">
+        <div class="fo-icon">🌿</div>
+        <div>
+          <div class="fo-name es">Ceremonia Especial</div>
+          <div class="fo-name en">Special Ceremony</div>
+          <div class="fo-desc es">Temazcal + danza + herbolaria para grupos. Diseñamos la experiencia a tu medida.</div>
+          <div class="fo-desc en">Temazcal + dance + herbalism for groups. We design the experience to your measure.</div>
+        </div>
+      </div>
+    </div>
+
+    <a href="https://wa.me/5554071775" class="btn-prim">
+      <span class="es">Cotizar mi celebración</span>
+      <span class="en">Get a quote</span>
+    </a>
+  </div>
+
+  <div class="fiestas-mosaic">
+    <div class="fm-tile fm-a"></div>
+    <div class="fm-tile fm-b"></div>
+    <div class="fm-tile fm-c"></div>
+  </div>
+</section>
+
+<!-- ── GALERÍA ── -->
+<section class="galeria">
+  <div class="galeria-header">
+    <div class="section-eyebrow fade-up es">El espacio</div>
+    <div class="section-eyebrow fade-up en">The space</div>
+    <h2 class="section-title fade-up es">Verde Nueve <em>en imágenes</em></h2>
+    <h2 class="section-title fade-up en">Verde Nueve <em>in pictures</em></h2>
+  </div>
+  <div class="galeria-grid">
+    <div class="gal-item fade-up"></div>
+    <div class="gal-item fade-up"></div>
+    <div class="gal-item fade-up"></div>
+    <div class="gal-item fade-up"></div>
+    <div class="gal-item fade-up"></div>
+    <div class="gal-item fade-up"></div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIOS ── -->
+<section class="testimonios">
+  <div class="testimonios-header">
+    <div class="section-eyebrow fade-up" style="justify-content:center es">Lo que dicen</div>
+    <div class="section-eyebrow fade-up" style="justify-content:center en">What they say</div>
+    <h2 class="section-title fade-up" style="text-align:center">
+      <span class="es">Experiencias que <em>dejan huella</em></span>
+      <span class="en">Experiences that <em>leave a mark</em></span>
+    </h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card fade-up">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text es">"El temazcal fue una experiencia completamente diferente a todo lo que había vivido. El jardín te prepara de una manera que no puedes describir — llegas estresada y sales liviana."</p>
+      <p class="testi-text en">"The temazcal was a completely different experience from anything I'd ever lived. The garden prepares you in a way you can't describe — you arrive stressed and leave light."</p>
+      <div class="testi-author">— Mariana G., CDMX</div>
+    </div>
+    <div class="testi-card fade-up">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text es">"Festejé mi cumpleaños con mis amigas en Verde Nueve. Masajes, temazcal y picnic en el jardín. Todas quedaron enamoradas del lugar. Ya queremos regresar."</p>
+      <p class="testi-text en">"I celebrated my birthday with my friends at Verde Nueve. Massages, temazcal and picnic in the garden. Everyone fell in love with the place. We already want to go back."</p>
+      <div class="testi-author">— Sofía R., Querétaro</div>
+    </div>
+    <div class="testi-card fade-up">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text es">"Los productos son increíbles — el aceite de lavanda que compré sigue siendo mi favorito meses después. Y la ceremonia holística nos conectó como equipo de una forma única."</p>
+      <p class="testi-text en">"The products are incredible — the lavender oil I bought is still my favorite months later. And the holistic ceremony connected us as a team in a unique way."</p>
+      <div class="testi-author">— Andrea M., Hidalgo</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-exp">
+  <div class="section-eyebrow es">¿Qué experiencia te llama?</div>
+  <div class="section-eyebrow en">Which experience calls you?</div>
+  <h2 class="es">Diseñamos tu experiencia <em>a tu medida</em></h2>
+  <h2 class="en">We design your experience <em>just for you</em></h2>
+  <p class="es">Cuéntanos qué buscas — relajación, sanación, celebración o simplemente desconectarte — y armamos la experiencia perfecta para ti.</p>
+  <p class="en">Tell us what you're looking for — relaxation, healing, celebration or simply disconnecting — and we'll put together the perfect experience for you.</p>
+  <div class="cta-btns">
+    <a href="https://wa.me/5554071775" class="btn-arena es">Escribir por WhatsApp</a>
+    <a href="https://wa.me/5554071775" class="btn-arena en">Message on WhatsApp</a>
+    <a href="spa-hotel.html" class="btn-ghost" style="border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.7)">
+      <span class="es">Ver Spa & Hotel →</span>
+      <span class="en">See Spa & Hotel →</span>
+    </a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Verde Nueve</div>
+      <p class="footer-bio es">Jardín holístico, spa y cosmética natural en Huichapan, Hidalgo. Nacimos de la aromaterapia y crecimos entre plantas medicinales.</p>
+      <p class="footer-bio en">Holistic garden, spa and natural cosmetics in Huichapan, Hidalgo. Born from aromatherapy and grown among medicinal plants.</p>
+    </div>
+    <div class="footer-col">
+      <h5 class="es">Servicios</h5><h5 class="en">Services</h5>
+      <a href="spa-hotel.html"><span class="es">Spa & Masajes</span><span class="en">Spa & Massages</span></a>
+      <a href="experiencias.html"><span class="es">Temazcal</span><span class="en">Temazcal</span></a>
+      <a href="spa-hotel.html"><span class="es">Faciales</span><span class="en">Facials</span></a>
+      <a href="experiencias.html"><span class="es">Terapias Holísticas</span><span class="en">Holistic Therapies</span></a>
+    </div>
+    <div class="footer-col">
+      <h5 class="es">Productos</h5><h5 class="en">Products</h5>
+      <a href="tienda.html"><span class="es">Aceites Esenciales</span><span class="en">Essential Oils</span></a>
+      <a href="tienda.html"><span class="es">Mantequillas Corporales</span><span class="en">Body Butters</span></a>
+      <a href="tienda.html"><span class="es">Serums & Faciales</span><span class="en">Serums & Facials</span></a>
+      <a href="tienda.html"><span class="es">Aromas & Perfumes</span><span class="en">Aromas & Perfumes</span></a>
+    </div>
+    <div class="footer-col">
+      <h5>Social</h5>
+      <a href="#">TikTok</a>
+      <a href="#">Facebook</a>
+      <a href="#">Instagram</a>
+      <a href="https://wa.me/5554071775">WhatsApp</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2026 Verde Nueve — El Calvario, Huichapan</div>
+    <div class="es">Hecho con 🌿 en México</div>
+    <div class="en">Made with 🌿 in Mexico</div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

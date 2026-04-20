@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Verde Nueve</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde:       #2d5a3d;
+    --verde-claro: #4a7c5f;
+    --tierra:      #8b5e3c;
+    --arena:       #c9a87c;
+    --crema:       #f5ede0;
+    --hueso:       #faf6ef;
+    --cafe:        #5c3d2e;
+    --gris:        #f4f4f4;
+    --gris2:       #e8e8e8;
+    --texto:       #2a2a2a;
+    --rojo:        #c0392b;
+    --success:     #27ae60;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--gris);
+    color: var(--texto);
+    min-height: 100vh;
+  }
+
+  /* ══════════════ LOGIN ══════════════ */
+  #login-screen {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--verde);
+    position: relative; overflow: hidden;
+  }
+  #login-screen::before {
+    content: 'VERDE NUEVE';
+    position: absolute; font-family: 'Playfair Display', serif;
+    font-size: 20vw; font-weight: 600; letter-spacing: .1em;
+    color: rgba(255,255,255,.04); white-space: nowrap;
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    pointer-events: none;
+  }
+
+  .login-box {
+    background: white; width: 100%; max-width: 400px;
+    padding: 3rem; position: relative; z-index: 2;
+    box-shadow: 0 24px 80px rgba(0,0,0,.25);
+  }
+  .login-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; color: var(--verde);
+    margin-bottom: .3rem;
+  }
+  .login-logo em { font-style: italic; color: var(--tierra); }
+  .login-sub {
+    font-size: .72rem; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--cafe); opacity: .45; margin-bottom: 2.5rem;
+  }
+
+  .login-field { margin-bottom: 1.2rem; }
+  .login-field label {
+    display: block; font-size: .72rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--cafe); opacity: .6;
+    margin-bottom: .5rem;
+  }
+  .login-field input {
+    width: 100%; padding: .85rem 1rem;
+    border: 1px solid var(--gris2); border-radius: 2px;
+    font-family: 'Jost', sans-serif; font-size: .9rem;
+    color: var(--texto); transition: border-color .2s;
+    outline: none;
+  }
+  .login-field input:focus { border-color: var(--verde); }
+
+  .login-error {
+    background: #fdf0ef; border: 1px solid #f5c6c2;
+    color: var(--rojo); font-size: .8rem; padding: .7rem 1rem;
+    border-radius: 2px; margin-bottom: 1rem; display: none;
+  }
+
+  .login-btn {
+    width: 100%; background: var(--verde); color: white;
+    border: none; padding: .95rem; cursor: pointer;
+    font-family: 'Jost', sans-serif; font-size: .82rem;
+    letter-spacing: .14em; text-transform: uppercase;
+    border-radius: 2px; transition: background .25s; margin-top: .5rem;
+  }
+  .login-btn:hover { background: var(--verde-claro); }
+
+  .login-hint {
+    text-align: center; margin-top: 1.5rem;
+    font-size: .72rem; color: var(--cafe); opacity: .4;
+  }
+
+  /* ══════════════ DASHBOARD ══════════════ */
+  #dashboard { display: none; min-height: 100vh; }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0; width: 240px;
+    background: var(--verde); display: flex; flex-direction: column;
+    z-index: 100;
+  }
+  .sb-logo {
+    padding: 1.8rem 1.5rem 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+  .sb-logo-text {
+    font-family: 'Playfair Display', serif; font-size: 1.2rem;
+    color: white;
+  }
+  .sb-logo-text em { font-style: italic; color: var(--arena); }
+  .sb-logo-sub {
+    font-size: .62rem; letter-spacing: .14em; text-transform: uppercase;
+    color: rgba(255,255,255,.35); margin-top: .2rem;
+  }
+
+  .sb-nav { flex: 1; padding: 1rem 0; overflow-y: auto; }
+  .sb-section {
+    font-size: .58rem; letter-spacing: .18em; text-transform: uppercase;
+    color: rgba(255,255,255,.3); padding: 1.2rem 1.5rem .5rem;
+  }
+  .sb-item {
+    display: flex; align-items: center; gap: .8rem;
+    padding: .75rem 1.5rem; cursor: pointer; transition: background .2s;
+    font-size: .82rem; color: rgba(255,255,255,.65);
+    border-left: 3px solid transparent;
+  }
+  .sb-item:hover { background: rgba(255,255,255,.07); color: white; }
+  .sb-item.active {
+    background: rgba(255,255,255,.1); color: white;
+    border-left-color: var(--arena);
+  }
+  .sb-icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
+
+  .sb-footer {
+    padding: 1.2rem 1.5rem;
+    border-top: 1px solid rgba(255,255,255,.1);
+  }
+  .sb-user { font-size: .78rem; color: rgba(255,255,255,.5); margin-bottom: .8rem; }
+  .sb-user strong { color: rgba(255,255,255,.85); display: block; }
+  .logout-btn {
+    background: rgba(255,255,255,.08); border: none; cursor: pointer;
+    color: rgba(255,255,255,.55); font-family: 'Jost', sans-serif;
+    font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+    padding: .5rem 1rem; border-radius: 2px; transition: all .2s; width: 100%;
+  }
+  .logout-btn:hover { background: rgba(255,255,255,.15); color: white; }
+
+  /* MAIN */
+  .main {
+    margin-left: 240px; min-height: 100vh;
+    display: flex; flex-direction: column;
+  }
+
+  /* TOPBAR */
+  .topbar {
+    background: white; border-bottom: 1px solid var(--gris2);
+    padding: 1rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 50;
+  }
+  .topbar-title { font-size: 1.1rem; font-weight: 600; color: var(--texto); }
+  .topbar-sub { font-size: .75rem; color: #999; margin-top: .1rem; }
+  .topbar-actions { display: flex; gap: .8rem; }
+
+  /* TOAST */
+  #toast {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
+    background: var(--verde); color: white;
+    padding: 1rem 1.5rem; border-radius: 4px;
+    font-size: .85rem; box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    transform: translateY(20px); opacity: 0;
+    transition: all .3s; pointer-events: none;
+  }
+  #toast.show { transform: translateY(0); opacity: 1; }
+  #toast.error { background: var(--rojo); }
+
+  /* CONTENT AREA */
+  .content { flex: 1; padding: 2rem; }
+
+  /* PANELS */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* CARDS GRID */
+  .cards-row {
+    display: grid; grid-template-columns: repeat(4,1fr);
+    gap: 1.2rem; margin-bottom: 2rem;
+  }
+  .stat-card {
+    background: white; padding: 1.5rem;
+    border-radius: 4px; border: 1px solid var(--gris2);
+  }
+  .sc-label { font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: #999; margin-bottom: .5rem; }
+  .sc-value { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--verde); line-height: 1; }
+  .sc-sub { font-size: .75rem; color: #bbb; margin-top: .3rem; }
+
+  /* TABLE */
+  .table-wrap {
+    background: white; border-radius: 4px;
+    border: 1px solid var(--gris2); overflow: hidden;
+  }
+  .table-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--gris2);
+  }
+  .table-title { font-weight: 600; font-size: .95rem; }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    text-align: left; padding: .8rem 1.2rem;
+    font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+    color: #999; background: var(--gris); border-bottom: 1px solid var(--gris2);
+    font-weight: 500;
+  }
+  td { padding: .9rem 1.2rem; border-bottom: 1px solid var(--gris2); font-size: .88rem; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--hueso); }
+
+  .tag {
+    display: inline-block; padding: .2rem .7rem; border-radius: 100px;
+    font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 500;
+  }
+  .tag-verde { background: rgba(45,90,61,.1); color: var(--verde); }
+  .tag-tierra { background: rgba(139,94,60,.1); color: var(--tierra); }
+  .tag-gris { background: var(--gris2); color: #888; }
+
+  /* FORM EDITOR */
+  .editor-wrap {
+    background: white; border-radius: 4px;
+    border: 1px solid var(--gris2); overflow: hidden;
+  }
+  .editor-header {
+    padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--gris2);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .editor-header-title { font-weight: 600; font-size: .95rem; }
+  .editor-body { padding: 1.5rem; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.2rem; }
+  .form-row.single { grid-template-columns: 1fr; }
+  .form-row.triple { grid-template-columns: 1fr 1fr 1fr; }
+
+  .field { display: flex; flex-direction: column; gap: .4rem; }
+  .field label {
+    font-size: .7rem; letter-spacing: .1em; text-transform: uppercase;
+    color: #888; font-weight: 500;
+  }
+  .field input, .field textarea, .field select {
+    padding: .7rem .9rem; border: 1px solid var(--gris2);
+    border-radius: 3px; font-family: 'Jost', sans-serif;
+    font-size: .88rem; color: var(--texto); outline: none;
+    transition: border-color .2s; resize: vertical;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus {
+    border-color: var(--verde);
+  }
+  .field textarea { min-height: 90px; }
+
+  .field-hint { font-size: .7rem; color: #bbb; margin-top: .2rem; }
+
+  /* IMAGEN UPLOADER */
+  .img-upload {
+    border: 2px dashed var(--gris2); border-radius: 3px;
+    padding: 2rem; text-align: center; cursor: pointer;
+    transition: all .2s; background: var(--gris);
+  }
+  .img-upload:hover { border-color: var(--verde); background: rgba(45,90,61,.04); }
+  .img-upload input { display: none; }
+  .img-upload .upload-icon { font-size: 2rem; margin-bottom: .5rem; opacity: .4; }
+  .img-upload p { font-size: .8rem; color: #999; }
+  .img-upload strong { color: var(--verde); }
+  .img-preview {
+    display: grid; grid-template-columns: repeat(4,1fr);
+    gap: .8rem; margin-top: 1rem;
+  }
+  .img-preview-item {
+    position: relative; padding-top: 75%; background: var(--gris2);
+    border-radius: 3px; overflow: hidden;
+  }
+  .img-preview-item img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .img-preview-item .remove-img {
+    position: absolute; top: .3rem; right: .3rem;
+    background: rgba(0,0,0,.6); color: white; border: none;
+    border-radius: 50%; width: 20px; height: 20px; font-size: .65rem;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--gris2); margin: 1.5rem 0; }
+
+  /* BUTTONS */
+  .btn { display: inline-flex; align-items: center; gap: .4rem; padding: .6rem 1.2rem; border-radius: 3px; font-family: 'Jost', sans-serif; font-size: .78rem; letter-spacing: .08em; cursor: pointer; border: none; transition: all .2s; font-weight: 500; }
+  .btn-primary { background: var(--verde); color: white; }
+  .btn-primary:hover { background: var(--verde-claro); }
+  .btn-secondary { background: white; color: var(--texto); border: 1px solid var(--gris2); }
+  .btn-secondary:hover { background: var(--gris); }
+  .btn-danger { background: white; color: var(--rojo); border: 1px solid rgba(192,57,43,.2); }
+  .btn-danger:hover { background: #fdf0ef; }
+  .btn-sm { padding: .35rem .8rem; font-size: .72rem; }
+
+  /* TABS */
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--gris2); margin-bottom: 1.5rem; }
+  .tab-btn {
+    padding: .8rem 1.4rem; background: none; border: none;
+    border-bottom: 2px solid transparent; cursor: pointer;
+    font-family: 'Jost', sans-serif; font-size: .8rem;
+    letter-spacing: .08em; color: #888; transition: all .2s;
+    margin-bottom: -1px;
+  }
+  .tab-btn.active { color: var(--verde); border-bottom-color: var(--verde); font-weight: 600; }
+  .tab-btn:hover { color: var(--verde); }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* SECTION EDITOR */
+  .section-editor {
+    background: white; border: 1px solid var(--gris2);
+    border-radius: 4px; margin-bottom: 1.2rem; overflow: hidden;
+  }
+  .se-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.2rem; cursor: pointer; user-select: none;
+    background: var(--gris);
+  }
+  .se-header:hover { background: var(--gris2); }
+  .se-title { font-weight: 600; font-size: .88rem; display: flex; align-items: center; gap: .6rem; }
+  .se-chevron { transition: transform .25s; font-size: .75rem; }
+  .se-body { display: none; padding: 1.2rem; border-top: 1px solid var(--gris2); }
+  .section-editor.open .se-body { display: block; }
+  .section-editor.open .se-chevron { transform: rotate(180deg); }
+
+  /* PAGINAS LIST */
+  .pages-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2rem; margin-bottom: 2rem; }
+  .page-card {
+    background: white; border: 2px solid var(--gris2);
+    border-radius: 4px; padding: 1.5rem; cursor: pointer;
+    transition: all .25s; text-align: center;
+  }
+  .page-card:hover, .page-card.selected { border-color: var(--verde); background: rgba(45,90,61,.02); }
+  .page-card .pc-icon { font-size: 2rem; margin-bottom: .6rem; }
+  .page-card .pc-name { font-weight: 600; font-size: .9rem; color: var(--texto); margin-bottom: .2rem; }
+  .page-card .pc-file { font-size: .72rem; color: #bbb; font-family: monospace; }
+
+  /* MEDIA MANAGER */
+  .media-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: .8rem; }
+  .media-item {
+    position: relative; padding-top: 75%;
+    background: var(--gris2); border-radius: 3px; overflow: hidden;
+    cursor: pointer; border: 2px solid transparent; transition: border-color .2s;
+  }
+  .media-item:hover, .media-item.selected { border-color: var(--verde); }
+  .media-item img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .media-item .media-del { position: absolute; top: .3rem; right: .3rem; background: rgba(0,0,0,.6); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: .7rem; cursor: pointer; display: none; align-items: center; justify-content: center; }
+  .media-item:hover .media-del { display: flex; }
+
+  /* CONFIGURACION */
+  .config-section { background: white; border: 1px solid var(--gris2); border-radius: 4px; margin-bottom: 1.2rem; overflow: hidden; }
+  .config-section-header { padding: 1rem 1.2rem; background: var(--gris); font-weight: 600; font-size: .88rem; border-bottom: 1px solid var(--gris2); }
+  .config-section-body { padding: 1.2rem; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1100px) {
+    .cards-row { grid-template-columns: repeat(2,1fr); }
+    .pages-grid { grid-template-columns: repeat(2,1fr); }
+  }
+  @media (max-width: 768px) {
+    .sidebar { transform: translateX(-100%); transition: transform .3s; }
+    .sidebar.open { transform: translateX(0); }
+    .main { margin-left: 0; }
+    .cards-row { grid-template-columns: 1fr 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .media-grid { grid-template-columns: repeat(3,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ LOGIN ══════════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">Verde <em>Nueve</em></div>
+    <div class="login-sub">Panel de administración</div>
+
+    <div class="login-error" id="login-error">Usuario o contraseña incorrectos.</div>
+
+    <div class="login-field">
+      <label>Usuario</label>
+      <input type="text" id="login-user" placeholder="admin" autocomplete="username">
+    </div>
+    <div class="login-field">
+      <label>Contraseña</label>
+      <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+
+    <button class="login-btn" onclick="doLogin()">Ingresar al panel</button>
+    <div class="login-hint">Verde Nueve © 2026 · Acceso restringido</div>
+  </div>
+</div>
+
+<!-- ══════════════ DASHBOARD ══════════════ -->
+<div id="dashboard">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-text">Verde <em>Nueve</em></div>
+      <div class="sb-logo-sub">Admin Panel</div>
+    </div>
+
+    <nav class="sb-nav">
+      <div class="sb-section">Principal</div>
+      <div class="sb-item active" onclick="showPanel('resumen')">
+        <span class="sb-icon">📊</span> Resumen
+      </div>
+      <div class="sb-item" onclick="showPanel('paginas')">
+        <span class="sb-icon">📄</span> Páginas
+      </div>
+
+      <div class="sb-section">Contenido</div>
+      <div class="sb-item" onclick="showPanel('productos')">
+        <span class="sb-icon">🧴</span> Productos
+      </div>
+      <div class="sb-item" onclick="showPanel('servicios')">
+        <span class="sb-icon">🌿</span> Servicios & Precios
+      </div>
+      <div class="sb-item" onclick="showPanel('media')">
+        <span class="sb-icon">🖼️</span> Imágenes
+      </div>
+
+      <div class="sb-section">Ajustes</div>
+      <div class="sb-item" onclick="showPanel('config')">
+        <span class="sb-icon">⚙️</span> Configuración
+      </div>
+      <div class="sb-item" onclick="showPanel('acceso')">
+        <span class="sb-icon">🔐</span> Acceso & Seguridad
+      </div>
+    </nav>
+
+    <div class="sb-footer">
+      <div class="sb-user">
+        Sesión activa<br>
+        <strong id="session-user">admin</strong>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <div class="topbar-title" id="topbar-title">Resumen</div>
+        <div class="topbar-sub" id="topbar-sub">Bienvenido al panel de Verde Nueve</div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-secondary btn-sm" onclick="window.open('index.html','_blank')">🌐 Ver sitio</button>
+        <button class="btn btn-primary btn-sm" onclick="saveAll()">💾 Guardar cambios</button>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- ── PANEL: RESUMEN ── -->
+      <div class="panel active" id="panel-resumen">
+        <div class="cards-row">
+          <div class="stat-card">
+            <div class="sc-label">Productos</div>
+            <div class="sc-value" id="stat-productos">+100</div>
+            <div class="sc-sub">Aceites, mantequillas, serums…</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-label">Páginas activas</div>
+            <div class="sc-value" id="stat-servicios">5</div>
+            <div class="sc-sub">Home, Spa, Jardín, Experiencias, Tienda</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-label">WhatsApp</div>
+            <div class="sc-value sc-value" style="font-size:1.3rem">55 5407 1775</div>
+            <div class="sc-sub">Línea de reservas y ventas</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-label">Idiomas</div>
+            <div class="sc-value">ES / EN</div>
+            <div class="sc-sub">Sitio bilingüe activo</div>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-header">
+            <div class="table-title">Estado del sitio</div>
+            <div id="db-status"><span class="tag tag-gris">○ Verificando...</span></div>
+            <button class="btn btn-secondary btn-sm" onclick="window.open('index.html','_blank')">Ver sitio →</button>
+          </div>
+          <table>
+            <thead><tr><th>Página</th><th>Archivo</th><th>Estado</th><th>Última edición</th><th></th></tr></thead>
+            <tbody>
+              <tr><td><strong>Home</strong></td><td><code>index.html</code></td><td><span class="tag tag-verde">Publicada</span></td><td>Hoy</td><td><button class="btn btn-secondary btn-sm" onclick="showPanel('paginas')">Editar</button></td></tr>
+              <tr><td><strong>Spa & Hotel</strong></td><td><code>spa-hotel.html</code></td><td><span class="tag tag-verde">Publicada</span></td><td>Hoy</td><td><button class="btn btn-secondary btn-sm" onclick="showPanel('paginas')">Editar</button></td></tr>
+              <tr><td><strong>Jardín Botánico</strong></td><td><code>jardin.html</code></td><td><span class="tag tag-verde">Publicada</span></td><td>Hoy</td><td><button class="btn btn-secondary btn-sm" onclick="showPanel('paginas')">Editar</button></td></tr>
+              <tr><td><strong>Experiencias</strong></td><td><code>experiencias.html</code></td><td><span class="tag tag-verde">Publicada</span></td><td>Hoy</td><td><button class="btn btn-secondary btn-sm" onclick="showPanel('paginas')">Editar</button></td></tr>
+              <tr><td><strong>Tienda</strong></td><td><code>tienda.html</code></td><td><span class="tag tag-verde">Publicada</span></td><td>Hoy</td><td><button class="btn btn-secondary btn-sm" onclick="showPanel('paginas')">Editar</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── PANEL: PÁGINAS ── -->
+      <div class="panel" id="panel-paginas">
+        <p style="color:#999;font-size:.85rem;margin-bottom:1.5rem">Selecciona una página para editar sus textos y contenido.</p>
+
+        <div class="pages-grid">
+          <div class="page-card selected" onclick="selectPage(this,'home')">
+            <div class="pc-icon">🏠</div>
+            <div class="pc-name">Home</div>
+            <div class="pc-file">index.html</div>
+          </div>
+          <div class="page-card" onclick="selectPage(this,'spa')">
+            <div class="pc-icon">🌿</div>
+            <div class="pc-name">Spa & Hotel</div>
+            <div class="pc-file">spa-hotel.html</div>
+          </div>
+          <div class="page-card" onclick="selectPage(this,'jardin')">
+            <div class="pc-icon">🌱</div>
+            <div class="pc-name">Jardín Botánico</div>
+            <div class="pc-file">jardin.html</div>
+          </div>
+          <div class="page-card" onclick="selectPage(this,'exp')">
+            <div class="pc-icon">🔥</div>
+            <div class="pc-name">Experiencias</div>
+            <div class="pc-file">experiencias.html</div>
+          </div>
+          <div class="page-card" onclick="selectPage(this,'tienda')">
+            <div class="pc-icon">🧴</div>
+            <div class="pc-name">Tienda</div>
+            <div class="pc-file">tienda.html</div>
+          </div>
+        </div>
+
+        <!-- EDITOR DE SECCIONES -->
+        <div class="editor-wrap">
+          <div class="editor-header">
+            <div class="editor-header-title" id="page-editor-title">Editando: Home</div>
+            <button class="btn btn-primary btn-sm" onclick="savePageContent()">💾 Guardar textos</button>
+          </div>
+          <div class="editor-body">
+
+            <div class="section-editor open">
+              <div class="se-header" onclick="toggleSection(this)">
+                <div class="se-title"><span>🦸</span> Hero principal</div>
+                <span class="se-chevron">▼</span>
+              </div>
+              <div class="se-body">
+                <div class="form-row">
+                  <div class="field">
+                    <label>Eyebrow / Subtítulo (ES)</label>
+                    <input type="text" id="hero-eyebrow-es" value="El Calvario, Huichapan · Pueblo Mágico">
+                  </div>
+                  <div class="field">
+                    <label>Eyebrow / Subtítulo (EN)</label>
+                    <input type="text" id="hero-eyebrow-en" value="El Calvario, Huichapan · Magic Town">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="field">
+                    <label>Título (ES)</label>
+                    <input type="text" id="hero-title-es" value="Jardín & Spa Verde Nueve">
+                  </div>
+                  <div class="field">
+                    <label>Título (EN)</label>
+                    <input type="text" id="hero-title-en" value="Garden & Spa Verde Nueve">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="field">
+                    <label>Descripción (ES)</label>
+                    <textarea id="hero-desc-es">Un espacio holístico donde la naturaleza, los aromas y el silencio te devuelven a ti misma.</textarea>
+                  </div>
+                  <div class="field">
+                    <label>Descripción (EN)</label>
+                    <textarea id="hero-desc-en">A holistic space where nature, aromas and silence bring you back to yourself.</textarea>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="field">
+                    <label>Tagline (ES)</label>
+                    <input type="text" id="hero-tagline-es" value="Cosmética natural · Aromaterapia · Temazcal · Hotel">
+                  </div>
+                  <div class="field">
+                    <label>Tagline (EN)</label>
+                    <input type="text" id="hero-tagline-en" value="Natural cosmetics · Aromatherapy · Temazcal · Hotel">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-editor">
+              <div class="se-header" onclick="toggleSection(this)">
+                <div class="se-title"><span>📖</span> Sobre nosotros</div>
+                <span class="se-chevron">▼</span>
+              </div>
+              <div class="se-body">
+                <div class="form-row">
+                  <div class="field">
+                    <label>Título sección (ES)</label>
+                    <input type="text" id="sobre-title-es" value="Nacimos del aroma y crecimos en la naturaleza">
+                  </div>
+                  <div class="field">
+                    <label>Título sección (EN)</label>
+                    <input type="text" id="sobre-title-en" value="Born from scent, grown in nature">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="field">
+                    <label>Texto (ES)</label>
+                    <textarea id="sobre-body-es">Todo comenzó con la aromaterapia. Poco a poco creamos más de 100 productos naturales. Luego descubrimos el poder del temazcal para conectar cuerpo y alma...</textarea>
+                  </div>
+                  <div class="field">
+                    <label>Texto (EN)</label>
+                    <textarea id="sobre-body-en">It all started with aromatherapy. Little by little we created over 100 natural products. Then we discovered the power of temazcal to connect body and soul...</textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-editor">
+              <div class="se-header" onclick="toggleSection(this)">
+                <div class="se-title"><span>📍</span> Información de contacto</div>
+                <span class="se-chevron">▼</span>
+              </div>
+              <div class="se-body">
+                <div class="form-row triple">
+                  <div class="field">
+                    <label>WhatsApp</label>
+                    <input type="text" id="contact-phone" value="5554071775">
+                    <div class="field-hint">Solo números, sin +52</div>
+                  </div>
+                  <div class="field">
+                    <label>Dirección</label>
+                    <input type="text" id="contact-address" value="El Calvario, Huichapan, Hidalgo">
+                  </div>
+                  <div class="field">
+                    <label>Usuario en redes</label>
+                    <input type="text" id="contact-social" value="@VerdeNueve">
+                  </div>
+                </div>
+                <div class="form-row triple">
+                  <div class="field">
+                    <label>TikTok URL</label>
+                    <input type="text" placeholder="https://tiktok.com/@verdenueve">
+                  </div>
+                  <div class="field">
+                    <label>Facebook URL</label>
+                    <input type="text" placeholder="https://facebook.com/verdenueve">
+                  </div>
+                  <div class="field">
+                    <label>Instagram URL</label>
+                    <input type="text" placeholder="https://instagram.com/verdenueve">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-editor">
+              <div class="se-header" onclick="toggleSection(this)">
+                <div class="se-title"><span>🖼️</span> Imágenes del hero</div>
+                <span class="se-chevron">▼</span>
+              </div>
+              <div class="se-body">
+                <p style="font-size:.82rem;color:#999;margin-bottom:1rem">Sube las imágenes que aparecerán en el mosaico del hero. Tamaño recomendado: 800×600px.</p>
+                <div class="img-upload" onclick="document.getElementById('hero-imgs').click()">
+                  <input type="file" id="hero-imgs" multiple accept="image/*" onchange="previewImgs(this,'hero-preview')">
+                  <div class="upload-icon">📁</div>
+                  <p><strong>Haz clic</strong> o arrastra imágenes aquí</p>
+                  <p>JPG, PNG, WebP · Máx. 5 MB c/u</p>
+                </div>
+                <div class="img-preview" id="hero-preview"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PANEL: PRODUCTOS ── -->
+      <div class="panel" id="panel-productos">
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab(this,'tab-aceites')">Aceites Esenciales</button>
+          <button class="tab-btn" onclick="switchTab(this,'tab-mantequillas')">Mantequillas</button>
+          <button class="tab-btn" onclick="switchTab(this,'tab-serums')">Serums & Mascarillas</button>
+          <button class="tab-btn" onclick="switchTab(this,'tab-nuevo')">+ Nuevo producto</button>
+        </div>
+
+        <!-- TAB: ACEITES -->
+        <div class="tab-panel active" id="tab-aceites">
+          <div class="table-wrap">
+            <div class="table-header">
+              <div class="table-title">Aceites Esenciales (14)</div>
+            </div>
+            <table>
+              <thead><tr><th>Nombre</th><th>Nombre científico</th><th>Precio</th><th>Usos principales</th><th>Acciones</th></tr></thead>
+              <tbody id="aceites-tbody">
+                <tr><td><strong>Ylang Ylang</strong></td><td style="color:#999;font-style:italic">Cananga odorata</td><td><strong>$715</strong></td><td>Equilibrante, ansiedad, menopausia</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Ylang Ylang',715)">Editar</button></td></tr>
+                <tr><td><strong>Lavanda</strong></td><td style="color:#999;font-style:italic">Lavandula officinalis</td><td><strong>$522</strong></td><td>Ansiedad, quemaduras, depresión</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Lavanda',522)">Editar</button></td></tr>
+                <tr><td><strong>Pachulí</strong></td><td style="color:#999;font-style:italic">Pogostemon cablin</td><td><strong>$627</strong></td><td>Afrodisiaco, meditación, dermatitis</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Pachulí',627)">Editar</button></td></tr>
+                <tr><td><strong>Mirra</strong></td><td style="color:#999;font-style:italic">Commiphora Mhyrra</td><td><strong>$588</strong></td><td>Cosmética, antioxidante, insomnio</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Mirra',588)">Editar</button></td></tr>
+                <tr><td><strong>Salvia</strong></td><td style="color:#999;font-style:italic">Salvia officinalis</td><td><strong>$603</strong></td><td>Cólicos, cambios hormonales</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Salvia',603)">Editar</button></td></tr>
+                <tr><td><strong>Mandarina</strong></td><td style="color:#999;font-style:italic">Citrus reticulata</td><td><strong>$308</strong></td><td>Acné, estrías, depresión</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Mandarina',308)">Editar</button></td></tr>
+                <tr><td><strong>Limón</strong></td><td style="color:#999;font-style:italic">Citrus limonum</td><td><strong>$247</strong></td><td>Acné, purificación, varices</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Limón',247)">Editar</button></td></tr>
+                <tr><td><strong>Lemongrass</strong></td><td style="color:#999;font-style:italic">Cymbopogon flexuosus</td><td><strong>$247</strong></td><td>Poros, digestivo, armonía</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Lemongrass',247)">Editar</button></td></tr>
+                <tr><td><strong>Toronja</strong></td><td style="color:#999;font-style:italic">Citrus paradisi</td><td><strong>$335</strong></td><td>Celulitis, diurética, alegría</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Toronja',335)">Editar</button></td></tr>
+                <tr><td><strong>Mentha</strong></td><td style="color:#999;font-style:italic">Mentha piperita</td><td><strong>$302</strong></td><td>Analgésico, migraña, energía</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Mentha',302)">Editar</button></td></tr>
+                <tr><td><strong>Pino</strong></td><td style="color:#999;font-style:italic">Pinus sylvestris</td><td><strong>$225</strong></td><td>Artritis, bronquitis, limpieza</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Pino',225)">Editar</button></td></tr>
+                <tr><td><strong>Naranja</strong></td><td style="color:#999;font-style:italic">Citrus sinesis</td><td><strong>$225</strong></td><td>Estreñimiento, depresión, digestión</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Naranja',225)">Editar</button></td></tr>
+                <tr><td><strong>Romero</strong></td><td style="color:#999;font-style:italic">Rosmarinus officinalis</td><td><strong>$324</strong></td><td>Dolor muscular, cabello, neuralgia</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Romero',324)">Editar</button></td></tr>
+                <tr><td><strong>RELAX (blend)</strong></td><td style="color:#999;font-style:italic">Bergamota · Lavanda · Petitgrain</td><td><strong>—</strong></td><td>Relajación, insomnio, estrés</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('RELAX',0)">Editar</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB: MANTEQUILLAS -->
+        <div class="tab-panel" id="tab-mantequillas">
+          <div class="table-wrap">
+            <div class="table-header">
+              <div class="table-title">Mantequillas Corporales (8) · $368 c/u · 200ml</div>
+            </div>
+            <table>
+              <thead><tr><th>Nombre</th><th>Descripción</th><th>Precio</th><th>Acciones</th></tr></thead>
+              <tbody id="mant-tbody">
+                <tr><td><strong>Sorbete de Mango</strong></td><td>Alegre y sensual</td><td><strong>$368</strong></td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Sorbete de Mango',368)">Editar</button></td></tr>
+                <tr><td><strong>Coconut</strong></td><td>Exótico y embriagador</td><td><strong>$368</strong></td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Coconut',368)">Editar</button></td></tr>
+                <tr><td><strong>Lavender</strong></td><td>Elegante y sutil</td><td><strong>$368</strong></td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Lavender',368)">Editar</button></td></tr>
+                <tr><td><strong>Mentha Verde</strong></td><td>Energía fresca</td><td><strong>$368</strong></td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Mentha Verde',368)">Editar</button></td></tr>
+                <tr><td><strong>Manzana Dulce</strong></td><td>Tan deliciosa como un néctar</td><td><strong>$368</strong></td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Manzana Dulce',368)">Editar</button></td></tr>
+                <tr><td><strong>Frutos del Bosque</strong></td><td>Exquisito postre de bayas</td><td><strong>$368</strong></td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Frutos del Bosque',368)">Editar</button></td></tr>
+                <tr><td><strong>Lemongrass</strong></td><td>La mezcla perfecta de cítricos y herbal</td><td><strong>$368</strong></td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Lemongrass butter',368)">Editar</button></td></tr>
+                <tr><td><strong>Vanilla & Almond</strong></td><td>Irresistiblemente dulce y embriagador</td><td><strong>$368</strong></td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Vanilla & Almond',368)">Editar</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB: SERUMS -->
+        <div class="tab-panel" id="tab-serums">
+          <div class="table-wrap" style="margin-bottom:1.2rem">
+            <div class="table-header"><div class="table-title">Serums Radiance (3)</div></div>
+            <table>
+              <thead><tr><th>Nombre</th><th>Precio</th><th>Volumen</th><th>Acciones</th></tr></thead>
+              <tbody id="serums-tbody">
+                <tr><td><strong>Suero Botánico Rejuvenecedor</strong></td><td><strong>$865</strong></td><td>30 ml</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Suero Botánico',865)">Editar</button></td></tr>
+                <tr><td><strong>Suero Aclarante Antioxidante</strong></td><td><strong>$865</strong></td><td>30 ml</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Suero Aclarante',865)">Editar</button></td></tr>
+                <tr><td><strong>Elixir Ultra Reparador</strong></td><td><strong>$920</strong></td><td>30 ml</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Elixir Ultra',920)">Editar</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <div class="table-header"><div class="table-title">Mascarillas Perfection (3)</div></div>
+            <table>
+              <thead><tr><th>Nombre</th><th>Precio</th><th>Volumen</th><th>Acciones</th></tr></thead>
+              <tbody id="masc-tbody">
+                <tr><td><strong>Perfection — Miele</strong></td><td><strong>$435</strong></td><td>200g</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Perfection Miele',435)">Editar</button></td></tr>
+                <tr><td><strong>Radiance — Latte</strong></td><td><strong>$435</strong></td><td>200g</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Radiance Latte',435)">Editar</button></td></tr>
+                <tr><td><strong>Perfection — Detox</strong></td><td><strong>$435</strong></td><td>200g</td><td><button class="btn btn-secondary btn-sm" onclick="editProduct('Perfection Detox',435)">Editar</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB: NUEVO PRODUCTO -->
+        <div class="tab-panel" id="tab-nuevo">
+          <div class="editor-wrap">
+            <div class="editor-header">
+              <div class="editor-header-title">Agregar nuevo producto</div>
+            </div>
+            <div class="editor-body">
+              <div class="form-row">
+                <div class="field">
+                  <label>Nombre del producto (ES)</label>
+                  <input type="text" id="new-name-es" placeholder="Ej: Aceite de Bergamota">
+                </div>
+                <div class="field">
+                  <label>Nombre del producto (EN)</label>
+                  <input type="text" id="new-name-en" placeholder="Ej: Bergamot Oil">
+                </div>
+              </div>
+              <div class="form-row triple">
+                <div class="field">
+                  <label>Categoría</label>
+                  <select id="new-cat">
+                    <option>Aceite esencial</option>
+                    <option>Mantequilla corporal</option>
+                    <option>Serum facial</option>
+                    <option>Mascarilla</option>
+                    <option>Aroma & Perfume</option>
+                    <option>Cuidado personal</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Precio (MXN)</label>
+                  <input type="number" id="new-price" placeholder="0">
+                </div>
+                <div class="field">
+                  <label>Volumen / Presentación</label>
+                  <input type="text" id="new-vol" placeholder="10 ml / 200g">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="field">
+                  <label>Nombre científico (opcional)</label>
+                  <input type="text" id="new-scientific" placeholder="Citrus bergamia">
+                </div>
+                <div class="field">
+                  <label>Emoji del producto</label>
+                  <input type="text" id="new-emoji" placeholder="🌿" maxlength="2">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="field">
+                  <label>Usos / Descripción (ES)</label>
+                  <textarea id="new-uso-es" placeholder="Ansiedad, estrés, piel grasa…"></textarea>
+                </div>
+                <div class="field">
+                  <label>Usos / Descripción (EN)</label>
+                  <textarea id="new-uso-en" placeholder="Anxiety, stress, oily skin…"></textarea>
+                </div>
+              </div>
+              <div class="form-row single">
+                <div class="field">
+                  <label>Imagen del producto</label>
+                  <div class="img-upload" onclick="document.getElementById('new-prod-img').click()">
+                    <input type="file" id="new-prod-img" accept="image/*" onchange="previewImgs(this,'new-prod-preview')">
+                    <div class="upload-icon">📷</div>
+                    <p><strong>Subir imagen</strong> del producto</p>
+                  </div>
+                  <div class="img-preview" id="new-prod-preview"></div>
+                </div>
+              </div>
+              <div style="display:flex;gap:.8rem;justify-content:flex-end;margin-top:1rem">
+                <button class="btn btn-secondary" onclick="clearNewProduct()">Limpiar</button>
+                <button class="btn btn-primary" onclick="addProduct()">✚ Agregar producto</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PANEL: SERVICIOS ── -->
+      <div class="panel" id="panel-servicios">
+        <div class="editor-wrap">
+          <div class="editor-header">
+            <div class="editor-header-title">Servicios & Precios</div>
+            <button class="btn btn-primary btn-sm" onclick="saveServicesTable()">💾 Guardar precios</button>
+          </div>
+          <div class="editor-body">
+            <div class="section-editor open">
+              <div class="se-header" onclick="toggleSection(this)">
+                <div class="se-title"><span>💆</span> Spa — Masajes</div>
+                <span class="se-chevron">▼</span>
+              </div>
+              <div class="se-body">
+                <div class="form-row triple">
+                  <div class="field"><label>Masaje Descontracturante</label><input type="text" data-service="Masaje Descontracturante" placeholder="Precio o 'Consultar'"></div>
+                  <div class="field"><label>Masaje Relajante</label><input type="text" data-service="Masaje Relajante" placeholder="Precio o 'Consultar'"></div>
+                  <div class="field"><label>Masaje Manos & Pies</label><input type="text" data-service="Masaje de Manos y Pies" placeholder="Precio o 'Consultar'"></div>
+                </div>
+                <div class="form-row triple">
+                  <div class="field"><label>Masaje con Aromaterapia</label><input type="text" placeholder="Precio o 'Consultar'"></div>
+                  <div class="field"><label>Tratamiento CBD</label><input type="text" placeholder="Precio o 'Consultar'"></div>
+                  <div class="field"><label>Anticelulitis</label><input type="text" placeholder="Precio o 'Consultar'"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-editor">
+              <div class="se-header" onclick="toggleSection(this)">
+                <div class="se-title"><span>✨</span> Faciales</div>
+                <span class="se-chevron">▼</span>
+              </div>
+              <div class="se-body">
+                <div class="form-row triple">
+                  <div class="field"><label>Limpieza Profunda</label><input type="text" data-service="Facial Limpieza Profunda" placeholder="Precio"></div>
+                  <div class="field"><label>Firmeza & Lifting</label><input type="text" data-service="Facial Firmeza & Lifting" placeholder="Precio"></div>
+                  <div class="field"><label>Hidratación Intensa</label><input type="text" data-service="Facial Hidratación Intensa" placeholder="Precio"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-editor">
+              <div class="se-header" onclick="toggleSection(this)">
+                <div class="se-title"><span>🔥</span> Temazcal</div>
+                <span class="se-chevron">▼</span>
+              </div>
+              <div class="se-body">
+                <div class="form-row triple">
+                  <div class="field"><label>Temazcal Individual</label><input type="text" data-service="Temazcal Individual" placeholder="Precio"></div>
+                  <div class="field"><label>Temazcal en Pareja</label><input type="text" data-service="Temazcal en Pareja" placeholder="Precio"></div>
+                  <div class="field"><label>Temazcal Grupal (por persona)</label><input type="text" data-service="Temazcal Grupal" placeholder="Precio"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-editor">
+              <div class="se-header" onclick="toggleSection(this)">
+                <div class="se-title"><span>🧺</span> Experiencias & Fiestas</div>
+                <span class="se-chevron">▼</span>
+              </div>
+              <div class="se-body">
+                <div class="form-row triple">
+                  <div class="field"><label>Picnic Gourmet</label><input type="text" data-service="Picnic Gourmet" placeholder="Precio"></div>
+                  <div class="field"><label>Fiesta SPA</label><input type="text" data-service="Fiesta SPA" placeholder="Precio"></div>
+                  <div class="field"><label>Masaje en Pareja</label><input type="text" placeholder="Precio"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PANEL: MEDIA ── -->
+      <div class="panel" id="panel-media">
+        <div class="table-wrap" style="margin-bottom:1.5rem">
+          <div class="editor-header" style="padding:1.2rem 1.5rem">
+            <div class="editor-header-title">Galería de imágenes del sitio</div>
+            <button class="btn btn-primary btn-sm" onclick="document.getElementById('media-upload').click()">+ Subir imágenes</button>
+            <input type="file" id="media-upload" multiple accept="image/*" style="display:none" onchange="addToMedia(this)">
+          </div>
+          <div style="padding:1.5rem">
+            <p style="font-size:.82rem;color:#999;margin-bottom:1.2rem">Haz clic en una imagen para seleccionarla. Las imágenes subidas aquí se guardan en Supabase Storage.</p>
+            <div class="media-grid" id="media-grid">
+              <div class="media-item"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#ccc">🌿</div><span style="position:absolute;bottom:.3rem;left:.4rem;font-size:.6rem;color:#999;background:rgba(255,255,255,.8);padding:.1rem .4rem;border-radius:2px">jardin.jpg</span></div>
+              <div class="media-item"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#ccc">🛁</div><span style="position:absolute;bottom:.3rem;left:.4rem;font-size:.6rem;color:#999;background:rgba(255,255,255,.8);padding:.1rem .4rem;border-radius:2px">spa.jpg</span></div>
+              <div class="media-item"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#ccc">🔥</div><span style="position:absolute;bottom:.3rem;left:.4rem;font-size:.6rem;color:#999;background:rgba(255,255,255,.8);padding:.1rem .4rem;border-radius:2px">temazcal.jpg</span></div>
+              <div class="media-item"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#ccc">🧴</div><span style="position:absolute;bottom:.3rem;left:.4rem;font-size:.6rem;color:#999;background:rgba(255,255,255,.8);padding:.1rem .4rem;border-radius:2px">productos.jpg</span></div>
+              <div class="media-item" style="border:2px dashed #ccc;cursor:pointer" onclick="document.getElementById('media-upload').click()">
+                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;color:#bbb">
+                  <span style="font-size:1.5rem">+</span>
+                  <span style="font-size:.68rem">Subir</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PANEL: CONFIG ── -->
+      <div class="panel" id="panel-config">
+        <div class="config-section">
+          <div class="config-section-header">🌐 Información general del sitio</div>
+          <div class="config-section-body">
+            <div class="form-row">
+              <div class="field"><label>Nombre del negocio</label><input type="text" value="Verde Nueve"></div>
+              <div class="field"><label>Dominio del sitio</label><input type="text" placeholder="verdenueve.mx"></div>
+            </div>
+            <div class="form-row">
+              <div class="field"><label>Meta título (SEO)</label><input type="text" value="Verde Nueve — Jardín & Spa Holístico · Huichapan"></div>
+              <div class="field"><label>Meta descripción (SEO)</label><input type="text" value="Jardín holístico, spa, temazcal y cosmética natural en Huichapan, Hidalgo."></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="config-section">
+          <div class="config-section-header">📱 WhatsApp & Redes sociales</div>
+          <div class="config-section-body">
+            <div class="form-row triple">
+              <div class="field"><label>Número WhatsApp</label><input type="text" id="cfg-whatsapp" value="5554071775"><div class="field-hint">Solo números sin espacios</div></div>
+              <div class="field"><label>TikTok</label><input type="text" id="cfg-tiktok" placeholder="@VerdeNueve"></div>
+              <div class="field"><label>Instagram</label><input type="text" id="cfg-instagram" placeholder="@VerdeNueve"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="config-section">
+          <div class="config-section-header">🗄️ Supabase — Base de datos</div>
+          <div class="config-section-body">
+            <div class="form-row">
+              <div class="field"><label>Supabase URL</label><input type="text" id="sb-url" placeholder="https://xxxx.supabase.co"><div class="field-hint">Obténla en tu proyecto de Supabase → Settings → API</div></div>
+              <div class="field"><label>Supabase Anon Key</label><input type="password" id="sb-key" placeholder="eyJh…"><div class="field-hint">Clave pública anónima</div></div>
+            </div>
+            <button class="btn btn-primary" onclick="testSupabase()">Probar conexión</button>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;margin-top:1rem">
+          <button class="btn btn-primary" onclick="saveAll()">💾 Guardar configuración</button>
+        </div>
+      </div>
+
+      <!-- ── PANEL: ACCESO ── -->
+      <div class="panel" id="panel-acceso">
+        <div class="config-section">
+          <div class="config-section-header">🔐 Cambiar contraseña de acceso</div>
+          <div class="config-section-body">
+            <div class="form-row">
+              <div class="field"><label>Contraseña actual</label><input type="password" id="old-pass" placeholder="••••••••"></div>
+              <div class="field"></div>
+            </div>
+            <div class="form-row">
+              <div class="field"><label>Nueva contraseña</label><input type="password" id="new-pass" placeholder="••••••••"></div>
+              <div class="field"><label>Confirmar nueva contraseña</label><input type="password" id="confirm-pass" placeholder="••••••••"></div>
+            </div>
+            <button class="btn btn-primary" onclick="changePassword()">Cambiar contraseña</button>
+          </div>
+        </div>
+
+        <div class="config-section">
+          <div class="config-section-header">👤 Usuarios con acceso</div>
+          <div class="config-section-body">
+            <table>
+              <thead><tr><th>Usuario</th><th>Rol</th><th>Último acceso</th><th></th></tr></thead>
+              <tbody>
+                <tr><td><strong>admin</strong></td><td><span class="tag tag-verde">Administrador</span></td><td>Ahora</td><td><span style="color:#bbb;font-size:.75rem">Tú</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /dashboard -->
+
+<!-- MODAL PRODUCTO EDITAR -->
+<div id="edit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center">
+  <div style="background:white;width:100%;max-width:540px;border-radius:4px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.3)">
+    <div style="padding:1.2rem 1.5rem;border-bottom:1px solid var(--gris2);display:flex;align-items:center;justify-content:space-between">
+      <div style="font-weight:600" id="modal-title">Editar producto</div>
+      <button onclick="closeModal()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#888">✕</button>
+    </div>
+    <div style="padding:1.5rem">
+      <div class="form-row">
+        <div class="field"><label>Nombre (ES)</label><input type="text" id="modal-name-es"></div>
+        <div class="field"><label>Nombre (EN)</label><input type="text" id="modal-name-en"></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Precio (MXN $)</label><input type="number" id="modal-price"></div>
+        <div class="field"><label>Volumen</label><input type="text" id="modal-vol" placeholder="10 ml"></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Usos / Descripción (ES)</label><textarea id="modal-uso-es"></textarea></div>
+        <div class="field"><label>Usos / Descripción (EN)</label><textarea id="modal-uso-en"></textarea></div>
+      </div>
+    </div>
+    <div style="padding:1rem 1.5rem;border-top:1px solid var(--gris2);display:flex;justify-content:flex-end;gap:.8rem">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveProduct()">💾 Guardar producto</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   VERDE NUEVE — Admin Panel con Supabase integrado
+   ═══════════════════════════════════════════════════════ */
+
+// ── SUPABASE CONFIG ───────────────────────────────────
+const SB_URL = 'https://pqqnxuvbrdvijvicyord.supabase.co';
+const SB_KEY = 'sb_publishable_Y3CmtZy4geYKq_8aMvT4nw_6sZ-t2io';
+
+async function sb(endpoint, options = {}) {
+  const url = `${SB_URL}/rest/v1/${endpoint}`;
+  const res = await fetch(url, {
+    ...options,
+    headers: {
+      'apikey': SB_KEY,
+      'Authorization': `Bearer ${SB_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': options.prefer || 'return=representation',
+      ...(options.headers || {})
+    }
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Supabase ${res.status}: ${err}`);
+  }
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
+}
+
+// ── CREDENCIALES ──────────────────────────────────────
+const CREDS = { admin: localStorage.getItem('vn-admin-pass') || 'verdenueve2026' };
+
+// ── LOGIN ─────────────────────────────────────────────
+function doLogin() {
+  const user = document.getElementById('login-user').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  const err  = document.getElementById('login-error');
+  if (CREDS[user] && CREDS[user] === pass) {
+    err.style.display = 'none';
+    sessionStorage.setItem('vn-auth', user);
+    document.getElementById('session-user').textContent = user;
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    initDashboard();
+  } else {
+    err.style.display = 'block';
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('login-screen').style.display !== 'none') doLogin();
+});
+
+// ── LOGOUT ────────────────────────────────────────────
+function doLogout() {
+  sessionStorage.removeItem('vn-auth');
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-pass').value = '';
+}
+
+// ── INICIALIZAR DASHBOARD ─────────────────────────────
+async function initDashboard() {
+  await loadPageContent('home');
+  await loadProductsTable();
+  await loadServicesTable();
+  await loadResumenStats();
+}
+
+// ═══════════════════════════════════════════════════════
+// PANEL: PÁGINAS — cargar y guardar contenidos
+// ═══════════════════════════════════════════════════════
+
+// Mapa: id de input del admin → { page, section, key }
+const CONTENT_MAP = {
+  'hero-title-es':   { page:'home', section:'hero',   key:'title_es' },
+  'hero-title-en':   { page:'home', section:'hero',   key:'title_en' },
+  'hero-desc-es':    { page:'home', section:'hero',   key:'desc_es'  },
+  'hero-desc-en':    { page:'home', section:'hero',   key:'desc_en'  },
+  'hero-eyebrow-es': { page:'home', section:'hero',   key:'eyebrow_es' },
+  'hero-eyebrow-en': { page:'home', section:'hero',   key:'eyebrow_en' },
+  'hero-tagline-es': { page:'home', section:'hero',   key:'tagline_es' },
+  'hero-tagline-en': { page:'home', section:'hero',   key:'tagline_en' },
+  'sobre-title-es':  { page:'home', section:'sobre',  key:'title_es' },
+  'sobre-title-en':  { page:'home', section:'sobre',  key:'title_en' },
+  'sobre-body-es':   { page:'home', section:'sobre',  key:'body_es'  },
+  'sobre-body-en':   { page:'home', section:'sobre',  key:'body_en'  },
+  'contact-address': { page:'home', section:'contacto', key:'address' },
+  'contact-phone':   { page:'home', section:'contacto', key:'phone'   },
+  'contact-social':  { page:'home', section:'contacto', key:'social'  },
+  'cfg-whatsapp':    { page:'global', section:'config', key:'whatsapp' },
+  'cfg-instagram':   { page:'global', section:'config', key:'instagram' },
+  'cfg-tiktok':      { page:'global', section:'config', key:'tiktok'   },
+  'cfg-facebook':    { page:'global', section:'config', key:'facebook' },
+};
+
+async function loadPageContent(page) {
+  try {
+    const rows = await sb(`site_content?page=in.(${page},global)&select=page,section,key,value`);
+    if (!rows) return;
+    rows.forEach(({ section, key, value }) => {
+      // Buscar el input con data-vn o por id que coincida con el mapa
+      const inputId = Object.keys(CONTENT_MAP).find(id => {
+        const m = CONTENT_MAP[id];
+        return m.section === section && m.key === key &&
+               (m.page === page || m.page === 'global');
+      });
+      if (inputId) {
+        const el = document.getElementById(inputId);
+        if (el) el.value = value || '';
+      }
+    });
+  } catch (e) {
+    console.warn('loadPageContent error:', e.message);
+  }
+}
+
+// Guardar todos los campos de contenido en Supabase
+async function savePageContent() {
+  showToast('Guardando…');
+  const upserts = [];
+  for (const [inputId, meta] of Object.entries(CONTENT_MAP)) {
+    const el = document.getElementById(inputId);
+    if (!el) continue;
+    upserts.push({ page: meta.page, section: meta.section, key: meta.key, value: el.value });
+  }
+  try {
+    await sb('site_content', {
+      method: 'POST',
+      prefer: 'resolution=merge-duplicates',
+      body: JSON.stringify(upserts)
+    });
+    showToast('✓ Contenido guardado en Supabase');
+  } catch(e) {
+    showToast('Error al guardar: ' + e.message, true);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// PANEL: PRODUCTOS — cargar y editar desde Supabase
+// ═══════════════════════════════════════════════════════
+let _editingProductId = null;
+
+async function loadProductsTable() {
+  try {
+    const products = await sb('products?active=eq.true&order=category.asc,sort_order.asc');
+    if (!products) return;
+
+    const byCategory = {};
+    products.forEach(p => {
+      if (!byCategory[p.category]) byCategory[p.category] = [];
+      byCategory[p.category].push(p);
+    });
+
+    // Aceites
+    const aceitesTbody = document.getElementById('aceites-tbody');
+    if (aceitesTbody && byCategory.aceites) {
+      aceitesTbody.innerHTML = byCategory.aceites.map(p => `
+        <tr>
+          <td><strong>${p.emoji || '🌿'} ${p.name_es}</strong></td>
+          <td style="color:#999;font-style:italic">${p.scientific || '—'}</td>
+          <td><strong>$${p.price || '—'}</strong></td>
+          <td style="font-size:.82rem">${(p.uso_es || '').substring(0,50)}${(p.uso_es||'').length>50?'…':''}</td>
+          <td><button class="btn btn-secondary btn-sm" onclick="openEditProduct(${p.id})">Editar</button></td>
+        </tr>`).join('');
+    }
+
+    // Mantequillas
+    const mantTbody = document.getElementById('mant-tbody');
+    if (mantTbody && byCategory.mantequillas) {
+      mantTbody.innerHTML = byCategory.mantequillas.map(p => `
+        <tr>
+          <td><strong>${p.emoji || '🧈'} ${p.name_es}</strong></td>
+          <td style="font-size:.82rem">${(p.uso_es || '').substring(0,40)}${(p.uso_es||'').length>40?'…':''}</td>
+          <td><strong>$${p.price || '—'}</strong></td>
+          <td><button class="btn btn-secondary btn-sm" onclick="openEditProduct(${p.id})">Editar</button></td>
+        </tr>`).join('');
+    }
+
+    // Serums
+    const serumsTbody = document.getElementById('serums-tbody');
+    if (serumsTbody && byCategory.serums) {
+      serumsTbody.innerHTML = byCategory.serums.map(p => `
+        <tr>
+          <td><strong>${p.emoji || '✨'} ${p.name_es}</strong></td>
+          <td><strong>$${p.price || '—'}</strong></td>
+          <td>${p.volume || '—'}</td>
+          <td><button class="btn btn-secondary btn-sm" onclick="openEditProduct(${p.id})">Editar</button></td>
+        </tr>`).join('');
+    }
+
+    // Mascarillas
+    const mascTbody = document.getElementById('masc-tbody');
+    if (mascTbody && byCategory.mascarillas) {
+      mascTbody.innerHTML = byCategory.mascarillas.map(p => `
+        <tr>
+          <td><strong>${p.emoji || '🧖'} ${p.name_es}</strong></td>
+          <td><strong>$${p.price || '—'}</strong></td>
+          <td>${p.volume || '—'}</td>
+          <td><button class="btn btn-secondary btn-sm" onclick="openEditProduct(${p.id})">Editar</button></td>
+        </tr>`).join('');
+    }
+
+    // Actualizar contador en resumen
+    const totalEl = document.getElementById('stat-productos');
+    if (totalEl) totalEl.textContent = products.length;
+
+  } catch(e) {
+    console.warn('loadProductsTable error:', e.message);
+  }
+}
+
+// Abrir modal con datos del producto desde Supabase
+async function openEditProduct(id) {
+  try {
+    const rows = await sb(`products?id=eq.${id}`);
+    if (!rows || !rows[0]) return;
+    const p = rows[0];
+    _editingProductId = id;
+    document.getElementById('modal-title').textContent = 'Editar: ' + p.name_es;
+    document.getElementById('modal-name-es').value  = p.name_es || '';
+    document.getElementById('modal-name-en').value  = p.name_en || '';
+    document.getElementById('modal-price').value     = p.price || '';
+    document.getElementById('modal-vol').value       = p.volume || '';
+    document.getElementById('modal-uso-es').value    = p.uso_es || '';
+    document.getElementById('modal-uso-en').value    = p.uso_en || '';
+    // Campos extra si existen
+    const sciEl = document.getElementById('modal-scientific');
+    const emojiEl = document.getElementById('modal-emoji');
+    if (sciEl) sciEl.value = p.scientific || '';
+    if (emojiEl) emojiEl.value = p.emoji || '';
+    document.getElementById('edit-modal').style.display = 'flex';
+  } catch(e) {
+    showToast('Error al cargar producto', true);
+  }
+}
+
+// Mantener compatibilidad con llamadas antiguas editProduct(name, price)
+function editProduct(name, price) {
+  // Buscar por nombre en Supabase
+  sb(`products?name_es=eq.${encodeURIComponent(name)}`).then(rows => {
+    if (rows && rows[0]) openEditProduct(rows[0].id);
+    else {
+      // Fallback: abrir modal vacío con los datos
+      _editingProductId = null;
+      document.getElementById('modal-title').textContent = 'Editar: ' + name;
+      document.getElementById('modal-name-es').value = name;
+      document.getElementById('modal-name-en').value = name;
+      document.getElementById('modal-price').value = price || '';
+      document.getElementById('modal-vol').value = '10 ml';
+      document.getElementById('modal-uso-es').value = '';
+      document.getElementById('modal-uso-en').value = '';
+      document.getElementById('edit-modal').style.display = 'flex';
+    }
+  });
+}
+
+function closeModal() {
+  document.getElementById('edit-modal').style.display = 'none';
+  _editingProductId = null;
+}
+
+// Guardar producto en Supabase
+async function saveProduct() {
+  const data = {
+    name_es:    document.getElementById('modal-name-es').value,
+    name_en:    document.getElementById('modal-name-en').value,
+    price:      parseFloat(document.getElementById('modal-price').value) || null,
+    volume:     document.getElementById('modal-vol').value,
+    uso_es:     document.getElementById('modal-uso-es').value,
+    uso_en:     document.getElementById('modal-uso-en').value,
+  };
+  const sciEl = document.getElementById('modal-scientific');
+  const emojiEl = document.getElementById('modal-emoji');
+  if (sciEl) data.scientific = sciEl.value;
+  if (emojiEl) data.emoji = emojiEl.value;
+
+  try {
+    if (_editingProductId) {
+      await sb(`products?id=eq.${_editingProductId}`, { method: 'PATCH', body: JSON.stringify(data) });
+      showToast('✓ Producto actualizado en Supabase');
+    } else {
+      await sb('products', { method: 'POST', body: JSON.stringify(data) });
+      showToast('✓ Producto guardado en Supabase');
+    }
+    closeModal();
+    await loadProductsTable();
+  } catch(e) {
+    showToast('Error: ' + e.message, true);
+  }
+}
+
+// Agregar producto nuevo desde el formulario de "Nuevo producto"
+async function addProduct() {
+  const name = document.getElementById('new-name-es').value.trim();
+  if (!name) { showToast('Escribe el nombre del producto', true); return; }
+
+  const catMap = {
+    'Aceite esencial': 'aceites',
+    'Mantequilla corporal': 'mantequillas',
+    'Serum facial': 'serums',
+    'Mascarilla': 'mascarillas',
+    'Aroma & Perfume': 'aromas',
+    'Cuidado personal': 'otros'
+  };
+
+  const catRaw = document.getElementById('new-cat').value;
+  const data = {
+    name_es:    name,
+    name_en:    document.getElementById('new-name-en').value || null,
+    scientific: document.getElementById('new-scientific').value || null,
+    emoji:      document.getElementById('new-emoji').value || '🌿',
+    price:      parseFloat(document.getElementById('new-price').value) || null,
+    volume:     document.getElementById('new-vol').value || null,
+    uso_es:     document.getElementById('new-uso-es').value || null,
+    uso_en:     document.getElementById('new-uso-en').value || null,
+    category:   catMap[catRaw] || 'otros',
+    active:     true
+  };
+
+  try {
+    await sb('products', { method: 'POST', body: JSON.stringify(data) });
+    showToast(`✓ "${name}" agregado a Supabase`);
+    clearNewProduct();
+    await loadProductsTable();
+  } catch(e) {
+    showToast('Error: ' + e.message, true);
+  }
+}
+
+function clearNewProduct() {
+  ['new-name-es','new-name-en','new-price','new-vol','new-scientific','new-emoji','new-uso-es','new-uso-en']
+    .forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+  const pr = document.getElementById('new-prod-preview');
+  if (pr) pr.innerHTML = '';
+}
+
+// ═══════════════════════════════════════════════════════
+// PANEL: SERVICIOS — cargar y guardar precios
+// ═══════════════════════════════════════════════════════
+async function loadServicesTable() {
+  try {
+    const services = await sb('services?active=eq.true&order=category.asc,sort_order.asc');
+    if (!services) return;
+
+    // Rellenar inputs de precio por nombre de servicio
+    services.forEach(s => {
+      // Buscar input con data-service="nombre_es"
+      const el = document.querySelector(`[data-service="${s.name_es}"]`);
+      if (el) el.value = s.price ? `$${s.price}` : '';
+    });
+  } catch(e) {
+    console.warn('loadServicesTable error:', e.message);
+  }
+}
+
+async function saveServicesTable() {
+  showToast('Guardando precios…');
+  const inputs = document.querySelectorAll('[data-service]');
+  const updates = [];
+  inputs.forEach(el => {
+    const name = el.dataset.service;
+    const raw = el.value.replace(/[$\s]/g,'');
+    const price = parseFloat(raw) || null;
+    updates.push(sb(`services?name_es=eq.${encodeURIComponent(name)}`,
+      { method: 'PATCH', body: JSON.stringify({ price }) }));
+  });
+  try {
+    await Promise.all(updates);
+    showToast('✓ Precios actualizados en Supabase');
+  } catch(e) {
+    showToast('Error: ' + e.message, true);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// PANEL: RESUMEN — estadísticas
+// ═══════════════════════════════════════════════════════
+async function loadResumenStats() {
+  try {
+    const [products, services] = await Promise.all([
+      sb('products?active=eq.true&select=id'),
+      sb('services?active=eq.true&select=id')
+    ]);
+    const totalEl = document.getElementById('stat-productos');
+    const svcEl   = document.getElementById('stat-servicios');
+    if (totalEl) totalEl.textContent = products?.length || 0;
+    if (svcEl)   svcEl.textContent   = services?.length || 0;
+
+    // Indicador de conexión
+    const dbStatus = document.getElementById('db-status');
+    if (dbStatus) {
+      dbStatus.innerHTML = '<span class="tag tag-verde">● Supabase conectado</span>';
+    }
+  } catch(e) {
+    const dbStatus = document.getElementById('db-status');
+    if (dbStatus) dbStatus.innerHTML = '<span class="tag tag-gris">○ Sin conexión</span>';
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// GUARDAR TODO
+// ═══════════════════════════════════════════════════════
+async function saveAll() {
+  // Determinar qué panel está activo y guardar lo que corresponde
+  const activePanel = document.querySelector('.panel.active')?.id;
+  if (activePanel === 'panel-paginas') {
+    await savePageContent();
+  } else if (activePanel === 'panel-servicios') {
+    await saveServicesTable();
+  } else if (activePanel === 'panel-config') {
+    await saveConfig();
+  } else {
+    // Guardar todo
+    await savePageContent();
+    showToast('✓ Todo guardado en Supabase');
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════════════
+async function saveConfig() {
+  const whatsapp  = document.getElementById('cfg-whatsapp')?.value || '';
+  const instagram = document.getElementById('cfg-instagram')?.value || '';
+  const tiktok    = document.getElementById('cfg-tiktok')?.value || '';
+  const facebook  = document.getElementById('cfg-facebook')?.value || '';
+
+  const upserts = [
+    { page:'global', section:'config', key:'whatsapp',  value: whatsapp  },
+    { page:'global', section:'config', key:'instagram', value: instagram },
+    { page:'global', section:'config', key:'tiktok',    value: tiktok    },
+    { page:'global', section:'config', key:'facebook',  value: facebook  },
+  ];
+
+  try {
+    await sb('site_content', {
+      method: 'POST',
+      prefer: 'resolution=merge-duplicates',
+      body: JSON.stringify(upserts)
+    });
+    showToast('✓ Configuración guardada en Supabase');
+  } catch(e) {
+    showToast('Error al guardar config: ' + e.message, true);
+  }
+}
+
+function testSupabase() {
+  showToast('Probando conexión a Supabase…');
+  fetch(`${SB_URL}/rest/v1/`, { headers: { 'apikey': SB_KEY } })
+    .then(r => r.ok
+      ? showToast('✓ Conexión a Supabase exitosa')
+      : showToast('Error de conexión. Verifica los datos.', true))
+    .catch(() => showToast('No se pudo conectar a Supabase', true));
+}
+
+// ═══════════════════════════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════════════════════════
+const panelMeta = {
+  resumen:   { title: 'Resumen', sub: 'Estado general del sitio Verde Nueve' },
+  paginas:   { title: 'Páginas', sub: 'Edita textos e imágenes de cada página' },
+  productos: { title: 'Productos', sub: 'Gestiona tu catálogo completo' },
+  servicios: { title: 'Servicios & Precios', sub: 'Actualiza precios de terapias y servicios' },
+  media:     { title: 'Imágenes', sub: 'Galería de medios del sitio' },
+  config:    { title: 'Configuración', sub: 'Ajustes generales y conexión a Supabase' },
+  acceso:    { title: 'Acceso & Seguridad', sub: 'Gestión de contraseñas y usuarios' },
+};
+
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  document.getElementById('topbar-title').textContent = panelMeta[id]?.title || id;
+  document.getElementById('topbar-sub').textContent   = panelMeta[id]?.sub || '';
+  event.currentTarget.classList.add('active');
+}
+
+function switchTab(btn, tabId) {
+  const parent = btn.closest('.panel');
+  parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  parent.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+
+function toggleSection(header) {
+  header.closest('.section-editor').classList.toggle('open');
+}
+
+function selectPage(card, pageId) {
+  document.querySelectorAll('.page-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  const names = { home:'Home', spa:'Spa & Hotel', jardin:'Jardín Botánico', exp:'Experiencias', tienda:'Tienda' };
+  document.getElementById('page-editor-title').textContent = 'Editando: ' + names[pageId];
+  loadPageContent(pageId === 'exp' ? 'experiencias' : pageId);
+}
+
+function previewImgs(input, previewId) {
+  const preview = document.getElementById(previewId);
+  Array.from(input.files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const div = document.createElement('div');
+      div.className = 'img-preview-item';
+      div.innerHTML = `<img src="${e.target.result}"><button class="remove-img" onclick="this.parentElement.remove()">✕</button>`;
+      preview.appendChild(div);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function addToMedia(input) {
+  const grid = document.getElementById('media-grid');
+  const addBtn = grid.lastElementChild;
+  Array.from(input.files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const div = document.createElement('div');
+      div.className = 'media-item';
+      div.innerHTML = `<img src="${e.target.result}"><button class="media-del" onclick="this.parentElement.remove()">✕</button>
+        <span style="position:absolute;bottom:.3rem;left:.4rem;font-size:.6rem;color:#999;background:rgba(255,255,255,.8);padding:.1rem .4rem;border-radius:2px">${file.name}</span>`;
+      grid.insertBefore(div, addBtn);
+    };
+    reader.readAsDataURL(file);
+  });
+  showToast('✓ Imágenes listas para subir');
+}
+
+// ── CONTRASEÑA ───────────────────────────────────────
+function changePassword() {
+  const old     = document.getElementById('old-pass').value;
+  const newP    = document.getElementById('new-pass').value;
+  const confirm = document.getElementById('confirm-pass').value;
+  if (old !== CREDS[sessionStorage.getItem('vn-auth')]) { showToast('La contraseña actual es incorrecta', true); return; }
+  if (newP.length < 6) { showToast('Mínimo 6 caracteres', true); return; }
+  if (newP !== confirm) { showToast('Las contraseñas no coinciden', true); return; }
+  const user = sessionStorage.getItem('vn-auth');
+  CREDS[user] = newP;
+  localStorage.setItem('vn-admin-pass', newP);
+  ['old-pass','new-pass','confirm-pass'].forEach(id => document.getElementById(id).value = '');
+  showToast('✓ Contraseña actualizada');
+}
+
+// ── TOAST ─────────────────────────────────────────────
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show' + (isError ? ' error' : '');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.className = '', 3500);
+}
+
+// ── AUTO-INIT SI YA HAY SESIÓN ────────────────────────
+if (sessionStorage.getItem('vn-auth')) {
+  document.getElementById('session-user').textContent = sessionStorage.getItem('vn-auth');
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  initDashboard();
+}
+</script>
+</body>
+</html>

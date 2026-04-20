@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spa & Hotel — Verde Nueve · Huichapan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+
+  /* ── PAGE HERO ── */
+  .page-hero {
+    min-height: 72vh;
+    background: url('https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=1400&q=80') center/cover no-repeat;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0 7% 6rem;
+    position: relative;
+  }
+  .page-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(45,90,61,.85) 0%, rgba(45,90,61,.2) 55%, transparent 100%);
+  }
+  .page-hero > * { position: relative; z-index: 2; }
+
+  .page-hero .eyebrow {
+    display: flex; align-items: center; gap: .8rem;
+    font-size: .68rem; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--arena); font-weight: 500; margin-bottom: 1.2rem;
+  }
+  .page-hero .eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--arena); }
+
+  .page-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 6vw, 6rem);
+    line-height: 1.04; color: #fff; margin-bottom: 1.2rem;
+  }
+  .page-hero h1 em { font-style: italic; color: var(--arena); display: block; }
+
+  .page-hero .hero-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; color: rgba(255,255,255,.82);
+    line-height: 1.7; max-width: 560px; margin-bottom: 2rem;
+  }
+
+  .hero-chips {
+    display: flex; gap: .8rem; flex-wrap: wrap;
+  }
+  .chip {
+    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25);
+    color: #fff; padding: .4rem 1.1rem; border-radius: 100px;
+    font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+    backdrop-filter: blur(6px);
+  }
+
+  /* ── RITUAL INTRO ── */
+  .ritual-intro {
+    background: var(--crema);
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 60vh;
+  }
+  .ritual-text {
+    padding: 6rem 5% 6rem 7%;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .ritual-visual {
+    background: url('https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=800&q=80') center/cover;
+    position: relative;
+  }
+  .ritual-visual-badge {
+    position: absolute; bottom: 2.5rem; right: 0;
+    background: var(--verde); color: #fff;
+    padding: .9rem 1.6rem;
+    font-size: .68rem; letter-spacing: .16em; text-transform: uppercase;
+  }
+
+  .ritual-steps { margin: 2rem 0; display: flex; flex-direction: column; gap: 1.4rem; }
+  .step {
+    display: flex; gap: 1.4rem; align-items: flex-start;
+  }
+  .step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; color: var(--arena); line-height: 1;
+    flex-shrink: 0; width: 2.5rem;
+  }
+  .step-body {}
+  .step-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; color: var(--verde); margin-bottom: .3rem;
+  }
+  .step-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; line-height: 1.65; color: var(--cafe); opacity: .85;
+  }
+
+  /* ── SERVICIOS GRID ── */
+  .servicios-spa { padding: 8rem 7%; background: var(--hueso); }
+  .servicios-header { margin-bottom: 4rem; }
+
+  .terapias-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .terapia-card {
+    background: #fff;
+    border: 1px solid rgba(139,94,60,.1);
+    padding: 2.5rem 2rem;
+    transition: all .35s;
+    position: relative; overflow: hidden;
+  }
+  .terapia-card::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 3px; background: var(--verde);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .35s;
+  }
+  .terapia-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(92,61,46,.1); }
+  .terapia-card:hover::after { transform: scaleX(1); }
+
+  .tc-icon { font-size: 1.8rem; margin-bottom: 1.2rem; }
+  .tc-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; color: var(--verde); margin-bottom: .6rem;
+  }
+  .tc-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; line-height: 1.7; color: var(--cafe); opacity: .8;
+    margin-bottom: 1.2rem;
+  }
+  .tc-tag {
+    font-size: .64rem; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--tierra); background: rgba(139,94,60,.08);
+    padding: .3rem .8rem; border-radius: 100px; display: inline-block;
+  }
+
+  /* ── FACIALES ── */
+  .faciales {
+    background: var(--verde);
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 65vh;
+  }
+  .faciales-img {
+    background: url('https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=800&q=80') center/cover;
+  }
+  .faciales-content {
+    padding: 6rem 6% 6rem 5%;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .faciales-content .section-eyebrow { color: var(--arena); }
+  .faciales-content .section-eyebrow::before { background: var(--arena); }
+  .faciales-content .section-title { color: #fff; }
+  .faciales-content .section-title em { color: var(--arena); }
+  .faciales-content .section-body { color: rgba(255,255,255,.75); margin-bottom: 2.5rem; }
+
+  .facial-tipos {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1rem; margin-bottom: 2.5rem;
+  }
+  .facial-tipo {
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.12);
+    padding: 1.2rem 1.4rem;
+  }
+  .ft-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: #fff; margin-bottom: .3rem; }
+  .ft-desc { font-size: .78rem; color: rgba(255,255,255,.55); line-height: 1.5; }
+
+  /* ── HOTEL ── */
+  .hotel { padding: 8rem 7%; background: var(--crema); }
+  .hotel-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+
+  .hotel-imgs {
+    display: grid; grid-template-columns: 1fr 1fr;
+    grid-template-rows: 260px 180px;
+    gap: 6px;
+  }
+  .hotel-img {
+    background-size: cover; background-position: center;
+    overflow: hidden; transition: transform .5s;
+  }
+  .hotel-img:hover { transform: scale(1.03); }
+  .hi-a { grid-column: 1/3; background-image: url('https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80'); }
+  .hi-b { background-image: url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&q=80'); }
+  .hi-c { background-image: url('https://images.unsplash.com/photo-1540518614846-7eded433c457?w=400&q=80'); }
+
+  .hotel-text {}
+  .hotel-perks { list-style: none; margin: 2rem 0 2.5rem; }
+  .hotel-perks li {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem 0; border-bottom: 1px solid rgba(139,94,60,.12);
+    font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--cafe);
+  }
+  .hotel-perks li:last-child { border-bottom: none; }
+  .perk-icon { font-size: 1.2rem; flex-shrink: 0; }
+
+  /* ── MASCARILLAS ── */
+  .mascarillas { background: #f0e8d8; padding: 8rem 7%; }
+  .mask-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 3.5rem; }
+
+  .mask-card {
+    background: #fff; padding: 2.2rem;
+    border-bottom: 3px solid var(--tierra);
+    transition: all .3s;
+  }
+  .mask-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(92,61,46,.1); }
+  .mask-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--cafe); margin-bottom: .5rem; font-weight: 600; }
+  .mask-sub { font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--tierra); margin-bottom: 1rem; }
+  .mask-desc { font-family: 'Cormorant Garamond', serif; font-size: .98rem; line-height: 1.7; color: var(--cafe); opacity: .82; margin-bottom: 1.2rem; }
+  .mask-ideal { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: .9rem; color: var(--verde); margin-bottom: 1.2rem; }
+  .mask-price { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--tierra); }
+  .mask-vol { font-size: .7rem; color: var(--cafe); opacity: .5; margin-top: .1rem; }
+
+  /* ── CTA FINAL ── */
+  .cta-reserva {
+    background: var(--cafe);
+    padding: 7rem 7%;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .cta-reserva::before {
+    content: 'VERDE NUEVE';
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    font-family: 'Playfair Display', serif; font-size: 18vw; font-weight: 600;
+    color: rgba(255,255,255,.03); white-space: nowrap; pointer-events: none;
+    letter-spacing: .1em;
+  }
+  .cta-reserva .section-eyebrow { color: var(--arena); justify-content: center; margin-bottom: 1.5rem; }
+  .cta-reserva .section-eyebrow::before { background: var(--arena); }
+  .cta-reserva h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    color: #fff; margin-bottom: 1.2rem; line-height: 1.15;
+  }
+  .cta-reserva h2 em { font-style: italic; color: var(--arena); }
+  .cta-reserva p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem; color: rgba(255,255,255,.65);
+    max-width: 500px; margin: 0 auto 2.5rem; line-height: 1.75;
+  }
+  .cta-btns { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
+  .btn-arena {
+    background: var(--arena); color: var(--cafe);
+    padding: .95rem 2.4rem; border-radius: 2px;
+    font-family: 'Jost', sans-serif; font-size: .8rem;
+    letter-spacing: .14em; text-transform: uppercase;
+    text-decoration: none; transition: all .3s; display: inline-block;
+    font-weight: 500;
+  }
+  .btn-arena:hover { background: #d4b48a; transform: translateY(-2px); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .ritual-intro, .faciales, .hotel-inner { grid-template-columns: 1fr; }
+    .ritual-visual { min-height: 50vw; }
+    .faciales-img { min-height: 50vw; }
+    .terapias-grid { grid-template-columns: 1fr 1fr; }
+    .mask-grid { grid-template-columns: 1fr 1fr; }
+    .hotel-imgs { grid-template-rows: 200px 140px; }
+  }
+  @media (max-width: 600px) {
+    .terapias-grid, .mask-grid, .facial-tipos { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">Verde <em>Nueve</em></a>
+  <ul class="nav-links">
+    <li><a href="spa-hotel.html" class="es">Spa & Hotel</a><a href="spa-hotel.html" class="en">Spa & Hotel</a></li>
+    <li><a href="jardin.html" class="es">Jardín</a><a href="jardin.html" class="en">Garden</a></li>
+    <li><a href="experiencias.html" class="es">Experiencias</a><a href="experiencias.html" class="en">Experiences</a></li>
+    <li><a href="tienda.html" class="es">Tienda</a><a href="tienda.html" class="en">Shop</a></li>
+    <li><a href="https://wa.me/5554071775" class="btn-reservar es">Reservar</a><a href="https://wa.me/5554071775" class="btn-reservar en">Book Now</a></li>
+  </ul>
+  <div class="lang-toggle">
+    <button data-lang="es" onclick="setLang('es')">ES</button>
+    <button data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
+  <button class="nav-burger" aria-label="Menú"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- ── PAGE HERO ── -->
+<section class="page-hero">
+  <div class="eyebrow">
+    <span class="es">Relajación & Sanación</span>
+    <span class="en">Relaxation & Healing</span>
+  </div>
+  <h1>
+    <span class="es" data-vn="hero.title_es">Spa &<em>Hotel Holístico</em></span>
+    <span class="en" data-vn="hero.title_en">Spa &<em>Holistic Hotel</em></span>
+  </h1>
+  <p class="hero-desc es" data-vn="hero.desc_es">Un lugar donde cada terapia comienza antes de empezar — en el jardín, con aromas, música y silencio. Tu cuerpo primero conecta, luego sana.</p>
+  <p class="hero-desc en" data-vn="hero.desc_en">A place where every therapy begins before it starts — in the garden, with aromas, music and silence. Your body first connects, then heals.</p>
+  <div class="hero-chips">
+    <div class="chip es">Masajes</div><div class="chip en">Massages</div>
+    <div class="chip es">Faciales</div><div class="chip en">Facials</div>
+    <div class="chip es">Manos & Pies</div><div class="chip en">Hands & Feet</div>
+    <div class="chip es">Hotel & Descanso</div><div class="chip en">Hotel & Rest</div>
+  </div>
+</section>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Masaje Descontracturante</div>
+    <div class="marquee-item">Masaje Relajante</div>
+    <div class="marquee-item">Facial Limpieza</div>
+    <div class="marquee-item">Facial Firmeza</div>
+    <div class="marquee-item">Facial Hidratación</div>
+    <div class="marquee-item">Manos & Pies</div>
+    <div class="marquee-item">Aromaterapia</div>
+    <div class="marquee-item">Hotel Holístico</div>
+    <div class="marquee-item">Masaje Descontracturante</div>
+    <div class="marquee-item">Masaje Relajante</div>
+    <div class="marquee-item">Facial Limpieza</div>
+    <div class="marquee-item">Facial Firmeza</div>
+    <div class="marquee-item">Facial Hidratación</div>
+    <div class="marquee-item">Manos & Pies</div>
+    <div class="marquee-item">Aromaterapia</div>
+    <div class="marquee-item">Hotel Holístico</div>
+  </div>
+</div>
+
+<!-- ── RITUAL ── -->
+<section class="ritual-intro">
+  <div class="ritual-text">
+    <div class="section-eyebrow es fade-up">El ritual Verde Nueve</div>
+    <div class="section-eyebrow en fade-up">The Verde Nueve ritual</div>
+    <h2 class="section-title fade-up es" data-vn="ritual.title_es">Tu terapia empieza <em>en el jardín</em></h2>
+    <h2 class="section-title fade-up en" data-vn="ritual.title_en">Your therapy starts <em>in the garden</em></h2>
+    <p class="section-body fade-up es">No llegás directo a la camilla. En Verde Nueve, la experiencia comienza desde que pisas el jardín. Media hora o más para que tu mente y cuerpo se preparen antes de cualquier terapia.</p>
+    <p class="section-body fade-up en">You don't go straight to the table. At Verde Nueve, the experience begins the moment you step into the garden. Half an hour or more for your mind and body to prepare before any therapy.</p>
+
+    <div class="ritual-steps">
+      <div class="step fade-up">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <div class="step-title es">Llegada al jardín</div>
+          <div class="step-title en">Arrival in the garden</div>
+          <div class="step-desc es">Te acomodas en una de las áreas de descanso. Música suave, infusión de hierbas del jardín, silencio natural.</div>
+          <div class="step-desc en">You settle into one of the rest areas. Soft music, herbal tea from the garden, natural silence.</div>
+        </div>
+      </div>
+      <div class="step fade-up">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <div class="step-title es">Conexión & equilibrio</div>
+          <div class="step-title en">Connection & balance</div>
+          <div class="step-desc es">Los aromas del jardín, las plantas medicinales y el ambiente te preparan. Tu sistema nervioso baja de revoluciones.</div>
+          <div class="step-desc en">The garden aromas, medicinal plants and environment prepare you. Your nervous system slows down.</div>
+        </div>
+      </div>
+      <div class="step fade-up">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <div class="step-title es">Tu ceremonia</div>
+          <div class="step-title en">Your ceremony</div>
+          <div class="step-desc es">Masaje, facial, temazcal — o la combinación que elijas. Tu cuerpo ya está listo para recibir la terapia con todo.</div>
+          <div class="step-desc en">Massage, facial, temazcal — or whatever combination you choose. Your body is ready to fully receive the therapy.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ritual-visual">
+    <div class="ritual-visual-badge es">Huichapan, Hidalgo</div>
+    <div class="ritual-visual-badge en">Huichapan, Hidalgo</div>
+  </div>
+</section>
+
+<!-- ── SERVICIOS SPA ── -->
+<section class="servicios-spa" id="masajes">
+  <div class="servicios-header">
+    <div class="section-eyebrow fade-up es">Nuestras terapias</div>
+    <div class="section-eyebrow fade-up en">Our therapies</div>
+    <h2 class="section-title fade-up es">Masajes & <em>Cuidado Corporal</em></h2>
+    <h2 class="section-title fade-up en">Massages & <em>Body Care</em></h2>
+  </div>
+
+  <div class="terapias-grid">
+    <div class="terapia-card fade-up">
+      <div class="tc-icon">💆</div>
+      <div class="tc-name es">Masaje Descontracturante</div>
+      <div class="tc-name en">Deep Tissue Massage</div>
+      <p class="tc-desc es">Trabaja nudos musculares profundos y tensiones acumuladas. Ideal para contracturas cervicales, espalda y hombros.</p>
+      <p class="tc-desc en">Works deep muscle knots and accumulated tension. Ideal for cervical, back and shoulder contractures.</p>
+      <div class="tc-tag es">Dolor muscular</div>
+      <div class="tc-tag en">Muscle pain</div>
+    </div>
+    <div class="terapia-card fade-up">
+      <div class="tc-icon">🌊</div>
+      <div class="tc-name es">Masaje Relajante</div>
+      <div class="tc-name en">Relaxing Massage</div>
+      <p class="tc-desc es">Movimientos suaves y rítmicos con aceites esenciales para liberar el estrés y devolver la calma al sistema nervioso.</p>
+      <p class="tc-desc en">Gentle, rhythmic movements with essential oils to release stress and restore calm to the nervous system.</p>
+      <div class="tc-tag es">Estrés & ansiedad</div>
+      <div class="tc-tag en">Stress & anxiety</div>
+    </div>
+    <div class="terapia-card fade-up">
+      <div class="tc-icon">🙌</div>
+      <div class="tc-name es">Masaje de Manos & Pies</div>
+      <div class="tc-name en">Hand & Foot Massage</div>
+      <p class="tc-desc es">Reflexología y masaje localizado para mejorar la circulación, aliviar cansancio y nutrir la piel con mantequillas naturales.</p>
+      <p class="tc-desc en">Reflexology and localized massage to improve circulation, relieve fatigue and nourish skin with natural butters.</p>
+      <div class="tc-tag es">Circulación</div>
+      <div class="tc-tag en">Circulation</div>
+    </div>
+    <div class="terapia-card fade-up">
+      <div class="tc-icon">🕯️</div>
+      <div class="tc-name es">Masaje con Aromaterapia</div>
+      <div class="tc-name en">Aromatherapy Massage</div>
+      <p class="tc-desc es">Combinación de técnicas de masaje con aceites esenciales seleccionados según tu estado emocional y físico del momento.</p>
+      <p class="tc-desc en">Combination of massage techniques with essential oils selected according to your current emotional and physical state.</p>
+      <div class="tc-tag es">Bienestar integral</div>
+      <div class="tc-tag en">Holistic wellness</div>
+    </div>
+    <div class="terapia-card fade-up">
+      <div class="tc-icon">🌿</div>
+      <div class="tc-name es">Tratamiento CBD</div>
+      <div class="tc-name en">CBD Treatment</div>
+      <p class="tc-desc es">Pomadas y aceites con CBD para el alivio de dolor crónico, inflamación y tensión muscular profunda. Sin efectos psicoactivos.</p>
+      <p class="tc-desc en">Salves and oils with CBD for chronic pain relief, inflammation and deep muscle tension. No psychoactive effects.</p>
+      <div class="tc-tag es">Dolor crónico</div>
+      <div class="tc-tag en">Chronic pain</div>
+    </div>
+    <div class="terapia-card fade-up">
+      <div class="tc-icon">✨</div>
+      <div class="tc-name es">Tratamiento Anticelulitis</div>
+      <div class="tc-name en">Anti-cellulite Treatment</div>
+      <p class="tc-desc es">Masaje reductivo con técnicas de drenaje linfático y aceites esenciales lipiolíticos. Se combina con fango reductivo Detox.</p>
+      <p class="tc-desc en">Reductive massage with lymphatic drainage techniques and lipolytic essential oils. Combined with Detox reductive mud.</p>
+      <div class="tc-tag es">Reductivo</div>
+      <div class="tc-tag en">Reductive</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FACIALES ── -->
+<section class="faciales" id="faciales">
+  <div class="faciales-img"></div>
+  <div class="faciales-content">
+    <div class="section-eyebrow es fade-up">Cuidado facial</div>
+    <div class="section-eyebrow en fade-up">Facial care</div>
+    <h2 class="section-title fade-up es">Faciales con <em>ingredientes del jardín</em></h2>
+    <h2 class="section-title fade-up en">Facials with <em>garden ingredients</em></h2>
+    <p class="section-body fade-up es">Todos nuestros faciales se realizan con productos elaborados en Jardín Verde Nueve: cremas, serums y mascarillas con Rosa, Aloe, Miel y aceites esenciales puros.</p>
+    <p class="section-body fade-up en">All our facials are performed with products made at Jardín Verde Nueve: creams, serums and masks with Rose, Aloe, Honey and pure essential oils.</p>
+
+    <div class="facial-tipos fade-up">
+      <div class="facial-tipo">
+        <div class="ft-name es">Limpieza Profunda</div>
+        <div class="ft-name en">Deep Cleansing</div>
+        <div class="ft-desc es">Purifica poros, elimina impurezas y reequilibra la piel congestionada o con acné.</div>
+        <div class="ft-desc en">Purifies pores, eliminates impurities and rebalances congested or acne-prone skin.</div>
+      </div>
+      <div class="facial-tipo">
+        <div class="ft-name es">Firmeza & Lifting</div>
+        <div class="ft-name en">Firming & Lifting</div>
+        <div class="ft-desc es">Estimula el colágeno y la elasticidad para piel madura. Con serum rejuvenecedor botánico.</div>
+        <div class="ft-desc en">Stimulates collagen and elasticity for mature skin. With botanical rejuvenating serum.</div>
+      </div>
+      <div class="facial-tipo">
+        <div class="ft-name es">Hidratación Intensa</div>
+        <div class="ft-name en">Intense Hydration</div>
+        <div class="ft-desc es">48 horas de humectación con mantequillas de karité, cacao y aceites esenciales puros.</div>
+        <div class="ft-desc en">48 hours of moisture with shea butter, cocoa and pure essential oils.</div>
+      </div>
+      <div class="facial-tipo">
+        <div class="ft-name es">Aclarante Antioxidante</div>
+        <div class="ft-name en">Brightening Antioxidant</div>
+        <div class="ft-desc es">Vitamina C, extractos herbales y retinol para reducir manchas y devolver luminosidad.</div>
+        <div class="ft-desc en">Vitamin C, herbal extracts and retinol to reduce spots and restore radiance.</div>
+      </div>
+    </div>
+
+    <a href="https://wa.me/5554071775" class="btn-prim">
+      <span class="es">Reservar Facial</span>
+      <span class="en">Book Facial</span>
+    </a>
+  </div>
+</section>
+
+<!-- ── MASCARILLAS ── -->
+<section class="mascarillas">
+  <div class="section-eyebrow fade-up es">Nuestras mascarillas</div>
+  <div class="section-eyebrow fade-up en">Our face masks</div>
+  <h2 class="section-title fade-up es">El antes y el después <em>nunca fue tan evidente</em></h2>
+  <h2 class="section-title fade-up en">Before and after <em>never looked so clear</em></h2>
+
+  <div class="mask-grid">
+    <div class="mask-card fade-up">
+      <div class="mask-name">Perfection — Miele</div>
+      <div class="mask-sub es">Mascarilla Revitalizante</div>
+      <div class="mask-sub en">Revitalizing Mask</div>
+      <p class="mask-desc es">Suave mascarilla con manzanilla, aloe, miel y vitamina E. Desinflama, refresca y afina los poros. Puedes dejarla actuar toda la noche.</p>
+      <p class="mask-desc en">Gentle mask with chamomile, aloe, honey and vitamin E. Reduces inflammation, refreshes and tightens pores. Can be left on overnight.</p>
+      <p class="mask-ideal es">Ideal para piel congestionada, acné y piel deshidratada.</p>
+      <p class="mask-ideal en">Ideal for congested, acne-prone and dehydrated skin.</p>
+      <div class="mask-price" data-vn="mascarillas.miele_price">$435</div>
+      <div class="mask-vol">200g</div>
+    </div>
+    <div class="mask-card fade-up">
+      <div class="mask-name">Radiance — Latte</div>
+      <div class="mask-sub es">Mascarilla Aclarante</div>
+      <div class="mask-sub en">Brightening Mask</div>
+      <p class="mask-desc es">Mascarilla sedosa con proteína de leche para aclarar la piel suavemente y devolver su luminosidad. Alto contenido de colágeno para recuperar elasticidad.</p>
+      <p class="mask-desc en">Silky mask with milk protein to gently brighten skin and restore luminosity. High collagen content to recover elasticity.</p>
+      <p class="mask-ideal es">Aplica en rostro, manos, escote y cuello. 2 veces por semana. Todo tipo de piel.</p>
+      <p class="mask-ideal en">Apply on face, hands, décolleté and neck. Twice a week. All skin types.</p>
+      <div class="mask-price" data-vn="mascarillas.latte_price">$435</div>
+      <div class="mask-vol">200g en polvo · 30 aplicaciones</div>
+    </div>
+    <div class="mask-card fade-up">
+      <div class="mask-name">Perfection — Detox</div>
+      <div class="mask-sub es">Mascarilla Desintoxicante</div>
+      <div class="mask-sub en">Detox Mask</div>
+      <p class="mask-desc es">Fórmula con arcillas minerales y carbón activado que afina y limpia los poros, da un aspecto mate y equilibra la piel de rostro, escote y espalda.</p>
+      <p class="mask-desc en">Formula with mineral clays and activated charcoal that refines and cleanses pores, gives a matte appearance and balances skin on face, décolleté and back.</p>
+      <p class="mask-ideal es">Úsalo también después del tratamiento anticelulitis como fango reductivo.</p>
+      <p class="mask-ideal en">Also use after anti-cellulite treatment as reductive mud.</p>
+      <div class="mask-price" data-vn="mascarillas.detox_price">$435</div>
+      <div class="mask-vol">200g en polvo</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOTEL ── -->
+<section class="hotel" id="hotel">
+  <div class="hotel-inner">
+    <div class="hotel-imgs">
+      <div class="hotel-img hi-a"></div>
+      <div class="hotel-img hi-b"></div>
+      <div class="hotel-img hi-c"></div>
+    </div>
+    <div class="hotel-text">
+      <div class="section-eyebrow fade-up es">Hospedaje</div>
+      <div class="section-eyebrow fade-up en">Accommodation</div>
+      <h2 class="section-title fade-up es">Quédate y <em>extiende tu descanso</em></h2>
+      <h2 class="section-title fade-up en">Stay and <em>extend your rest</em></h2>
+      <p class="section-body fade-up es">El hotel cierra la pinza perfecta. No hay que irse corriendo — te quedas a dormir en el jardín, amaneces entre aromas y plantas medicinales, y continúas tu experiencia al día siguiente.</p>
+      <p class="section-body fade-up en">The hotel completes the perfect circle. No need to rush off — you stay overnight in the garden, wake up among aromas and medicinal plants, and continue your experience the next day.</p>
+      <ul class="hotel-perks fade-up">
+        <li><div class="perk-icon">🌙</div><span class="es">Habitaciones rodeadas del jardín holístico</span><span class="en">Rooms surrounded by the holistic garden</span></li>
+        <li><div class="perk-icon">🌿</div><span class="es">Aromas naturales y silencio total</span><span class="en">Natural aromas and complete silence</span></li>
+        <li><div class="perk-icon">☀️</div><span class="es">Amanecer entre plantas medicinales</span><span class="en">Wake up among medicinal plants</span></li>
+        <li><div class="perk-icon">🧴</div><span class="es">Amenidades con productos Verde Nueve</span><span class="en">Amenities with Verde Nueve products</span></li>
+        <li><div class="perk-icon">🍃</div><span class="es">Desayuno con hierbas aromáticas del jardín</span><span class="en">Breakfast with aromatic herbs from the garden</span></li>
+        <li><div class="perk-icon">✨</div><span class="es">Acceso continuo a terapias y espacios del spa</span><span class="en">Continuous access to spa therapies and spaces</span></li>
+      </ul>
+      <a href="https://wa.me/5554071775" class="btn-prim">
+        <span class="es">Consultar disponibilidad</span>
+        <span class="en">Check availability</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA FINAL ── -->
+<section class="cta-reserva">
+  <div class="section-eyebrow es">¿Lista para desconectarte?</div>
+  <div class="section-eyebrow en">Ready to disconnect?</div>
+  <h2 class="es">Tu cuerpo merece un <em>día de verdad</em></h2>
+  <h2 class="en">Your body deserves <em>a real day off</em></h2>
+  <p class="es">Escríbenos por WhatsApp y te ayudamos a diseñar tu experiencia perfecta en Verde Nueve.</p>
+  <p class="en">Write to us on WhatsApp and we'll help you design your perfect Verde Nueve experience.</p>
+  <div class="cta-btns">
+    <a href="https://wa.me/5554071775" class="btn-arena es">Reservar por WhatsApp</a>
+    <a href="https://wa.me/5554071775" class="btn-arena en">Book via WhatsApp</a>
+    <a href="experiencias.html" class="btn-ghost" style="border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.7)">
+      <span class="es">Ver Experiencias →</span>
+      <span class="en">See Experiences →</span>
+    </a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Verde Nueve</div>
+      <p class="footer-bio es">Jardín holístico, spa y cosmética natural en Huichapan, Hidalgo. Nacimos de la aromaterapia y crecimos entre plantas medicinales.</p>
+      <p class="footer-bio en">Holistic garden, spa and natural cosmetics in Huichapan, Hidalgo. Born from aromatherapy and grown among medicinal plants.</p>
+    </div>
+    <div class="footer-col">
+      <h5 class="es">Servicios</h5><h5 class="en">Services</h5>
+      <a href="spa-hotel.html"><span class="es">Spa & Masajes</span><span class="en">Spa & Massages</span></a>
+      <a href="experiencias.html"><span class="es">Temazcal</span><span class="en">Temazcal</span></a>
+      <a href="spa-hotel.html"><span class="es">Faciales</span><span class="en">Facials</span></a>
+      <a href="experiencias.html"><span class="es">Terapias Holísticas</span><span class="en">Holistic Therapies</span></a>
+    </div>
+    <div class="footer-col">
+      <h5 class="es">Productos</h5><h5 class="en">Products</h5>
+      <a href="tienda.html"><span class="es">Aceites Esenciales</span><span class="en">Essential Oils</span></a>
+      <a href="tienda.html"><span class="es">Mantequillas Corporales</span><span class="en">Body Butters</span></a>
+      <a href="tienda.html"><span class="es">Serums & Faciales</span><span class="en">Serums & Facials</span></a>
+      <a href="tienda.html"><span class="es">Aromas & Perfumes</span><span class="en">Aromas & Perfumes</span></a>
+    </div>
+    <div class="footer-col">
+      <h5>Social</h5>
+      <a href="#">TikTok</a>
+      <a href="#">Facebook</a>
+      <a href="#">Instagram</a>
+      <a href="https://wa.me/5554071775">WhatsApp</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2026 Verde Nueve — El Calvario, Huichapan</div>
+    <div class="es">Hecho con 🌿 en México</div>
+    <div class="en">Made with 🌿 in Mexico</div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
