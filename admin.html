@@ -1638,12 +1638,12 @@ async function uploadImage(input, page, section, key, previewId) {
   try {
     // Upload to Supabase Storage
     const uploadRes = await fetch(
-      `${VN_CONFIG.url}/storage/v1/object/images/${filename}`,
+      `${SB_URL}/storage/v1/object/images/${filename}`,
       {
         method: 'POST',
         headers: {
-          'apikey': VN_CONFIG.key,
-          'Authorization': `Bearer ${VN_CONFIG.key}`,
+          'apikey': SB_KEY,
+          'Authorization': `Bearer ${SB_KEY}`,
           'Content-Type': file.type,
           'x-upsert': 'true'
         },
@@ -1654,7 +1654,7 @@ async function uploadImage(input, page, section, key, previewId) {
     if (!uploadRes.ok) throw new Error('Error al subir: ' + uploadRes.status);
 
     // Build public URL
-    const publicUrl = `${VN_CONFIG.url}/storage/v1/object/public/images/${filename}`;
+    const publicUrl = `${SB_URL}/storage/v1/object/public/images/${filename}`;
 
     // Save URL to site_images table
     await sb(`site_images?page=eq.${page}&section=eq.${section}&key=eq.${key}`, {
