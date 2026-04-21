@@ -251,7 +251,7 @@ function renderPosts(posts) {
     const emoji = catEmojis[p.category] || '🌿';
     const date = new Date(p.created_at).toLocaleDateString('es-MX', { year:'numeric', month:'long', day:'numeric' });
     return `
-      <a href="blog/${p.slug}.html" class="blog-card fade-up">
+      <a href="blog/${p.slug}/" class="blog-card fade-up">
         <div class="bc-img">
           <span>${emoji}</span>
           <div class="bc-cat">${p.category || 'Blog'}</div>
