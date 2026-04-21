@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="post-title">Cargando...</title>
+<meta name="description" id="post-meta-desc" content="">
+<meta name="keywords" id="post-keywords" content="">
+<meta name="robots" content="index, follow">
+<link id="canonical" rel="canonical" href="">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../style.css">
+<style>
+  .post-hero {
+    min-height: 55vh; background: var(--verde);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 76px 7% 5rem; position: relative; overflow: hidden;
+  }
+  .post-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(0,0,0,.2);
+  }
+  .post-hero > * { position: relative; z-index: 2; }
+  .post-cat {
+    display: inline-block; background: var(--tierra); color: #fff;
+    font-size: .65rem; letter-spacing: .14em; text-transform: uppercase;
+    padding: .35rem .9rem; border-radius: 100px; margin-bottom: 1.2rem;
+  }
+  .post-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 4.5vw, 4rem);
+    color: #fff; line-height: 1.1; max-width: 800px; margin-bottom: 1rem;
+  }
+  .post-date { font-size: .75rem; color: rgba(255,255,255,.5); letter-spacing: .1em; }
+  .post-body-wrap { max-width: 780px; margin: 0 auto; padding: 5rem 7%; }
+  .post-body { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; line-height: 1.9; color: var(--cafe); }
+  .post-body h2 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--verde); margin: 2.5rem 0 1rem; line-height: 1.2; }
+  .post-body p { margin-bottom: 1.3rem; }
+  .post-body strong { color: var(--cafe); font-weight: 600; }
+  .post-cta { background: var(--crema); border-left: 4px solid var(--tierra); padding: 2rem 2.5rem; margin: 3rem 0; }
+  .post-cta p { font-family: 'Jost', sans-serif; font-size: .95rem; color: var(--cafe); margin-bottom: 1rem; }
+  .post-tags { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(139,94,60,.12); }
+  .post-tag { background: rgba(45,90,61,.08); color: var(--verde); font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; padding: .3rem .8rem; border-radius: 100px; }
+  .related { padding: 5rem 7%; background: var(--hueso); }
+  .related-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 2.5rem; }
+  .related-card { background: #fff; padding: 1.5rem; text-decoration: none; color: inherit; border: 1px solid rgba(139,94,60,.08); transition: all .3s; display: block; }
+  .related-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(92,61,46,.08); }
+  .rc-cat { font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--tierra); margin-bottom: .5rem; }
+  .rc-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--verde); line-height: 1.3; }
+  @media (max-width: 900px) { .related-grid { grid-template-columns: 1fr 1fr; } .post-body-wrap { padding: 3rem 5%; } }
+  @media (max-width: 600px) { .related-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../index.html" class="nav-logo">Verde <em>Nueve</em></a>
+  <ul class="nav-links">
+    <li><a href="../../spa-hotel.html">Spa & Hotel</a></li>
+    <li><a href="../../jardin.html">Jardín</a></li>
+    <li><a href="../../experiencias.html">Experiencias</a></li>
+    <li><a href="../../tienda.html">Tienda</a></li>
+    <li><a href="../../blog.html" class="active">Blog</a></li>
+    <li><a href="https://wa.me/5554071775" class="btn-reservar">Reservar</a></li>
+  </ul>
+  <div class="lang-toggle">
+    <button data-lang="es" onclick="setLang('es')">ES</button>
+    <button data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
+  <button class="nav-burger" aria-label="Menú"><span></span><span></span><span></span></button>
+</nav>
+
+<section class="post-hero">
+  <div class="post-cat" id="post-cat">Blog</div>
+  <h1 id="post-h1">Cargando...</h1>
+  <div class="post-date" id="post-date"></div>
+</section>
+
+<div class="post-body-wrap">
+  <div class="post-body" id="post-content">
+    <p style="opacity:.4;text-align:center;padding:3rem">Cargando artículo...</p>
+  </div>
+  <div class="post-cta">
+    <p>¿Te gustaría vivir esta experiencia en Verde Nueve? Estamos en Huichapan, Hidalgo — a 2.5 horas de CDMX.</p>
+    <a href="https://wa.me/5554071775" class="btn-prim">Reservar por WhatsApp</a>
+  </div>
+  <div class="post-tags" id="post-tags"></div>
+</div>
+
+<section class="related">
+  <div class="section-eyebrow">Seguir leyendo</div>
+  <h2 class="section-title">Más artículos <em>para ti</em></h2>
+  <div class="related-grid" id="related-grid"></div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Verde Nueve</div>
+      <p class="footer-bio">Jardín holístico, spa y cosmética natural en Huichapan, Hidalgo.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Páginas</h5>
+      <a href="../../spa-hotel.html">Spa & Hotel</a>
+      <a href="../../jardin.html">Jardín</a>
+      <a href="../../experiencias.html">Experiencias</a>
+      <a href="../../tienda.html">Tienda</a>
+      <a href="../../blog.html">Blog</a>
+    </div>
+    <div class="footer-col">
+      <h5>Contacto</h5>
+      <a href="https://wa.me/5554071775">WhatsApp</a>
+      <a href="#">Instagram @VerdeNueve</a>
+    </div>
+    <div class="footer-col">
+      <h5>Ubicación</h5>
+      <a href="#">El Calvario, Huichapan</a>
+      <a href="#">Hidalgo, México</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2026 Verde Nueve</div>
+    <div>Hecho con 🌿 en México</div>
+  </div>
+</footer>
+
+<script src="../../main.js"></script>
+<script>
+const SB = {
+  url: 'https://pqqnxuvbrdvijvicyord.supabase.co',
+  key: 'sb_publishable_Y3CmtZy4geYKq_8aMvT4nw_6sZ-t2io'
+};
+
+const slug = location.pathname.split('/').filter(Boolean).pop();
+
+async function loadPost() {
+  try {
+    const res = await fetch(
+      SB.url + '/rest/v1/blog_posts?slug=eq.' + slug + '&select=*',
+      { headers: { 'apikey': SB.key, 'Authorization': 'Bearer ' + SB.key } }
+    );
+    const data = await res.json();
+    if (!data || !data[0]) {
+      document.getElementById('post-h1').textContent = 'Artículo no encontrado';
+      return;
+    }
+    const post = data[0];
+
+    document.title = post.title + ' — Verde Nueve';
+    document.getElementById('post-meta-desc').setAttribute('content', post.meta_desc || '');
+    document.getElementById('post-keywords').setAttribute('content', post.keywords || '');
+    document.getElementById('canonical').setAttribute('href', 'https://verdenueve.mx/blog/' + slug);
+    document.getElementById('post-h1').textContent = post.title;
+    document.getElementById('post-cat').textContent = post.category || 'Blog';
+    document.getElementById('post-title').textContent = post.title + ' — Verde Nueve';
+
+    const date = new Date(post.created_at).toLocaleDateString('es-MX', { year:'numeric', month:'long', day:'numeric' });
+    document.getElementById('post-date').textContent = date;
+
+    const html = (post.body || '').trim().split('\n').map(line => {
+      if (line.startsWith('## ')) return '<h2>' + line.slice(3) + '</h2>';
+      if (line.trim() === '') return '';
+      return '<p>' + line + '</p>';
+    }).join('\n');
+    document.getElementById('post-content').innerHTML = html;
+
+    if (post.keywords) {
+      const tags = post.keywords.split(',').map(k => k.trim());
+      document.getElementById('post-tags').innerHTML = tags.map(t => '<span class="post-tag">' + t + '</span>').join('');
+    }
+
+    loadRelated(post.category, post.slug);
+  } catch(e) { console.error(e); }
+}
+
+async function loadRelated(category, currentSlug) {
+  try {
+    const res = await fetch(
+      SB.url + '/rest/v1/blog_posts?published=eq.true&slug=neq.' + currentSlug + '&limit=3&select=slug,title,category',
+      { headers: { 'apikey': SB.key, 'Authorization': 'Bearer ' + SB.key } }
+    );
+    const related = await res.json();
+    if (!related || !related.length) return;
+    document.getElementById('related-grid').innerHTML = related.map(p =>
+      '<a href="../../blog/' + p.slug + '" class="related-card"><div class="rc-cat">' + p.category + '</div><div class="rc-title">' + p.title + '</div></a>'
+    ).join('');
+  } catch(e) {}
+}
+
+loadPost();
+</script>
+</body>
+</html>
